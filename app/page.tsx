@@ -1,54 +1,96 @@
-import Image from "next/image";
+import { stat } from "fs";
+import { responseCookiesToRequestCookies } from "next/dist/server/web/spec-extension/adapters/request-cookies";
 
+
+//図鑑番号サンプル
+const dexNumber:string ="25";
+//APIにリクエストを送信
+const response= await fetch(`https://pokeapi.co/api/v2/pokemon/${dexNumber}`);
+const data= await response.json();
+//データの値の設定
+const height:number =data.height/10;
+const weight:number=data.weight/10;
+//pokemonのステータスの型設定
+type StatsList={h:number,a:number,b:number,c:number,d:number,s:number};
+const statsList:StatsList={
+  h:data.stats.find((stat:any)=>stat.stat.name=="hp")?.base_stat ?? 0,
+  a:data.stats.find((stat:any)=>stat.stat.name=="attack")?.base_stat ?? 0,
+  b:data.stats.find((stat:any)=>stat.stat.name=="defense")?.base_stat ?? 0,
+  c:data.stats.find((stat:any)=>stat.stat.name=="special-attack")?.base_stat ?? 0,
+  d:data.stats.find((stat:any)=>stat.stat.name=="special-defense")?.base_stat ?? 0,
+  s:data.stats.find((stat:any)=>stat.stat.name=="speed")?.base_stat ?? 0
+};
+const totalStats: number=Object.values(statsList).reduce((a,b)=>a+b,0);
+const typeNames:string[]=data.types.map((item:any)=>item.type.name);
+const languageList:{value: string;label: string}[]=[
+  {value: "ja",label:"日本語"},
+  {value:"ja=Hrkt",label:"にほんご"},
+  {value:"en",label:"English"},
+  {value:"fr",label:"french"},
+  {value:"it",label:"italiano"},
+];
+
+const typeNamesList:{eng:string,ja:string}[]=[
+  {eng:"normal",ja:"ノーマル"},
+  {eng:"fire",ja:"ほのう"},
+  {eng:"water",ja:"みず"},
+  {eng:"grass",ja:"くさ"},
+  {eng:"electric",ja:"でんき"},
+  {eng:"ice",ja:"こおり"},
+  {eng:"fighting",ja:"かくとう"},
+  {eng:"poison",ja:"どく"},
+  {eng:"ground",ja:"じめん"},
+  {eng:"flying",ja:"ひこう"},
+  {eng:"psychic",ja:"エスパー"},
+  {eng:"bug",ja:"むし"},
+  {eng:"rock",ja:"いわ"},
+  {eng:"ghost",ja:"ゴースト"},
+  {eng:"dragon",ja:"ドラゴン"},
+  {eng:"dark",ja:"あく"},
+  {eng:"steel",ja:"はがね"},
+  {eng:"fairy",ja:"フェアリー"}
+]
+const typeNamesJa: string[] = typeNames.map((typeName) =>
+  typeNamesList.find((type) => type.eng === typeName)?.ja|| ""
+);
+
+const isShiny:boolean=false;
+const imageType:string="正面"
+const imageTypeList:{type: string, url: string}[]=[
+  {type:"公式イラスト",url:"/other/official-artwoek"},
+  {type:"正面",url:""},
+  {type:"側面",url:"/other/home"},
+  {type:"ポケモンホーム",url:"\other/home"}
+]
+const imageTypeUrl=imageTypeList.find((item)=>item.type==imageType)?.url;
+const shiny:string=isShiny?"/shiny":"";
+// const url:string=`https://raw.githubusercontent.com/PokeAPI/sporetes/master/sprotes/master/pokemon${imageTypeUrl}${shiny}/${dexNumber}.png`
 export default function Home() {
+  console.log(data)
   return (
     <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
       <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
+        <h1>
+          名前:{data.name}/タイプ：{typeNamesJa}
+        </h1>
+          <img
+            src={data.sprites.other["official-artwork"].front_default}
+            alt={data.name}
+          />
+        <li>HP:{statsList.h}</li>
+        <li>攻撃:{statsList.a}</li>
+        <li>特殊攻撃:{statsList.c}</li>
+        <li>防御力:{statsList.b}</li>
+        <li>特殊防御力:{statsList.d}</li>
+        <li>スピード:{statsList.s}</li>
+        {/* <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
           <a
             className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
             href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
             target="_blank"
             rel="noopener noreferrer"
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
+            検索
           </a>
           <a
             className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
@@ -56,9 +98,9 @@ export default function Home() {
             target="_blank"
             rel="noopener noreferrer"
           >
-            Documentation
+            クリア
           </a>
-        </div>
+        </div> */}
       </main>
     </div>
   );
