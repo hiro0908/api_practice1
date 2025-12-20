@@ -5,7 +5,7 @@ import React from 'react';
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer, Tooltip, Legend } from 'recharts';
 
 //図鑑番号サンプル
-const dexNumber:string ="40";
+const dexNumber:string ="1020";
 //APIにリクエストを送信
 const response= await fetch(`https://pokeapi.co/api/v2/pokemon/${dexNumber}`);
 const data= await response.json();
@@ -137,19 +137,23 @@ export default function Home() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
       <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
+        <h1 className= "text-center text-4xl font-bold">ポケモン図鑑</h1>
+        <h1 className = "text-center">
+          名前：{data.name}/タイプ：{typeNamesJa}
+        </h1>
         <h1>
-          名前:{data.name}/タイプ：{typeNamesJa}
+          高さ：{height}m/体重：{weight}kg
         </h1>
           <img
             src={data.sprites.other["official-artwork"].front_default}
             alt={data.name}
           />
-        <li>HP:{statsList.h}</li>
-        <li>攻撃:{statsList.a}</li>
-        <li>特殊攻撃:{statsList.c}</li>
-        <li>防御力:{statsList.b}</li>
-        <li>特殊防御力:{statsList.d}</li>
-        <li>スピード:{statsList.s}</li>
+        <h2>HP：{statsList.h}</h2>
+        <h2>攻撃力：{statsList.a}</h2>
+        <h2>特殊攻撃力：{statsList.c}</h2>
+        <h2>防御力：{statsList.b}</h2>
+        <h2>特殊防御力：{statsList.d}</h2>
+        <h2>スピード：{statsList.s}</h2>
         {/* <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
           <a
             className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
@@ -169,6 +173,7 @@ export default function Home() {
           </a>
         </div> */}
         <h1>ポケモンステータスチャート</h1>
+        <h2>種族値：{totalStats}</h2>
         <RadarChartComponent/>
       </main>
     </div>
