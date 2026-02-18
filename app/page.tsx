@@ -1,30 +1,10 @@
 "use client";
-import { stat } from "fs";
-import { responseCookiesToRequestCookies } from "next/dist/server/web/spec-extension/adapters/request-cookies";
+import {useEffect, useState } from "react";
 import React from 'react';
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer, Tooltip, Legend } from 'recharts';
+import { ButtonGroupInput } from "@/components/ui/ButtonGroupInput"
 
-//図鑑番号サンプル
-const dexNumber:string ="1020";
-//APIにリクエストを送信
-const response= await fetch(`https://pokeapi.co/api/v2/pokemon/${dexNumber}`);
-const data= await response.json();
-//データの値の設定
-const height:number =data.height/10;
-const weight:number=data.weight/10;
-//pokemonのステータスの型設定
-type StatsList={h:number,a:number,b:number,c:number,d:number,s:number};
-const statsList:StatsList={
-  h:data.stats.find((stat:any)=>stat.stat.name=="hp")?.base_stat ?? 0,
-  a:data.stats.find((stat:any)=>stat.stat.name=="attack")?.base_stat ?? 0,
-  b:data.stats.find((stat:any)=>stat.stat.name=="defense")?.base_stat ?? 0,
-  c:data.stats.find((stat:any)=>stat.stat.name=="special-attack")?.base_stat ?? 0,
-  d:data.stats.find((stat:any)=>stat.stat.name=="special-defense")?.base_stat ?? 0,
-  s:data.stats.find((stat:any)=>stat.stat.name=="speed")?.base_stat ?? 0
-};
 
-const totalStats: number=Object.values(statsList).reduce((a,b)=>a+b,0);
-const typeNames:string[]=data.types.map((item:any)=>item.type.name);
 const languageList:{value: string;label: string}[]=[
   {value: "ja",label:"日本語"},
   {value:"ja=Hrkt",label:"にほんご"},
@@ -53,9 +33,7 @@ const typeNamesList:{eng:string,ja:string}[]=[
   {eng:"steel",ja:"はがね"},
   {eng:"fairy",ja:"フェアリー"}
 ]
-const typeNamesJa: string[] = typeNames.map((typeName) =>
-  typeNamesList.find((type) => type.eng === typeName)?.ja|| ""
-);
+
 
 const isShiny:boolean=false;
 const imageType:string="正面"
@@ -63,12 +41,67 @@ const imageTypeList:{type: string, url: string}[]=[
   {type:"公式イラスト",url:"/other/official-artwoek"},
   {type:"正面",url:""},
   {type:"側面",url:"/other/home"},
-  {type:"ポケモンホーム",url:"\other/home"}
+  {type:"ポケモンホーム",url:"/other/home"}
 ]
 const imageTypeUrl=imageTypeList.find((item)=>item.type==imageType)?.url;
 const shiny:string=isShiny?"/shiny":"";
 // const url:string=`https://raw.githubusercontent.com/PokeAPI/sporetes/master/sprotes/master/pokemon${imageTypeUrl}${shiny}/${dexNumber}.png`
 
+
+
+interface DataPoint {
+  subject: string; // 軸のラベル
+  A: number;       // 1つ目のデータセットの値      // 2つ目のデータセットの値 (必要に応じて削除・変更可能)
+  fullMark: number; // その項目の最大値（スケール調整用）
+}
+
+
+export default function Home() {
+  //外部から入力した数値の格納
+  const [inputNumber,setInputNumber] =useState("1010");
+  //調査結果のための格納
+  const [searchNumber,setSearchNumber] =useState("1010");
+  const [data,setData]= useState<any>(null);  const [isClicked,setIsClicked] = useState(false);
+  const NumberSearch = () => {
+    console.log("検索:", inputNumber);
+    setSearchNumber(inputNumber);
+    setIsClicked(true);
+  };
+  
+useEffect(()=>{
+  const fetchPokemon = async()=>{
+    //APIにリクエストを送信
+    const response= await fetch(`https://pokeapi.co/api/v2/pokemon/${searchNumber}`);
+    const data= await response.json();
+    setData(data);
+  };
+  fetchPokemon();
+},[searchNumber]);
+
+if(!data){
+  return (
+  <div>そのポケモンは存在しません</div>
+)
+};
+//データの値の設定
+const height:number =data.height/10;
+const weight:number=data.weight/10;
+//pokemonのステータスの型設定
+type StatsList={h:number,a:number,b:number,c:number,d:number,s:number};
+const statsList:StatsList={
+  h:data.stats.find((stat:any)=>stat.stat.name=="hp")?.base_stat ?? 0,
+  a:data.stats.find((stat:any)=>stat.stat.name=="attack")?.base_stat ?? 0,
+  b:data.stats.find((stat:any)=>stat.stat.name=="defense")?.base_stat ?? 0,
+  c:data.stats.find((stat:any)=>stat.stat.name=="special-attack")?.base_stat ?? 0,
+  d:data.stats.find((stat:any)=>stat.stat.name=="special-defense")?.base_stat ?? 0,
+  s:data.stats.find((stat:any)=>stat.stat.name=="speed")?.base_stat ?? 0
+};
+
+const totalStats: number=Object.values(statsList).reduce((a,b)=>a+b,0);
+const typeNames:string[]=data.types.map((item:any)=>item.type.name);
+const typeNamesJa: string[] = typeNames.map((typeName) =>
+  typeNamesList.find((type) => type.eng === typeName)?.ja|| ""
+);
 const status: DataPoint[] = [
   {
     subject: 'HP',
@@ -101,13 +134,6 @@ const status: DataPoint[] = [
     fullMark: 200,
   },
 ];
-
-
-interface DataPoint {
-  subject: string; // 軸のラベル
-  A: number;       // 1つ目のデータセットの値      // 2つ目のデータセットの値 (必要に応じて削除・変更可能)
-  fullMark: number; // その項目の最大値（スケール調整用）
-}
 const RadarChartComponent: React.FC = () => {
   return (
     // 親コンテナに合わせてサイズを調整するResponsiveContainerを使用
@@ -132,12 +158,18 @@ const RadarChartComponent: React.FC = () => {
   );
 };
 
-export default function Home() {
-  console.log(data)
   return (
     <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
       <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
         <h1 className= "text-center text-4xl font-bold">ポケモン図鑑</h1>
+        <div>
+          <ButtonGroupInput 
+            value={inputNumber}
+            onChange={setInputNumber}
+            onSearch={NumberSearch}
+          />
+          {isClicked && <p>検索しました</p>}
+        </div>
         <h1 className = "text-center">
           名前：{data.name}/タイプ：{typeNamesJa}
         </h1>
@@ -154,24 +186,7 @@ export default function Home() {
         <h2>防御力：{statsList.b}</h2>
         <h2>特殊防御力：{statsList.d}</h2>
         <h2>スピード：{statsList.s}</h2>
-        {/* <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            検索
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            クリア
-          </a>
-        </div> */}
+
         <h1>ポケモンステータスチャート</h1>
         <h2>種族値：{totalStats}</h2>
         <RadarChartComponent/>
