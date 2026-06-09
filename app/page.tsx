@@ -3,6 +3,8 @@ import {useEffect, useState } from "react";
 import React from 'react';
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer, Tooltip, Legend } from 'recharts';
 import { ButtonGroupInput } from "@/components/ui/ButtonGroupInput"
+// import { json } from "stream/consumers";
+
 
 
 const languageList:{value: string;label: string}[]=[
@@ -58,13 +60,14 @@ interface DataPoint {
 
 export default function Home() {
   //外部から入力した数値の格納
-  const [inputNumber,setInputNumber] =useState("1010");
+  const [inputNumber,setInputNumber] =useState("0");
   //調査結果のための格納
-  const [searchNumber,setSearchNumber] =useState("1010");
-  const [data,setData]= useState<any>(null);  const [isClicked,setIsClicked] = useState(false);
-  const NumberSearch = () => {
-    console.log("検索:", inputNumber);
-    setSearchNumber(inputNumber);
+  const [searchNumber,setSearchNumber] =useState("0");
+  const [data,setData]= useState<any>(null);  
+  const [isClicked,setIsClicked] = useState(false);
+  const NumberSearch = (number:string="0") => {
+    console.log("検索:", number);
+    setSearchNumber(number);
     setIsClicked(true);
   };
   
@@ -78,9 +81,67 @@ useEffect(()=>{
   fetchPokemon();
 },[searchNumber]);
 
+
+const [pokemonCount, setPokemonCount] = useState<number | null>(null);
+//一旦リストの上限取得とその表示
+useEffect(()=>{
+  const fetchListLimit = async()=>{
+    const responseLimit = await fetch("https://pokeapi.co/api/v2/pokemon");
+    const listLimit= await responseLimit.json();
+    setPokemonCount(listLimit.count);
+    console.log(pokemonCount);
+  };
+    fetchListLimit();
+},[]);
+
+useEffect(()=>{
+  console.log(pokemonCount);
+},[pokemonCount]);
+
+const [pokemonList,setPokemonList]=useState<
+  {number:string;name:string}[]
+>([]);
+
+useEffect(()=>{
+  if (pokemonCount === null) return;
+  const fetchPokemonList=async()=>{
+    const response= await fetch(
+      `https://pokeapi.co/api/v2/pokemon?limit=${pokemonCount}`
+    );
+    const json = await response.json();
+    const nameList=json.results.map(
+    (pokemon:{name:string,url:string})=>({
+      name:pokemon.name,
+      number:pokemon.url.split("/").slice(-2,-1)[0]
+    })
+);
+setPokemonList(nameList);
+  }
+  fetchPokemonList();
+
+},[pokemonCount]);
+
+
+
+
 if(!data){
   return (
-  <div>そのポケモンは存在しません</div>
+  <div>現在存在するポケモン番号を入力すると検索できます<br/>
+        今回は一時的にリストによる検索表示を行います
+      {pokemonList.map((pokemon)=>(
+        <div key={pokemon.number}>
+          {pokemon.number} :    
+          <button type="button" onClick={()=>NumberSearch(pokemon.number)}>{pokemon.name}</button>
+        </div>
+      ))}
+
+   {/* <ButtonGroupInput 
+    value={inputNumber}
+    onChange={setInputNumber}
+    onSearch={NumberSearch}
+    /> */}
+  </div>
+
 )
 };
 //データの値の設定
