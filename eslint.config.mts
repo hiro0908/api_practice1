@@ -11,12 +11,23 @@ export default defineConfig([
       "@stylistic":stylistic,
     },
   },
-  { files: ["**/*.{js,mjs,cjs,ts,mts,cts,jsx,tsx}"], plugins: { js }, extends: ["js/recommended"], languageOptions: { globals: {...globals.browser, ...globals.node} } },
-  tseslint.configs.recommended,{
+  { 
+    files: ["**/*.{js,mjs,cjs,ts,mts,cts,jsx,tsx}"], 
+    plugins: { js }, 
+    extends: ["js/recommended"], 
+    languageOptions: { 
+      globals: {...globals.browser, ...globals.node},
+      parserOptions:{projectService:true}
+      } 
+  },
+  tseslint.configs.recommended,
+  tseslint.configs.recommendedTypeChecked,
+  {
     rules:{
       "no-console":"warn",
       camelcase: ["warn", { properties: "never" }],
       "@stylistic/semi": ["warn", "always"], 
+      "@typescript-eslint/switch-exhaustiveness-check":"warn",
     },
   },
   pluginReact.configs.flat.recommended,

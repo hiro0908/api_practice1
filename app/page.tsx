@@ -4,9 +4,6 @@ import React from 'react';
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer, Tooltip, Legend } from 'recharts';
 import { ButtonGroupInput } from "@/components/ui/ButtonGroupInput"
 import Image from "next/image";
-// import { Type } from "lucide-react";
-// import { json } from "stream/consumers";
-
 
 
 // const languageList:{value: string;label: string}[]=[
