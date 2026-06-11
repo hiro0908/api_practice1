@@ -15,7 +15,14 @@ ESLintには「ルール(rule)」という概念があり、ルール[^2]はチ�
 |error|2|警告し、終了コードを1にする|
 
 ## ESLintの自働化の導入
-ESLineのルールの中にプラグインをインストールすることで自動修正できるものがある。
+ESLineのルール[^3]の中にプラグインをインストールすることで自動修正できるものがある。
 <br>`npm install -D @stylistic/eslint-plugin`
+プラグインをインストールしたら`eslint.congig.ts`を開いて以下の二行を追加すれば完了。<br>
+`import tseslint from "typescript-eslint"`<br>
+`tseslint.configs.recommended,`<br>
+逆にどうしてもルールを破りたい場合は破りたいコマンドの前文に以下のコードを付け加えることによって無視させることが出来る<br>
+`// eslint-disable-next-line camelcase`
+
+
 [^1]: プログラムを静的に解析し、バグや問題点を発見するツール
 [^2]: [ルールの詳細](https://eslint.org/docs/latest/rules/)
