@@ -3,17 +3,19 @@ import {useEffect, useState } from "react";
 import React from 'react';
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer, Tooltip, Legend } from 'recharts';
 import { ButtonGroupInput } from "@/components/ui/ButtonGroupInput"
+import Image from "next/image";
+// import { Type } from "lucide-react";
 // import { json } from "stream/consumers";
 
 
 
-const languageList:{value: string;label: string}[]=[
-  {value: "ja",label:"日本語"},
-  {value:"ja=Hrkt",label:"にほんご"},
-  {value:"en",label:"English"},
-  {value:"fr",label:"french"},
-  {value:"it",label:"italiano"},
-];
+// const languageList:{value: string;label: string}[]=[
+//   {value: "ja",label:"日本語"},
+//   {value:"ja=Hrkt",label:"にほんご"},
+//   {value:"en",label:"English"},
+//   {value:"fr",label:"french"},
+//   {value:"it",label:"italiano"},
+// ];
 
 const typeNamesList:{eng:string,ja:string}[]=[
   {eng:"normal",ja:"ノーマル"},
@@ -37,33 +39,89 @@ const typeNamesList:{eng:string,ja:string}[]=[
 ]
 
 
-const isShiny:boolean=false;
-const imageType:string="正面"
-const imageTypeList:{type: string, url: string}[]=[
-  {type:"公式イラスト",url:"/other/official-artwoek"},
-  {type:"正面",url:""},
-  {type:"側面",url:"/other/home"},
-  {type:"ポケモンホーム",url:"/other/home"}
-]
-const imageTypeUrl=imageTypeList.find((item)=>item.type==imageType)?.url;
-const shiny:string=isShiny?"/shiny":"";
+// const isShiny:boolean=false;
+// const imageType:string="正面"
+// const imageTypeList:{type: string, url: string}[]=[
+//   {type:"公式イラスト" ,url:"/other/official-artwoek"},
+//   {type:"正面",url:""},
+//   {type:"側面",url:"/other/home"},
+//   {type:"ポケモンホーム",url:"/other/home"}
+// ]
+// const imageTypeUrl=imageTypeList.find((item)=>item.type==imageType)?.url;
+// const shiny:string=isShiny?"/shiny":"";
 // const url:string=`https://raw.githubusercontent.com/PokeAPI/sporetes/master/sprotes/master/pokemon${imageTypeUrl}${shiny}/${dexNumber}.png`
 
 
+type PokemonStat={
+  base_stat:number;
+  stat:{
+    name:string;
+  };
+}
+type PokemonType={
+  slot:number;
+  type:{
+    name:string;
+    url:string;
+  };
+  weight:number;
+};
 
+type PokemonData = {
+  name: string;
+  height: number;
+  weight: number;
+
+  stats: PokemonStat[];
+
+  types: PokemonType[];
+
+  sprites: {
+    other: {
+      "official-artwork": {
+        front_default: string;
+      };
+    };
+  };
+};
 interface DataPoint {
   subject: string; // 軸のラベル
   A: number;       // 1つ目のデータセットの値      // 2つ目のデータセットの値 (必要に応じて削除・変更可能)
   fullMark: number; // その項目の最大値（スケール調整用）
 }
+type RaderChartProps={
+  status:DataPoint[];
+};
 
-
+const RadarChartComponent:React.FC<RaderChartProps> = ({status}) => {
+  return (
+    // 親コンテナに合わせてサイズを調整するResponsiveContainerを使用
+    <ResponsiveContainer width="100%" height={400}>
+      {/* cx, cyは中心点の位置、outerRadiusはチャートのサイズを定義 */}
+      <RadarChart cx="50%" cy="50%" outerRadius="80%" data={status}>
+        {/* PolarGrid は6角形のグリッド線を描画 */}
+        <PolarGrid />
+        {/* PolarAngleAxis は6角形の頂点（軸）のラベルを描画 */}
+        <PolarAngleAxis dataKey="subject" />
+        {/* PolarRadiusAxis は中心からの距離（数値のスケール）を描画しない設定 (必要なら変更可) */}
+        <PolarRadiusAxis angle={30} domain={[0, 200]} />
+        
+        {/* Radar は実際のデータ系列を描画 */}
+        <Radar name="ステータス" dataKey="A" stroke="#8884d8" fill="#8884d8" fillOpacity={0.6} strokeWidth={2} />
+        
+        {/* Tooltip と Legend を追加してインタラクティブに */}
+        <Tooltip />
+        <Legend />
+      </RadarChart>
+    </ResponsiveContainer>
+    );
+  };
 export default function Home() {
   //外部から入力した数値の格納
   const [inputNumber,setInputNumber] =useState("0");
   //調査結果のための格納
   const [searchNumber,setSearchNumber] =useState("0");
-  const [data,setData]= useState<any>(null);  
+  const [data,setData]= useState<PokemonData|null>(null);  
   const [isClicked,setIsClicked] = useState(false);
   const NumberSearch = (number:string="0") => {
     console.log("検索:", number);
@@ -89,7 +147,6 @@ useEffect(()=>{
     const responseLimit = await fetch("https://pokeapi.co/api/v2/pokemon");
     const listLimit= await responseLimit.json();
     setPokemonCount(listLimit.count);
-    console.log(pokemonCount);
   };
     fetchListLimit();
 },[]);
@@ -142,7 +199,7 @@ if(!data){
     /> */}
   </div>
 
-)
+  )
 };
 //データの値の設定
 const height:number =data.height/10;
@@ -150,19 +207,17 @@ const weight:number=data.weight/10;
 //pokemonのステータスの型設定
 type StatsList={h:number,a:number,b:number,c:number,d:number,s:number};
 const statsList:StatsList={
-  h:data.stats.find((stat:any)=>stat.stat.name=="hp")?.base_stat ?? 0,
-  a:data.stats.find((stat:any)=>stat.stat.name=="attack")?.base_stat ?? 0,
-  b:data.stats.find((stat:any)=>stat.stat.name=="defense")?.base_stat ?? 0,
-  c:data.stats.find((stat:any)=>stat.stat.name=="special-attack")?.base_stat ?? 0,
-  d:data.stats.find((stat:any)=>stat.stat.name=="special-defense")?.base_stat ?? 0,
-  s:data.stats.find((stat:any)=>stat.stat.name=="speed")?.base_stat ?? 0
+  h:data.stats.find((stat:PokemonStat)=>stat.stat.name=="hp")?.base_stat ?? 0,
+  a:data.stats.find((stat:PokemonStat)=>stat.stat.name=="attack")?.base_stat ?? 0,
+  b:data.stats.find((stat:PokemonStat)=>stat.stat.name=="defense")?.base_stat ?? 0,
+  c:data.stats.find((stat:PokemonStat)=>stat.stat.name=="special-attack")?.base_stat ?? 0,
+  d:data.stats.find((stat:PokemonStat)=>stat.stat.name=="special-defense")?.base_stat ?? 0,
+  s:data.stats.find((stat:PokemonStat)=>stat.stat.name=="speed")?.base_stat ?? 0
 };
 
 const totalStats: number=Object.values(statsList).reduce((a,b)=>a+b,0);
-const typeNames:string[]=data.types.map((item:any)=>item.type.name);
-const typeNamesJa: string[] = typeNames.map((typeName) =>
-  typeNamesList.find((type) => type.eng === typeName)?.ja|| ""
-);
+const typeNames:string[]=data.types.map((item:PokemonType)=>item.type.name);
+const typeNamesJa: string[] = typeNames.map((typeName) =>typeNamesList.find((type) => type.eng === typeName)?.ja|| "");
 const status: DataPoint[] = [
   {
     subject: 'HP',
@@ -195,30 +250,6 @@ const status: DataPoint[] = [
     fullMark: 200,
   },
 ];
-const RadarChartComponent: React.FC = () => {
-  return (
-    // 親コンテナに合わせてサイズを調整するResponsiveContainerを使用
-    <ResponsiveContainer width="100%" height={400}>
-      {/* cx, cyは中心点の位置、outerRadiusはチャートのサイズを定義 */}
-      <RadarChart cx="50%" cy="50%" outerRadius="80%" data={status}>
-        {/* PolarGrid は6角形のグリッド線を描画 */}
-        <PolarGrid />
-        {/* PolarAngleAxis は6角形の頂点（軸）のラベルを描画 */}
-        <PolarAngleAxis dataKey="subject" />
-        {/* PolarRadiusAxis は中心からの距離（数値のスケール）を描画しない設定 (必要なら変更可) */}
-        <PolarRadiusAxis angle={30} domain={[0, 200]} />
-        
-        {/* Radar は実際のデータ系列を描画 */}
-        <Radar name="ステータス" dataKey="A" stroke="#8884d8" fill="#8884d8" fillOpacity={0.6} strokeWidth={2} />
-        
-        {/* Tooltip と Legend を追加してインタラクティブに */}
-        <Tooltip />
-        <Legend />
-      </RadarChart>
-    </ResponsiveContainer>
-  );
-};
-
   return (
     <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
       <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
@@ -237,9 +268,11 @@ const RadarChartComponent: React.FC = () => {
         <h1>
           高さ：{height}m/体重：{weight}kg
         </h1>
-          <img
+          <Image
             src={data.sprites.other["official-artwork"].front_default}
             alt={data.name}
+            width={300}
+            height={300}
           />
         <h2>HP：{statsList.h}</h2>
         <h2>攻撃力：{statsList.a}</h2>
@@ -250,7 +283,7 @@ const RadarChartComponent: React.FC = () => {
 
         <h1>ポケモンステータスチャート</h1>
         <h2>種族値：{totalStats}</h2>
-        <RadarChartComponent/>
+        <RadarChartComponent status={status}/>
       </main>
     </div>
   );
