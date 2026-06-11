@@ -1,36 +1,20 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Lintについて調べてみた
+## ESLintとは？
+ESLintは、JavaScriptやTypeScriptのコードがコーディング規約に準拠しているかをチェックするツールである。一般的にはリンター[^1]というジャンルのツールである。類似した機能を持つコンパイラーとの大きな違いはそれぞれの機能の本質にある。コンパイラーはある言語から別の言語に変換することであるのに対してリンターはプログラムの問題点を指摘することであり、言語から言語への変換は行わない。そのため相互補完的な関係を作ることが可能である。
+##導入方法
+Typescriptがはいいている状態で下記のコマンド実行していく。
+<br>`pnpm init -y @eslint/config@latest`
+## ESLintのルール設定
+ESLintには「ルール(rule)」という概念があり、ルール[^2]はチェックの最小単位である。ルール設定が完了したら下記のコードを実行することでルールに則った問題点を指摘する。
+<br>`npx eslint`
+ルールには`off` `warn` `error`の3種類で重要度が設定でき、重要度は以下の表のようになっている。・
+|重要度|数値|効果|
+|----|----|----|
+|off|0|error|
+|warn|1|警告するが終了コードに影響しない|
+|error|2|警告し、終了コードを1にする|
 
-## Getting Started
-
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## ESLintの自働化の導入
+次から自動化について
+[^1]: プログラムを静的に解析し、バグや問題点を発見するツール
+[^2]: [ルールの詳細](https://eslint.org/docs/latest/rules/)
