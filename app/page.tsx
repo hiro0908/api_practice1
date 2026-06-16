@@ -4,6 +4,11 @@ import React from 'react';
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer, Tooltip, Legend } from 'recharts';
 import { ButtonGroupInput } from "@/components/ui/ButtonGroupInput"
 import Image from "next/image";
+import type{
+  PokemonStat,
+  PokemonData,
+  PokemonType
+} from "@/types/pokemon"
 
 
 // const languageList:{value: string;label: string}[]=[
@@ -49,46 +54,21 @@ const typeNamesList:{eng:string,ja:string}[]=[
 // const url:string=`https://raw.githubusercontent.com/PokeAPI/sporetes/master/sprotes/master/pokemon${imageTypeUrl}${shiny}/${dexNumber}.png`
 
 
-type PokemonStat={
-  base_stat:number;
-  stat:{
-    name:string;
-  };
-}
-type PokemonType={
-  slot:number;
-  type:{
-    name:string;
-    url:string;
-  };
-  weight:number;
+
+
+type RaderChartProps={
+  status:DataPoint[];
 };
 
-type PokemonData = {
-  name: string;
-  height: number;
-  weight: number;
+//pokemonのステータスの型設定
+type StatsList={h:number,a:number,b:number,c:number,d:number,s:number};
 
-  stats: PokemonStat[];
-
-  types: PokemonType[];
-
-  sprites: {
-    other: {
-      "official-artwork": {
-        front_default: string;
-      };
-    };
-  };
-};
 interface DataPoint {
   subject: string; // 軸のラベル
   A: number;       // 1つ目のデータセットの値      // 2つ目のデータセットの値 (必要に応じて削除・変更可能)
   fullMark: number; // その項目の最大値（スケール調整用）
 }
-type RaderChartProps={
-  status:DataPoint[];
-};
+
 
 const RadarChartComponent:React.FC<RaderChartProps> = ({status}) => {
   return (
@@ -201,8 +181,7 @@ if(!data){
 //データの値の設定
 const height:number =data.height/10;
 const weight:number=data.weight/10;
-//pokemonのステータスの型設定
-type StatsList={h:number,a:number,b:number,c:number,d:number,s:number};
+
 const statsList:StatsList={
   h:data.stats.find((stat:PokemonStat)=>stat.stat.name=="hp")?.base_stat ?? 0,
   a:data.stats.find((stat:PokemonStat)=>stat.stat.name=="attack")?.base_stat ?? 0,
