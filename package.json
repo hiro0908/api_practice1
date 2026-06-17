@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "format": "prettier --write src"
+    "format": "eslint src --fix && prettier --write src"
   },
   "dependencies": {
     "class-variance-authority": "^0.7.1",
@@ -30,6 +30,7 @@
     "baseline-browser-mapping": "^2.10.35",
     "eslint": "^9.39.1",
     "eslint-config-next": "16.0.6",
+    "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-react": "^7.37.5",
     "globals": "^17.6.0",
     "jiti": "^2.7.0",
