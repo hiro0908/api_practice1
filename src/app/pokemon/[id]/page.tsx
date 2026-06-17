@@ -2,7 +2,7 @@
 import {use} from 'react'
 import {useState,useEffect} from 'react'
 import Image from "next/image";
-import {PokemonData,PokemonType} from '@/types/pokemon'
+import {PokemonData,PokemonType} from '@/src/types/pokemon'
 type Params={
     id:string;
 };
