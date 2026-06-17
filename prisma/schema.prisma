@@ -13,8 +13,19 @@ datasource db {
 }
 
 model Pokemon{
-  id       Int     @id @default(autoincrement())
+  id       Int      @id @default(autoincrement())
   name     String 
   imageUrl String
   type     String?
+  stats    Stats[]
+}
+
+model Stats{
+  id        Int     @id @default(autoincrement())
+  name      String
+  value     Int
+  pokemonId Int
+  pokemon   Pokemon @relation(fields:[pokemonId],references:[id])
+  
+
 }
