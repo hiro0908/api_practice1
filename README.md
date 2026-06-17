@@ -88,9 +88,9 @@ Performant NPM を略したJavaScript のパッケージ管理ツールである
 
 ## インストールが高速
 従来のjavascriptのインストール方法
-![alt text](image.png)
+![alt text](images/image.png)
 pnpmのインストール方法
-![alt text](image-1.png)
+![alt text](images/image-1.png)
 上記のようにパッケージごとに個別にステージを実行することで、待ち状態を生み出さないようにし、インストールのプロセスを効率化しています。
 ## 使用方法
 - 自分のインストール
@@ -149,7 +149,7 @@ Facebook（現 Meta）が「npmをもっと速く・便利にしたい」と作�
 # SPAとSSRについて
 ## SPAとは？
 SPAとはSingle Page Applicationの略称で、ブラウザから初回のリクエストが来るとまず1つのページをサーバーが生成してブラウザが返却する。そこから新たに取得したいデータが存在すればその差分を都度APIからデータを取得してDOMを構築しHTML要素がレンダリングされる。
-![alt text](image-2.png)
+![alt text](images/image-2.png)
 ## SPAに対応する技術
 - React
 - Angular
@@ -167,7 +167,7 @@ SPAとはSingle Page Applicationの略称で、ブラウザから初回のリク
 
 ## SSRとは？
 Server Side Renderingの略称でページ遷移のたびにサーバーにHTTPリクエストが走り、サーバー側でAPIと連携され生成されたHTMLをブラウザに返すアーキテクチャーのことを指す。SSRでは初回レンダリング速度改善とSEOに対する強みを持つことで、先に述べたSPAのデメリットを解消することができる。
-![alt text](image-3.png)
+![alt text](images/image-3.png)
 ## SSRに対応する技術
 - Next.js
 - Nuxt.js
