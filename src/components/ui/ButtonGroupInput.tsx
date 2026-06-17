@@ -1,7 +1,7 @@
 "use client"
-import { Button } from "@/components/ui/button"
-import { ButtonGroup } from "@/components/ui/button-group"
-import { Input } from "@/components/ui/input"
+import { Button } from "@/src/components/ui/button"
+import { ButtonGroup } from "@/src/components/ui/button-group"
+import { Input } from "@/src/components/ui/input"
 import { SearchIcon } from "lucide-react"
 
 type Props = {

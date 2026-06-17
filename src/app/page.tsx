@@ -2,13 +2,13 @@
 import {useEffect, useState } from "react";
 import React from 'react';
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer, Tooltip, Legend } from 'recharts';
-import { ButtonGroupInput } from "@/components/ui/ButtonGroupInput"
+import { ButtonGroupInput } from "@/src/components/ui/ButtonGroupInput"
 import Image from "next/image";
 import type{
   PokemonStat,
   PokemonData,
   PokemonType
-} from "@/types/pokemon"
+} from "@/src/types/pokemon"
 
 
 // const languageList:{value: string;label: string}[]=[
