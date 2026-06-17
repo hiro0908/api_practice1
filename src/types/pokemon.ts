@@ -1,16 +1,16 @@
-export type PokemonStat={
-  base_stat:number;
-  stat:{
-    name:string;
+export type PokemonStat = {
+  base_stat: number;
+  stat: {
+    name: string;
   };
-}
-export type PokemonType={
-  slot:number;
-  type:{
-    name:string;
-    url:string;
+};
+export type PokemonType = {
+  slot: number;
+  type: {
+    name: string;
+    url: string;
   };
-  weight:number;
+  weight: number;
 };
 
 export type PokemonData = {
@@ -30,4 +30,3 @@ export type PokemonData = {
     };
   };
 };
-

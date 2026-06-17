@@ -1,29 +1,29 @@
-"use client"
-import { Button } from "@/src/components/ui/button"
-import { ButtonGroup } from "@/src/components/ui/button-group"
-import { Input } from "@/src/components/ui/input"
-import { SearchIcon } from "lucide-react"
+"use client";
+import { Button } from "@/src/components/ui/button";
+import { ButtonGroup } from "@/src/components/ui/button-group";
+import { Input } from "@/src/components/ui/input";
+import { SearchIcon } from "lucide-react";
 
 type Props = {
   value: string;
   onChange: (value: string) => void;
-  onSearch : (value:string) => void
-}
-export function ButtonGroupInput({value,onChange,onSearch}:Props) {
+  onSearch: (value: string) => void;
+};
+export function ButtonGroupInput({ value, onChange, onSearch }: Props) {
   return (
     <ButtonGroup>
-      <Input 
+      <Input
         placeholder="図鑑番号を入力"
-        value = {value}
+        value={value}
         onChange={(e) => onChange(e.target.value)}
-        />
-      <Button 
-        variant="outline" 
+      />
+      <Button
+        variant="outline"
         aria-label="Search"
-        onClick={()=>onSearch(value)}
+        onClick={() => onSearch(value)}
       >
         <SearchIcon />
       </Button>
     </ButtonGroup>
-  )
+  );
 }
