@@ -1,26 +1,24 @@
 export type PokemonStat = {
-    id: number;
-    name: string;
-    value: number;
-    pokemonId:number;
+  id: number;
+  name: string;
+  value: number;
+  pokemonId: number;
 };
 
 export type PokemonData = {
-  id:number;
+  id: number;
   name: string;
-  imageUrl:string;
+  imageUrl: string;
   type: string;
-  stats:PokemonStat[];
-  height:number;
-  weight:number;
-
+  stats: PokemonStat[];
+  height: number;
+  weight: number;
 };
 
-export type PokemonListItem={
-  id:number
-  name:string;
-}
-
+export type PokemonListItem = {
+  id: number;
+  name: string;
+};
 
 // export type PokemonType = {
 //   type:string;
@@ -43,5 +41,3 @@ export type PokemonListItem={
 //     };
 //   };
 // };
-
-

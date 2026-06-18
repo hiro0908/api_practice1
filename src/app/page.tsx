@@ -16,7 +16,7 @@ import Image from "next/image";
 import type {
   PokemonStat,
   PokemonData,
-  PokemonListItem
+  PokemonListItem,
 } from "@/src/types/pokemon";
 
 // const languageList:{value: string;label: string}[]=[
@@ -126,9 +126,7 @@ export default function Home() {
   useEffect(() => {
     const fetchPokemon = async () => {
       //APIにリクエストを送信
-      const response = await fetch(
-        `/api/pokemon/${searchNumber}`,
-      );
+      const response = await fetch(`/api/pokemon/${searchNumber}`);
       const data = await response.json();
       setData(data);
     };
@@ -157,16 +155,12 @@ export default function Home() {
   useEffect(() => {
     // if (pokemonCount === null) return;
     const fetchPokemonList = async () => {
-      const response = await fetch(
-        `/api/pokemon`,
-      );
+      const response = await fetch(`/api/pokemon`);
       const json = await response.json();
-      const nameList = json.map(
-        (pokemon: PokemonListItem) => ({
-          name: pokemon.name,
-          number: pokemon.id,
-        }),
-      );
+      const nameList = json.map((pokemon: PokemonListItem) => ({
+        name: pokemon.name,
+        number: pokemon.id,
+      }));
       setPokemonList(nameList);
     };
     fetchPokemonList();
@@ -199,32 +193,26 @@ export default function Home() {
   const weight: number = data.weight / 10;
 
   const statsList: StatsList = {
-    h:
-      data.stats.find((stat: PokemonStat) => stat.name == "hp")
-        ?.value ?? 0,
+    h: data.stats.find((stat: PokemonStat) => stat.name == "hp")?.value ?? 0,
     a:
-      data.stats.find((stat: PokemonStat) => stat.name == "attack")
-        ?.value ?? 0,
+      data.stats.find((stat: PokemonStat) => stat.name == "attack")?.value ?? 0,
     b:
-      data.stats.find((stat: PokemonStat) => stat.name == "defense")
-        ?.value ?? 0,
+      data.stats.find((stat: PokemonStat) => stat.name == "defense")?.value ??
+      0,
     c:
       data.stats.find((stat: PokemonStat) => stat.name == "special-attack")
         ?.value ?? 0,
     d:
-      data.stats.find(
-        (stat: PokemonStat) => stat.name == "special-defense",
-      )?.value ?? 0,
-    s:
-      data.stats.find((stat: PokemonStat) => stat.name == "speed")
+      data.stats.find((stat: PokemonStat) => stat.name == "special-defense")
         ?.value ?? 0,
+    s: data.stats.find((stat: PokemonStat) => stat.name == "speed")?.value ?? 0,
   };
 
   const totalStats: number = Object.values(statsList).reduce(
     (a, b) => a + b,
     0,
   );
-  const typeNames: string[]=[data.type];
+  const typeNames: string[] = [data.type];
   const typeNamesJa: string[] = typeNames.map(
     (typeName) => typeNamesList.find((type) => type.eng === typeName)?.ja || "",
   );
@@ -278,12 +266,7 @@ export default function Home() {
         <h1>
           高さ：{height}m/体重：{weight}kg
         </h1>
-        <Image
-          src={data.imageUrl}
-          alt={data.name}
-          width={300}
-          height={300}
-        />
+        <Image src={data.imageUrl} alt={data.name} width={300} height={300} />
         <h2>HP：{statsList.h}</h2>
         <h2>攻撃力：{statsList.a}</h2>
         <h2>特殊攻撃力：{statsList.c}</h2>

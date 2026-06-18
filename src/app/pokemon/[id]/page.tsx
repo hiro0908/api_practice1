@@ -2,7 +2,7 @@
 import { use } from "react";
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import { PokemonData} from "@/src/types/pokemon";
+import { PokemonData } from "@/src/types/pokemon";
 type Params = {
   id: string;
 };
@@ -42,7 +42,7 @@ export default function BlogPostPage({ params }: { params: Promise<Params> }) {
   if (!data) {
     return <div>Loading...</div>;
   }
-  const typeNames: string[]=[data.type];
+  const typeNames: string[] = [data.type];
   const typeNamesJa: string[] = typeNames.map(
     (typeName) => typeNamesList.find((type) => type.eng === typeName)?.ja || "",
   );
@@ -55,12 +55,7 @@ export default function BlogPostPage({ params }: { params: Promise<Params> }) {
       <h1>
         高さ：{data.height / 10}m/体重：{data.weight / 10}kg
       </h1>
-      <Image
-        src={data.imageUrl}
-        alt={data?.name}
-        width={300}
-        height={300}
-      />
+      <Image src={data.imageUrl} alt={data?.name} width={300} height={300} />
     </div>
   );
 }
