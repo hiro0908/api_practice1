@@ -24,6 +24,8 @@ export default async function insertData(){
                 name:data.name,
                 imageUrl:data.sprites.other["official-artwork"].front_default,
                 type:data.types[0].type.name,
+                height:data.height,
+                weight:data.weight,
                 stats:{
                     create:data.stats.map((s:{stat:{name:string},base_stat:number})=>({
                         name:  s.stat.name,

@@ -596,7 +596,9 @@ export const PokemonScalarFieldEnum = {
   id: 'id',
   name: 'name',
   imageUrl: 'imageUrl',
-  type: 'type'
+  type: 'type',
+  height: 'height',
+  weight: 'weight'
 } as const
 
 export type PokemonScalarFieldEnum = (typeof PokemonScalarFieldEnum)[keyof typeof PokemonScalarFieldEnum]

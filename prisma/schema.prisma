@@ -17,6 +17,8 @@ model Pokemon{
   name     String 
   imageUrl String?
   type     String?
+  height   Int
+  weight   Int
   stats    Stats[]
 }
 

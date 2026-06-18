@@ -16,7 +16,7 @@ import Image from "next/image";
 import type {
   PokemonStat,
   PokemonData,
-  PokemonType,
+  PokemonListItem
 } from "@/src/types/pokemon";
 
 // const languageList:{value: string;label: string}[]=[
@@ -127,7 +127,7 @@ export default function Home() {
     const fetchPokemon = async () => {
       //APIにリクエストを送信
       const response = await fetch(
-        `https://pokeapi.co/api/v2/pokemon/${searchNumber}`,
+        `/api/pokemon/${searchNumber}`,
       );
       const data = await response.json();
       setData(data);
@@ -135,42 +135,42 @@ export default function Home() {
     fetchPokemon();
   }, [searchNumber]);
 
-  const [pokemonCount, setPokemonCount] = useState<number | null>(null);
-  //一旦リストの上限取得とその表示
-  useEffect(() => {
-    const fetchListLimit = async () => {
-      const responseLimit = await fetch("https://pokeapi.co/api/v2/pokemon");
-      const listLimit = await responseLimit.json();
-      setPokemonCount(listLimit.count);
-    };
-    fetchListLimit();
-  }, []);
+  // const [pokemonCount, setPokemonCount] = useState<number | null>(null);
+  // //一旦リストの上限取得とその表示
+  // useEffect(() => {
+  //   const fetchListLimit = async () => {
+  //     const responseLimit = await fetch("/api/pokemon");
+  //     const listLimit = await responseLimit.json();
+  //     setPokemonCount(listLimit.count);
+  //   };
+  //   fetchListLimit();
+  // }, []);
 
-  useEffect(() => {
-    console.log(pokemonCount);
-  }, [pokemonCount]);
+  // useEffect(() => {
+  //   console.log(pokemonCount);
+  // }, [pokemonCount]);
 
   const [pokemonList, setPokemonList] = useState<
     { number: string; name: string }[]
   >([]);
 
   useEffect(() => {
-    if (pokemonCount === null) return;
+    // if (pokemonCount === null) return;
     const fetchPokemonList = async () => {
       const response = await fetch(
-        `https://pokeapi.co/api/v2/pokemon?limit=${pokemonCount}`,
+        `/api/pokemon`,
       );
       const json = await response.json();
-      const nameList = json.results.map(
-        (pokemon: { name: string; url: string }) => ({
+      const nameList = json.map(
+        (pokemon: PokemonListItem) => ({
           name: pokemon.name,
-          number: pokemon.url.split("/").slice(-2, -1)[0],
+          number: pokemon.id,
         }),
       );
       setPokemonList(nameList);
     };
     fetchPokemonList();
-  }, [pokemonCount]);
+  }, []);
 
   if (!data) {
     return (
@@ -200,33 +200,31 @@ export default function Home() {
 
   const statsList: StatsList = {
     h:
-      data.stats.find((stat: PokemonStat) => stat.stat.name == "hp")
-        ?.base_stat ?? 0,
+      data.stats.find((stat: PokemonStat) => stat.name == "hp")
+        ?.value ?? 0,
     a:
-      data.stats.find((stat: PokemonStat) => stat.stat.name == "attack")
-        ?.base_stat ?? 0,
+      data.stats.find((stat: PokemonStat) => stat.name == "attack")
+        ?.value ?? 0,
     b:
-      data.stats.find((stat: PokemonStat) => stat.stat.name == "defense")
-        ?.base_stat ?? 0,
+      data.stats.find((stat: PokemonStat) => stat.name == "defense")
+        ?.value ?? 0,
     c:
-      data.stats.find((stat: PokemonStat) => stat.stat.name == "special-attack")
-        ?.base_stat ?? 0,
+      data.stats.find((stat: PokemonStat) => stat.name == "special-attack")
+        ?.value ?? 0,
     d:
       data.stats.find(
-        (stat: PokemonStat) => stat.stat.name == "special-defense",
-      )?.base_stat ?? 0,
+        (stat: PokemonStat) => stat.name == "special-defense",
+      )?.value ?? 0,
     s:
-      data.stats.find((stat: PokemonStat) => stat.stat.name == "speed")
-        ?.base_stat ?? 0,
+      data.stats.find((stat: PokemonStat) => stat.name == "speed")
+        ?.value ?? 0,
   };
 
   const totalStats: number = Object.values(statsList).reduce(
     (a, b) => a + b,
     0,
   );
-  const typeNames: string[] = data.types.map(
-    (item: PokemonType) => item.type.name,
-  );
+  const typeNames: string[]=[data.type];
   const typeNamesJa: string[] = typeNames.map(
     (typeName) => typeNamesList.find((type) => type.eng === typeName)?.ja || "",
   );
@@ -281,7 +279,7 @@ export default function Home() {
           高さ：{height}m/体重：{weight}kg
         </h1>
         <Image
-          src={data.sprites.other["official-artwork"].front_default}
+          src={data.imageUrl}
           alt={data.name}
           width={300}
           height={300}

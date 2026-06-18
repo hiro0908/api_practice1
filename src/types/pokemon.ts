@@ -1,32 +1,47 @@
 export type PokemonStat = {
-  base_stat: number;
-  stat: {
+    id: number;
     name: string;
-  };
-};
-export type PokemonType = {
-  slot: number;
-  type: {
-    name: string;
-    url: string;
-  };
-  weight: number;
+    value: number;
+    pokemonId:number;
 };
 
 export type PokemonData = {
+  id:number;
   name: string;
-  height: number;
-  weight: number;
+  imageUrl:string;
+  type: string;
+  stats:PokemonStat[];
+  height:number;
+  weight:number;
 
-  stats: PokemonStat[];
-
-  types: PokemonType[];
-
-  sprites: {
-    other: {
-      "official-artwork": {
-        front_default: string;
-      };
-    };
-  };
 };
+
+export type PokemonListItem={
+  id:number
+  name:string;
+}
+
+
+// export type PokemonType = {
+//   type:string;
+// };
+
+// export type PokemonData = {
+//   name: string;
+//   height: number;
+//   weight: number;
+
+//   stats: PokemonStat[];
+
+//   type: PokemonType[];
+
+//   sprites: {
+//     other: {
+//       "official-artwork": {
+//         front_default: string;
+//       };
+//     };
+//   };
+// };
+
+
