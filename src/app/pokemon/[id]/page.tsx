@@ -2,7 +2,7 @@
 import { use } from "react";
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import { PokemonData, PokemonType } from "@/src/types/pokemon";
+import { PokemonData} from "@/src/types/pokemon";
 type Params = {
   id: string;
 };
@@ -33,7 +33,7 @@ export default function BlogPostPage({ params }: { params: Promise<Params> }) {
   useEffect(() => {
     const fetchPokemon = async () => {
       //APIにリクエストを送信
-      const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
+      const response = await fetch(`/api/pokemon/${id}`);
       const data = await response.json();
       setData(data);
     };
@@ -42,9 +42,7 @@ export default function BlogPostPage({ params }: { params: Promise<Params> }) {
   if (!data) {
     return <div>Loading...</div>;
   }
-  const typeNames: string[] = data.types.map(
-    (item: PokemonType) => item.type.name,
-  );
+  const typeNames: string[]=[data.type];
   const typeNamesJa: string[] = typeNames.map(
     (typeName) => typeNamesList.find((type) => type.eng === typeName)?.ja || "",
   );
@@ -58,7 +56,7 @@ export default function BlogPostPage({ params }: { params: Promise<Params> }) {
         高さ：{data.height / 10}m/体重：{data.weight / 10}kg
       </h1>
       <Image
-        src={data?.sprites.other["official-artwork"].front_default}
+        src={data.imageUrl}
         alt={data?.name}
         width={300}
         height={300}
