@@ -15,6 +15,7 @@ datasource db {
 model Pokemon{
   id       Int      @id @default(autoincrement())
   name     String 
+  japaneseName String?
   imageUrl String?
   type     String[]
   height   Int
@@ -32,8 +33,3 @@ model Stats{
 
 }
 
-model PokemonType {
-  id        Int
-  name      String
-  pokemonId Int
-}

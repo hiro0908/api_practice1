@@ -42,7 +42,7 @@ pnpm prisma migrate deploy
 または開発環境の場合
 
 ```bash
-pnpm prisma migrate dev
+pnpm prisma migrate dev --name ["名前"]
 ```
 
 ## 6. Prisma Client の生成

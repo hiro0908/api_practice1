@@ -133,7 +133,6 @@ export default function Home() {
     fetchPokemon();
   }, [searchNumber]);
 
-
   const [pokemonList, setPokemonList] = useState<
     { number: string; name: string }[]
   >([]);
@@ -144,7 +143,7 @@ export default function Home() {
       const response = await fetch(`/api/pokemon`);
       const json = await response.json();
       const nameList = json.map((pokemon: PokemonListItem) => ({
-        name: pokemon.name,
+        name: pokemon.japaneseName,
         number: pokemon.id,
       }));
       setPokemonList(nameList);

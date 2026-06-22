@@ -9,6 +9,7 @@ export type PokemonData = {
   id: number;
   name: string;
   imageUrl: string;
+  japaneseName:string;
   type: string[];
   stats: PokemonStat[];
   height: number;
@@ -18,7 +19,7 @@ export type PokemonData = {
 
 export type PokemonListItem = {
   id: number;
-  name: string;
+  japaneseName: string;
 };
 
 // export type PokemonType = {
