@@ -9,10 +9,11 @@ export type PokemonData = {
   id: number;
   name: string;
   imageUrl: string;
-  type: string;
+  type: string[];
   stats: PokemonStat[];
   height: number;
   weight: number;
+  discription: string;
 };
 
 export type PokemonListItem = {

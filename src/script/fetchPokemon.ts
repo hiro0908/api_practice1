@@ -2,6 +2,7 @@ import prisma from "@/src/lib/prisma";
 import "dotenv/config";
 import { getMaxPokemonNumber } from "./getMaxPokemonNumber";
 import { getPokemonData } from "../lib/pokemonApi";
+import { getJapanesePokemonData } from "../lib/pokemonApi"
 
 export default async function insertData() {
   console.log("既存のデータを削除します");
@@ -15,15 +16,18 @@ export default async function insertData() {
   for (let i = 1; i <= maxPokemonNumber; i++) {
     const res = await fetch(getPokemonData(i));
     if (!res.ok) {
+      console.log("ポケモンのデータが存在しません。登録を終了します");
       break;
     }
     const data = await res.json();
-    console.log(`No${i}の${data.name}の登録が完了`);
+    const resja = await fetch(getJapanesePokemonData(i));
+    const dataja = await resja.json();
+    console.log(`No${i}の${dataja.name}の登録が完了`);
     await prisma.pokemon.create({
       data: {
         name: data.name,
         imageUrl: data.sprites.other["official-artwork"].front_default,
-        type: data.types[0].type.name,
+        type: data.types.map((item:{type:{name:string}})=>item.type.name),
         height: data.height,
         weight: data.weight,
         stats: {

@@ -7,3 +7,6 @@ export const getPokemonData = (id: number) => {
 export const getAllPokemonList = (maximam: number) => {
   return `https://pokeapi.co/api/v2/pokemon?limit=${maximam}`;
 };
+export const getJapanesePokemonData = (id : number)=>{
+  return `https://pokeapi.co/api/v2/pokemon-species/${id}`
+}

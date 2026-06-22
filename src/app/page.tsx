@@ -133,20 +133,6 @@ export default function Home() {
     fetchPokemon();
   }, [searchNumber]);
 
-  // const [pokemonCount, setPokemonCount] = useState<number | null>(null);
-  // //一旦リストの上限取得とその表示
-  // useEffect(() => {
-  //   const fetchListLimit = async () => {
-  //     const responseLimit = await fetch("/api/pokemon");
-  //     const listLimit = await responseLimit.json();
-  //     setPokemonCount(listLimit.count);
-  //   };
-  //   fetchListLimit();
-  // }, []);
-
-  // useEffect(() => {
-  //   console.log(pokemonCount);
-  // }, [pokemonCount]);
 
   const [pokemonList, setPokemonList] = useState<
     { number: string; name: string }[]
@@ -212,7 +198,7 @@ export default function Home() {
     (a, b) => a + b,
     0,
   );
-  const typeNames: string[] = [data.type];
+  const typeNames: string[] = data.type;
   const typeNamesJa: string[] = typeNames.map(
     (typeName) => typeNamesList.find((type) => type.eng === typeName)?.ja || "",
   );

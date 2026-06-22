@@ -42,7 +42,7 @@ export default function BlogPostPage({ params }: { params: Promise<Params> }) {
   if (!data) {
     return <div>Loading...</div>;
   }
-  const typeNames: string[] = [data.type];
+  const typeNames: string[] = data.type;
   const typeNamesJa: string[] = typeNames.map(
     (typeName) => typeNamesList.find((type) => type.eng === typeName)?.ja || "",
   );
