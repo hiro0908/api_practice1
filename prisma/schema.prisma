@@ -15,8 +15,9 @@ datasource db {
 model Pokemon{
   id       Int      @id @default(autoincrement())
   name     String 
+  japaneseName String?
   imageUrl String?
-  type     String?
+  type     String[]
   height   Int
   weight   Int
   stats    Stats[]
@@ -31,3 +32,4 @@ model Stats{
   
 
 }
+

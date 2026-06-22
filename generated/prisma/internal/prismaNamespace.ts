@@ -595,6 +595,7 @@ export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof
 export const PokemonScalarFieldEnum = {
   id: 'id',
   name: 'name',
+  japaneseName: 'japaneseName',
   imageUrl: 'imageUrl',
   type: 'type',
   height: 'height',

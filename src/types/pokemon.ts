@@ -9,15 +9,17 @@ export type PokemonData = {
   id: number;
   name: string;
   imageUrl: string;
-  type: string;
+  japaneseName:string;
+  type: string[];
   stats: PokemonStat[];
   height: number;
   weight: number;
+  discription: string;
 };
 
 export type PokemonListItem = {
   id: number;
-  name: string;
+  japaneseName: string;
 };
 
 // export type PokemonType = {

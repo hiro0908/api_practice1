@@ -41,8 +41,8 @@ export type PokemonSumAggregateOutputType = {
 export type PokemonMinAggregateOutputType = {
   id: number | null
   name: string | null
+  japaneseName: string | null
   imageUrl: string | null
-  type: string | null
   height: number | null
   weight: number | null
 }
@@ -50,8 +50,8 @@ export type PokemonMinAggregateOutputType = {
 export type PokemonMaxAggregateOutputType = {
   id: number | null
   name: string | null
+  japaneseName: string | null
   imageUrl: string | null
-  type: string | null
   height: number | null
   weight: number | null
 }
@@ -59,6 +59,7 @@ export type PokemonMaxAggregateOutputType = {
 export type PokemonCountAggregateOutputType = {
   id: number
   name: number
+  japaneseName: number
   imageUrl: number
   type: number
   height: number
@@ -82,8 +83,8 @@ export type PokemonSumAggregateInputType = {
 export type PokemonMinAggregateInputType = {
   id?: true
   name?: true
+  japaneseName?: true
   imageUrl?: true
-  type?: true
   height?: true
   weight?: true
 }
@@ -91,8 +92,8 @@ export type PokemonMinAggregateInputType = {
 export type PokemonMaxAggregateInputType = {
   id?: true
   name?: true
+  japaneseName?: true
   imageUrl?: true
-  type?: true
   height?: true
   weight?: true
 }
@@ -100,6 +101,7 @@ export type PokemonMaxAggregateInputType = {
 export type PokemonCountAggregateInputType = {
   id?: true
   name?: true
+  japaneseName?: true
   imageUrl?: true
   type?: true
   height?: true
@@ -196,8 +198,9 @@ export type PokemonGroupByArgs<ExtArgs extends runtime.Types.Extensions.Internal
 export type PokemonGroupByOutputType = {
   id: number
   name: string
+  japaneseName: string | null
   imageUrl: string | null
-  type: string | null
+  type: string[]
   height: number
   weight: number
   _count: PokemonCountAggregateOutputType | null
@@ -228,8 +231,9 @@ export type PokemonWhereInput = {
   NOT?: Prisma.PokemonWhereInput | Prisma.PokemonWhereInput[]
   id?: Prisma.IntFilter<"Pokemon"> | number
   name?: Prisma.StringFilter<"Pokemon"> | string
+  japaneseName?: Prisma.StringNullableFilter<"Pokemon"> | string | null
   imageUrl?: Prisma.StringNullableFilter<"Pokemon"> | string | null
-  type?: Prisma.StringNullableFilter<"Pokemon"> | string | null
+  type?: Prisma.StringNullableListFilter<"Pokemon">
   height?: Prisma.IntFilter<"Pokemon"> | number
   weight?: Prisma.IntFilter<"Pokemon"> | number
   stats?: Prisma.StatsListRelationFilter
@@ -238,8 +242,9 @@ export type PokemonWhereInput = {
 export type PokemonOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  japaneseName?: Prisma.SortOrderInput | Prisma.SortOrder
   imageUrl?: Prisma.SortOrderInput | Prisma.SortOrder
-  type?: Prisma.SortOrderInput | Prisma.SortOrder
+  type?: Prisma.SortOrder
   height?: Prisma.SortOrder
   weight?: Prisma.SortOrder
   stats?: Prisma.StatsOrderByRelationAggregateInput
@@ -251,8 +256,9 @@ export type PokemonWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.PokemonWhereInput[]
   NOT?: Prisma.PokemonWhereInput | Prisma.PokemonWhereInput[]
   name?: Prisma.StringFilter<"Pokemon"> | string
+  japaneseName?: Prisma.StringNullableFilter<"Pokemon"> | string | null
   imageUrl?: Prisma.StringNullableFilter<"Pokemon"> | string | null
-  type?: Prisma.StringNullableFilter<"Pokemon"> | string | null
+  type?: Prisma.StringNullableListFilter<"Pokemon">
   height?: Prisma.IntFilter<"Pokemon"> | number
   weight?: Prisma.IntFilter<"Pokemon"> | number
   stats?: Prisma.StatsListRelationFilter
@@ -261,8 +267,9 @@ export type PokemonWhereUniqueInput = Prisma.AtLeast<{
 export type PokemonOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  japaneseName?: Prisma.SortOrderInput | Prisma.SortOrder
   imageUrl?: Prisma.SortOrderInput | Prisma.SortOrder
-  type?: Prisma.SortOrderInput | Prisma.SortOrder
+  type?: Prisma.SortOrder
   height?: Prisma.SortOrder
   weight?: Prisma.SortOrder
   _count?: Prisma.PokemonCountOrderByAggregateInput
@@ -278,16 +285,18 @@ export type PokemonScalarWhereWithAggregatesInput = {
   NOT?: Prisma.PokemonScalarWhereWithAggregatesInput | Prisma.PokemonScalarWhereWithAggregatesInput[]
   id?: Prisma.IntWithAggregatesFilter<"Pokemon"> | number
   name?: Prisma.StringWithAggregatesFilter<"Pokemon"> | string
+  japaneseName?: Prisma.StringNullableWithAggregatesFilter<"Pokemon"> | string | null
   imageUrl?: Prisma.StringNullableWithAggregatesFilter<"Pokemon"> | string | null
-  type?: Prisma.StringNullableWithAggregatesFilter<"Pokemon"> | string | null
+  type?: Prisma.StringNullableListFilter<"Pokemon">
   height?: Prisma.IntWithAggregatesFilter<"Pokemon"> | number
   weight?: Prisma.IntWithAggregatesFilter<"Pokemon"> | number
 }
 
 export type PokemonCreateInput = {
   name: string
+  japaneseName?: string | null
   imageUrl?: string | null
-  type?: string | null
+  type?: Prisma.PokemonCreatetypeInput | string[]
   height: number
   weight: number
   stats?: Prisma.StatsCreateNestedManyWithoutPokemonInput
@@ -296,8 +305,9 @@ export type PokemonCreateInput = {
 export type PokemonUncheckedCreateInput = {
   id?: number
   name: string
+  japaneseName?: string | null
   imageUrl?: string | null
-  type?: string | null
+  type?: Prisma.PokemonCreatetypeInput | string[]
   height: number
   weight: number
   stats?: Prisma.StatsUncheckedCreateNestedManyWithoutPokemonInput
@@ -305,8 +315,9 @@ export type PokemonUncheckedCreateInput = {
 
 export type PokemonUpdateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  japaneseName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  type?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  type?: Prisma.PokemonUpdatetypeInput | string[]
   height?: Prisma.IntFieldUpdateOperationsInput | number
   weight?: Prisma.IntFieldUpdateOperationsInput | number
   stats?: Prisma.StatsUpdateManyWithoutPokemonNestedInput
@@ -315,8 +326,9 @@ export type PokemonUpdateInput = {
 export type PokemonUncheckedUpdateInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  japaneseName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  type?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  type?: Prisma.PokemonUpdatetypeInput | string[]
   height?: Prisma.IntFieldUpdateOperationsInput | number
   weight?: Prisma.IntFieldUpdateOperationsInput | number
   stats?: Prisma.StatsUncheckedUpdateManyWithoutPokemonNestedInput
@@ -325,16 +337,18 @@ export type PokemonUncheckedUpdateInput = {
 export type PokemonCreateManyInput = {
   id?: number
   name: string
+  japaneseName?: string | null
   imageUrl?: string | null
-  type?: string | null
+  type?: Prisma.PokemonCreatetypeInput | string[]
   height: number
   weight: number
 }
 
 export type PokemonUpdateManyMutationInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  japaneseName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  type?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  type?: Prisma.PokemonUpdatetypeInput | string[]
   height?: Prisma.IntFieldUpdateOperationsInput | number
   weight?: Prisma.IntFieldUpdateOperationsInput | number
 }
@@ -342,15 +356,25 @@ export type PokemonUpdateManyMutationInput = {
 export type PokemonUncheckedUpdateManyInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  japaneseName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  type?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  type?: Prisma.PokemonUpdatetypeInput | string[]
   height?: Prisma.IntFieldUpdateOperationsInput | number
   weight?: Prisma.IntFieldUpdateOperationsInput | number
+}
+
+export type StringNullableListFilter<$PrismaModel = never> = {
+  equals?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel> | null
+  has?: string | Prisma.StringFieldRefInput<$PrismaModel> | null
+  hasEvery?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>
+  hasSome?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>
+  isEmpty?: boolean
 }
 
 export type PokemonCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  japaneseName?: Prisma.SortOrder
   imageUrl?: Prisma.SortOrder
   type?: Prisma.SortOrder
   height?: Prisma.SortOrder
@@ -366,8 +390,8 @@ export type PokemonAvgOrderByAggregateInput = {
 export type PokemonMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  japaneseName?: Prisma.SortOrder
   imageUrl?: Prisma.SortOrder
-  type?: Prisma.SortOrder
   height?: Prisma.SortOrder
   weight?: Prisma.SortOrder
 }
@@ -375,8 +399,8 @@ export type PokemonMaxOrderByAggregateInput = {
 export type PokemonMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  japaneseName?: Prisma.SortOrder
   imageUrl?: Prisma.SortOrder
-  type?: Prisma.SortOrder
   height?: Prisma.SortOrder
   weight?: Prisma.SortOrder
 }
@@ -392,12 +416,21 @@ export type PokemonScalarRelationFilter = {
   isNot?: Prisma.PokemonWhereInput
 }
 
+export type PokemonCreatetypeInput = {
+  set: string[]
+}
+
 export type StringFieldUpdateOperationsInput = {
   set?: string
 }
 
 export type NullableStringFieldUpdateOperationsInput = {
   set?: string | null
+}
+
+export type PokemonUpdatetypeInput = {
+  set?: string[]
+  push?: string | string[]
 }
 
 export type IntFieldUpdateOperationsInput = {
@@ -424,8 +457,9 @@ export type PokemonUpdateOneRequiredWithoutStatsNestedInput = {
 
 export type PokemonCreateWithoutStatsInput = {
   name: string
+  japaneseName?: string | null
   imageUrl?: string | null
-  type?: string | null
+  type?: Prisma.PokemonCreatetypeInput | string[]
   height: number
   weight: number
 }
@@ -433,8 +467,9 @@ export type PokemonCreateWithoutStatsInput = {
 export type PokemonUncheckedCreateWithoutStatsInput = {
   id?: number
   name: string
+  japaneseName?: string | null
   imageUrl?: string | null
-  type?: string | null
+  type?: Prisma.PokemonCreatetypeInput | string[]
   height: number
   weight: number
 }
@@ -457,8 +492,9 @@ export type PokemonUpdateToOneWithWhereWithoutStatsInput = {
 
 export type PokemonUpdateWithoutStatsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  japaneseName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  type?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  type?: Prisma.PokemonUpdatetypeInput | string[]
   height?: Prisma.IntFieldUpdateOperationsInput | number
   weight?: Prisma.IntFieldUpdateOperationsInput | number
 }
@@ -466,8 +502,9 @@ export type PokemonUpdateWithoutStatsInput = {
 export type PokemonUncheckedUpdateWithoutStatsInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  japaneseName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  type?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  type?: Prisma.PokemonUpdatetypeInput | string[]
   height?: Prisma.IntFieldUpdateOperationsInput | number
   weight?: Prisma.IntFieldUpdateOperationsInput | number
 }
@@ -506,6 +543,7 @@ export type PokemonCountOutputTypeCountStatsArgs<ExtArgs extends runtime.Types.E
 export type PokemonSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   name?: boolean
+  japaneseName?: boolean
   imageUrl?: boolean
   type?: boolean
   height?: boolean
@@ -517,6 +555,7 @@ export type PokemonSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
 export type PokemonSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   name?: boolean
+  japaneseName?: boolean
   imageUrl?: boolean
   type?: boolean
   height?: boolean
@@ -526,6 +565,7 @@ export type PokemonSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
 export type PokemonSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   name?: boolean
+  japaneseName?: boolean
   imageUrl?: boolean
   type?: boolean
   height?: boolean
@@ -535,13 +575,14 @@ export type PokemonSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
 export type PokemonSelectScalar = {
   id?: boolean
   name?: boolean
+  japaneseName?: boolean
   imageUrl?: boolean
   type?: boolean
   height?: boolean
   weight?: boolean
 }
 
-export type PokemonOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "imageUrl" | "type" | "height" | "weight", ExtArgs["result"]["pokemon"]>
+export type PokemonOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "japaneseName" | "imageUrl" | "type" | "height" | "weight", ExtArgs["result"]["pokemon"]>
 export type PokemonInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   stats?: boolean | Prisma.Pokemon$statsArgs<ExtArgs>
   _count?: boolean | Prisma.PokemonCountOutputTypeDefaultArgs<ExtArgs>
@@ -557,8 +598,9 @@ export type $PokemonPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
     name: string
+    japaneseName: string | null
     imageUrl: string | null
-    type: string | null
+    type: string[]
     height: number
     weight: number
   }, ExtArgs["result"]["pokemon"]>
@@ -987,8 +1029,9 @@ export interface Prisma__PokemonClient<T, Null = never, ExtArgs extends runtime.
 export interface PokemonFieldRefs {
   readonly id: Prisma.FieldRef<"Pokemon", 'Int'>
   readonly name: Prisma.FieldRef<"Pokemon", 'String'>
+  readonly japaneseName: Prisma.FieldRef<"Pokemon", 'String'>
   readonly imageUrl: Prisma.FieldRef<"Pokemon", 'String'>
-  readonly type: Prisma.FieldRef<"Pokemon", 'String'>
+  readonly type: Prisma.FieldRef<"Pokemon", 'String[]'>
   readonly height: Prisma.FieldRef<"Pokemon", 'Int'>
   readonly weight: Prisma.FieldRef<"Pokemon", 'Int'>
 }
