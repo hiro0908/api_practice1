@@ -246,7 +246,7 @@ export default function Home() {
           {isClicked && <p>検索しました</p>}
         </div>
         <h1 className="text-center">
-          名前：{data.name}/タイプ：{typeNamesJa}
+          名前：{data.japaneseName}/タイプ：{typeNamesJa}
         </h1>
         <h1>
           高さ：{height}m/体重：{weight}kg
