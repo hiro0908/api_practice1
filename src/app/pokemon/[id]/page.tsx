@@ -50,7 +50,7 @@ export default function BlogPostPage({ params }: { params: Promise<Params> }) {
   return (
     <div>
       <h1 className="text-center">
-        名前：{data.name}/タイプ：{typeNamesJa}
+        名前：{data.japaneseName}/タイプ：{typeNamesJa}
       </h1>
       <h1>
         高さ：{data.height / 10}m/体重：{data.weight / 10}kg
