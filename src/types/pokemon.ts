@@ -9,7 +9,7 @@ export type PokemonData = {
   id: number;
   name: string;
   imageUrl: string;
-  japaneseName:string;
+  japaneseName: string;
   type: string[];
   stats: PokemonStat[];
   height: number;
