@@ -245,23 +245,37 @@ export default function Home() {
           />
           {isClicked && <p>検索しました</p>}
         </div>
-        <h1 className="text-center">
-          名前：{data.japaneseName}/タイプ：{typeNamesJa}
-        </h1>
-        <h1>
-          高さ：{height}m/体重：{weight}kg
-        </h1>
-        <Image src={data.imageUrl} alt={data.name} width={300} height={300} />
-        <h2>HP：{statsList.h}</h2>
-        <h2>攻撃力：{statsList.a}</h2>
-        <h2>特殊攻撃力：{statsList.c}</h2>
-        <h2>防御力：{statsList.b}</h2>
-        <h2>特殊防御力：{statsList.d}</h2>
-        <h2>スピード：{statsList.s}</h2>
-
-        <h1>ポケモンステータスチャート</h1>
-        <h2>種族値：{totalStats}</h2>
-        <RadarChartComponent status={status} />
+        <div>
+          <div className="font-bold">No.{data.id}</div>
+          <div className="font-bold">{data.japaneseName}</div>
+          <div className="font-bold">タイプ：{typeNamesJa}</div>
+          <div className="font-bold">
+            高さ：{height}m/体重：{weight}kg
+          </div>
+        </div>
+        <div className="flex flex-col sm:flex-row items-center sm:items-start gap-8 w-full mt-8">
+          <div>
+            <Image
+              src={data.imageUrl}
+              alt={data.name}
+              width={300}
+              height={300}
+            />
+          </div>
+          <div className="w-full border-4 border-double">
+            <div className="font-bold">種族値：{totalStats}</div>
+            <div className="font-bold">HP：{statsList.h}</div>
+            <div className="font-bold">攻撃力：{statsList.a}</div>
+            <div className="font-bold">特殊攻撃力：{statsList.c}</div>
+            <div className="font-bold">防御力：{statsList.b}</div>
+            <div className="font-bold">特殊防御力：{statsList.d}</div>
+            <div className="font-bold">スピード：{statsList.s}</div>
+          </div>
+        </div>
+        <div className="w-full mt-8 border-4 border-double">
+          <div className="text-center">ポケモンステータスチャート</div>
+          <RadarChartComponent status={status} />
+        </div>
       </main>
     </div>
   );
