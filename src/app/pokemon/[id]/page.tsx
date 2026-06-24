@@ -3,9 +3,13 @@ import { use } from "react";
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import { PokemonData } from "@/src/types/pokemon";
+import RadarChartComponent from "@/src/components/ui/RaderChartComponent";
+import { fetchPokemonStatus } from "@/src/lib/fetchPokemonStatus";
+import { ButtonGroupInput } from "@/src/components/ui/ButtonGroupInput";
 type Params = {
   id: string;
 };
+
 const typeNamesList: { eng: string; ja: string }[] = [
   { eng: "normal", ja: "ノーマル" },
   { eng: "fire", ja: "ほのう" },
@@ -30,6 +34,8 @@ const typeNamesList: { eng: string; ja: string }[] = [
 export default function BlogPostPage({ params }: { params: Promise<Params> }) {
   const { id } = use(params);
   const [data, setData] = useState<PokemonData | null>(null);
+  const [inputNumber, setInputNumber] = useState("0");
+  const [isClicked, setIsClicked] = useState(false);
   useEffect(() => {
     const fetchPokemon = async () => {
       //APIにリクエストを送信
@@ -39,9 +45,12 @@ export default function BlogPostPage({ params }: { params: Promise<Params> }) {
     };
     fetchPokemon();
   }, [id]);
+
   if (!data) {
     return <div>Loading...</div>;
   }
+  // const [inputNumber, setInputNumber] = useState(`${id}`);
+  const status = fetchPokemonStatus(data.stats);
   const typeNames: string[] = data.type;
   const typeNamesJa: string[] = typeNames.map(
     (typeName) => typeNamesList.find((type) => type.eng === typeName)?.ja || "",
@@ -49,13 +58,24 @@ export default function BlogPostPage({ params }: { params: Promise<Params> }) {
 
   return (
     <div>
-      <h1 className="text-center">
-        名前：{data.japaneseName}/タイプ：{typeNamesJa}
-      </h1>
-      <h1>
-        高さ：{data.height / 10}m/体重：{data.weight / 10}kg
-      </h1>
-      <Image src={data.imageUrl} alt={data?.name} width={300} height={300} />
+      <h1 className="text-center text-4xl font-bold">ポケモン図鑑</h1>
+      <div>
+        <ButtonGroupInput value={inputNumber} onChange={setInputNumber} />
+        {isClicked && <p>検索しました</p>}
+      </div>
+      <div>
+        <div className="font-bold">No.{data.id}</div>
+        <div className="font-bold">{data.japaneseName}</div>
+        <div className="font-bold">タイプ：{typeNamesJa}</div>
+        <div className="font-bold">
+          高さ：{data.height / 10}m/体重：{data.weight / 10}kg
+        </div>
+        <Image src={data.imageUrl} alt={data?.name} width={300} height={300} />
+      </div>
+      <div className="w-full border-4 border-double">
+        <div className="text_center">ポケモンステータスチャート</div>
+        <RadarChartComponent status={status} />
+      </div>
     </div>
   );
 }

@@ -1,137 +1,33 @@
 "use client";
 import { useEffect, useState } from "react";
 import React from "react";
-import {
-  Radar,
-  RadarChart,
-  PolarGrid,
-  PolarAngleAxis,
-  PolarRadiusAxis,
-  ResponsiveContainer,
-  Tooltip,
-  Legend,
-} from "recharts";
-import { ButtonGroupInput } from "@/src/components/ui/ButtonGroupInput";
-import Image from "next/image";
-import type {
-  PokemonStat,
-  PokemonData,
-  PokemonListItem,
-} from "@/src/types/pokemon";
+import type { PokemonListItem } from "@/src/types/pokemon";
 
-// const languageList:{value: string;label: string}[]=[
-//   {value: "ja",label:"日本語"},
-//   {value:"ja=Hrkt",label:"にほんご"},
-//   {value:"en",label:"English"},
-//   {value:"fr",label:"french"},
-//   {value:"it",label:"italiano"},
-// ];
+import { useRouter } from "next/navigation";
 
-const typeNamesList: { eng: string; ja: string }[] = [
-  { eng: "normal", ja: "ノーマル" },
-  { eng: "fire", ja: "ほのう" },
-  { eng: "water", ja: "みず" },
-  { eng: "grass", ja: "くさ" },
-  { eng: "electric", ja: "でんき" },
-  { eng: "ice", ja: "こおり" },
-  { eng: "fighting", ja: "かくとう" },
-  { eng: "poison", ja: "どく" },
-  { eng: "ground", ja: "じめん" },
-  { eng: "flying", ja: "ひこう" },
-  { eng: "psychic", ja: "エスパー" },
-  { eng: "bug", ja: "むし" },
-  { eng: "rock", ja: "いわ" },
-  { eng: "ghost", ja: "ゴースト" },
-  { eng: "dragon", ja: "ドラゴン" },
-  { eng: "dark", ja: "あく" },
-  { eng: "steel", ja: "はがね" },
-  { eng: "fairy", ja: "フェアリー" },
-];
-
-// const isShiny:boolean=false;
-// const imageType:string="正面"
-// const imageTypeList:{type: string, url: string}[]=[
-//   {type:"公式イラスト" ,url:"/other/official-artwoek"},
-//   {type:"正面",url:""},
-//   {type:"側面",url:"/other/home"},
-//   {type:"ポケモンホーム",url:"/other/home"}
-// ]
-// const imageTypeUrl=imageTypeList.find((item)=>item.type==imageType)?.url;
-// const shiny:string=isShiny?"/shiny":"";
-// const url:string=`https://raw.githubusercontent.com/PokeAPI/sporetes/master/sprotes/master/pokemon${imageTypeUrl}${shiny}/${dexNumber}.png`
-
-type RaderChartProps = {
-  status: DataPoint[];
-};
-
-//pokemonのステータスの型設定
-type StatsList = {
-  h: number;
-  a: number;
-  b: number;
-  c: number;
-  d: number;
-  s: number;
-};
-
-interface DataPoint {
-  subject: string; // 軸のラベル
-  A: number; // 1つ目のデータセットの値      // 2つ目のデータセットの値 (必要に応じて削除・変更可能)
-  fullMark: number; // その項目の最大値（スケール調整用）
-}
-
-const RadarChartComponent: React.FC<RaderChartProps> = ({ status }) => {
-  return (
-    // 親コンテナに合わせてサイズを調整するResponsiveContainerを使用
-    <ResponsiveContainer width="100%" height={400}>
-      {/* cx, cyは中心点の位置、outerRadiusはチャートのサイズを定義 */}
-      <RadarChart cx="50%" cy="50%" outerRadius="80%" data={status}>
-        {/* PolarGrid は6角形のグリッド線を描画 */}
-        <PolarGrid />
-        {/* PolarAngleAxis は6角形の頂点（軸）のラベルを描画 */}
-        <PolarAngleAxis dataKey="subject" />
-        {/* PolarRadiusAxis は中心からの距離（数値のスケール）を描画しない設定 (必要なら変更可) */}
-        <PolarRadiusAxis angle={30} domain={[0, 200]} />
-
-        {/* Radar は実際のデータ系列を描画 */}
-        <Radar
-          name="ステータス"
-          dataKey="A"
-          stroke="#8884d8"
-          fill="#8884d8"
-          fillOpacity={0.6}
-          strokeWidth={2}
-        />
-
-        {/* Tooltip と Legend を追加してインタラクティブに */}
-        <Tooltip />
-        <Legend />
-      </RadarChart>
-    </ResponsiveContainer>
-  );
-};
 export default function Home() {
+  //ルーティング設定
+  const router = useRouter();
   //外部から入力した数値の格納
-  const [inputNumber, setInputNumber] = useState("0");
-  //調査結果のための格納
-  const [searchNumber, setSearchNumber] = useState("0");
-  const [data, setData] = useState<PokemonData | null>(null);
-  const [isClicked, setIsClicked] = useState(false);
-  const NumberSearch = (number: string = "0") => {
-    console.log("検索:", number);
-    setSearchNumber(number);
-    setIsClicked(true);
-  };
+  // //調査結果のための格納
+  // const [searchNumber, setSearchNumber] = useState("0");
+  // const [data, setData] = useState<PokemonData | null>(null);
+  // const [isClicked, setIsClicked] = useState(false);
+  // const NumberSearch = (number: string = "0") => {
+  //   console.log("検索:", number);
+  //   setSearchNumber(number);
+  //   setIsClicked(true);
+  // };
 
-  useEffect(() => {
-    const fetchPokemon = async () => {
-      //APIにリクエストを送信
-      const response = await fetch(`/api/pokemon/${searchNumber}`);
-      const data = await response.json();
-      setData(data);
-    };
-    fetchPokemon();
-  }, [searchNumber]);
+  // useEffect(() => {
+  //   const fetchPokemon = async () => {
+  //     //APIにリクエストを送信
+  //     const response = await fetch(`/api/pokemon/${searchNumber}`);
+  //     const data = await response.json();
+  //     setData(data);
+  //   };
+  //   fetchPokemon();
+  // }, [searchNumber]);
 
   const [pokemonList, setPokemonList] = useState<
     { number: string; name: string }[]
@@ -151,132 +47,22 @@ export default function Home() {
     fetchPokemonList();
   }, []);
 
-  if (!data) {
-    return (
-      <div>
-        現在存在するポケモン番号を入力すると検索できます
-        <br />
-        今回は一時的にリストによる検索表示を行います
-        {pokemonList.map((pokemon) => (
-          <div key={pokemon.number}>
-            {pokemon.number} :
-            <button type="button" onClick={() => NumberSearch(pokemon.number)}>
-              {pokemon.name}
-            </button>
-          </div>
-        ))}
-        {/* <ButtonGroupInput 
-    value={inputNumber}
-    onChange={setInputNumber}
-    onSearch={NumberSearch}
-    /> */}
-      </div>
-    );
-  }
-  //データの値の設定
-  const height: number = data.height / 10;
-  const weight: number = data.weight / 10;
-
-  const statsList: StatsList = {
-    h: data.stats.find((stat: PokemonStat) => stat.name == "hp")?.value ?? 0,
-    a:
-      data.stats.find((stat: PokemonStat) => stat.name == "attack")?.value ?? 0,
-    b:
-      data.stats.find((stat: PokemonStat) => stat.name == "defense")?.value ??
-      0,
-    c:
-      data.stats.find((stat: PokemonStat) => stat.name == "special-attack")
-        ?.value ?? 0,
-    d:
-      data.stats.find((stat: PokemonStat) => stat.name == "special-defense")
-        ?.value ?? 0,
-    s: data.stats.find((stat: PokemonStat) => stat.name == "speed")?.value ?? 0,
-  };
-
-  const totalStats: number = Object.values(statsList).reduce(
-    (a, b) => a + b,
-    0,
-  );
-  const typeNames: string[] = data.type;
-  const typeNamesJa: string[] = typeNames.map(
-    (typeName) => typeNamesList.find((type) => type.eng === typeName)?.ja || "",
-  );
-  const status: DataPoint[] = [
-    {
-      subject: "HP",
-      A: statsList.h,
-      fullMark: 200,
-    },
-    {
-      subject: "攻撃",
-      A: statsList.a,
-      fullMark: 200,
-    },
-    {
-      subject: "特攻",
-      A: statsList.c,
-      fullMark: 200,
-    },
-    {
-      subject: "すばやさ",
-      A: statsList.s,
-      fullMark: 200,
-    },
-    {
-      subject: "特防",
-      A: statsList.d,
-      fullMark: 200,
-    },
-    {
-      subject: "防御",
-      A: statsList.b,
-      fullMark: 200,
-    },
-  ];
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <h1 className="text-center text-4xl font-bold">ポケモン図鑑</h1>
-        <div>
-          <ButtonGroupInput
-            value={inputNumber}
-            onChange={setInputNumber}
-            onSearch={NumberSearch}
-          />
-          {isClicked && <p>検索しました</p>}
+    <div>
+      現在存在するポケモン番号を入力すると検索できます
+      <br />
+      今回は一時的にリストによる検索表示を行います
+      {pokemonList.map((pokemon) => (
+        <div key={pokemon.number}>
+          {pokemon.number} :
+          <button
+            type="button"
+            onClick={() => router.push(`/pokemon/${pokemon.number}`)}
+          >
+            {pokemon.name}
+          </button>
         </div>
-        <div>
-          <div className="font-bold">No.{data.id}</div>
-          <div className="font-bold">{data.japaneseName}</div>
-          <div className="font-bold">タイプ：{typeNamesJa}</div>
-          <div className="font-bold">
-            高さ：{height}m/体重：{weight}kg
-          </div>
-        </div>
-        <div className="flex flex-col sm:flex-row items-center sm:items-start gap-8 w-full mt-8">
-          <div>
-            <Image
-              src={data.imageUrl}
-              alt={data.name}
-              width={300}
-              height={300}
-            />
-          </div>
-          <div className="w-full border-4 border-double">
-            <div className="font-bold">種族値：{totalStats}</div>
-            <div className="font-bold">HP：{statsList.h}</div>
-            <div className="font-bold">攻撃力：{statsList.a}</div>
-            <div className="font-bold">特殊攻撃力：{statsList.c}</div>
-            <div className="font-bold">防御力：{statsList.b}</div>
-            <div className="font-bold">特殊防御力：{statsList.d}</div>
-            <div className="font-bold">スピード：{statsList.s}</div>
-          </div>
-        </div>
-        <div className="w-full mt-8 border-4 border-double">
-          <div className="text-center">ポケモンステータスチャート</div>
-          <RadarChartComponent status={status} />
-        </div>
-      </main>
+      ))}
     </div>
   );
 }

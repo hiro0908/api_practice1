@@ -4,16 +4,18 @@ import { ButtonGroup } from "@/src/components/ui/button-group";
 import { Input } from "@/src/components/ui/input";
 import { SearchIcon } from "lucide-react";
 import React from "react";
+import { useRouter } from "next/navigation";
 
 type Props = {
   value: string;
   onChange: (value: string) => void;
-  onSearch: (value: string) => void;
 };
-export function ButtonGroupInput({ value, onChange, onSearch }: Props) {
+export function ButtonGroupInput({ value, onChange }: Props) {
+  const router = useRouter();
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault(); //全体画面のページリロードを防ぐ
-    onSearch(value);
+    if (!value) return;
+    router.push(`${value}`);
   };
   return (
     <form onSubmit={handleSubmit}>
@@ -23,10 +25,7 @@ export function ButtonGroupInput({ value, onChange, onSearch }: Props) {
           value={value}
           onChange={(e) => onChange(e.target.value)}
         />
-        <Button
-          variant="outline"
-          aria-label="Search"
-        >
+        <Button variant="outline" aria-label="Search">
           <SearchIcon />
         </Button>
       </ButtonGroup>
