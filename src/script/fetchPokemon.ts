@@ -1,8 +1,12 @@
 import prisma from "@/src/lib/prisma";
-import "dotenv/config";
+import dotenv from "dotenv";
+dotenv.config({
+  path: ".env.local",
+});
 import { getMaxPokemonNumber } from "./getMaxPokemonNumber";
 import { getPokemonData } from "../lib/pokemonApi";
 import { getJapanesePokemonData } from "../lib/pokemonApi";
+console.log("DATABASE_URL =", process.env.DATABASE_URL);
 
 export default async function insertData() {
   console.log("既存のデータを削除します");

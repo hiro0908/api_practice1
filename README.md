@@ -15,11 +15,11 @@ pnpm install
 
 ## 3. 環境変数の設定
 
-プロジェクト直下に `.env` ファイルを作成し、PostgreSQL の接続情報を設定する。
+プロジェクト直下に `.env.local` ファイルを作成し、PostgreSQL の接続情報を設定する。
 
 例：
 
-```env
+```env.local
 DATABASE_URL="postgresql://ユーザー名:パスワード@localhost:5432/データベース名"
 ```
 
