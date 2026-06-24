@@ -23,26 +23,16 @@ pnpm install
 DATABASE_URL="postgresql://ユーザー名:パスワード@localhost:5432/データベース名"
 ```
 
-## 4. データベースの作成
+## 4. DockerでPostgreSQLコンテナの起動
 
-PostgreSQL 上に利用するデータベースを作成する。
+docker compose up -d
 
-例：
 
-```sql
-CREATE DATABASE ts_poke;
-```
 
 ## 5. Prisma のマイグレーション実行
 
 ```bash
-pnpm prisma migrate deploy
-```
-
-または開発環境の場合
-
-```bash
-pnpm prisma migrate dev --name ["名前"]
+pnpm prisma migrate dev --name ["作成したいファイル名"]
 ```
 
 ## 6. Prisma Client の生成
@@ -66,6 +56,11 @@ pnpm tsx src/script/fetchPokemon.ts
 * IDのリセット
 * PokeAPIからポケモン情報取得
 * PostgreSQLへ保存
+
+データベースの確認
+```bash
+pnpm prisma studio
+```
 
 ## 8. 開発サーバ起動
 
