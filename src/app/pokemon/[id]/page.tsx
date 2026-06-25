@@ -3,7 +3,7 @@ import { use } from "react";
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import { PokemonData } from "@/src/types/pokemon";
-import RadarChartComponent from "@/src/components/ui/RaderChartComponent";
+import RadarChartComponent from "@/src/components/RaderChartComponent";
 import { fetchPokemonStatus } from "@/src/lib/fetchPokemonStatus";
 import { ButtonGroupInput } from "@/src/components/ui/ButtonGroupInput";
 type Params = {
@@ -35,10 +35,8 @@ export default function BlogPostPage({ params }: { params: Promise<Params> }) {
   const { id } = use(params);
   const [data, setData] = useState<PokemonData | null>(null);
   const [inputNumber, setInputNumber] = useState("0");
-  const [isClicked, setIsClicked] = useState(false);
   useEffect(() => {
     const fetchPokemon = async () => {
-      //APIにリクエストを送信
       const response = await fetch(`/api/pokemon/${id}`);
       const data = await response.json();
       setData(data);
@@ -49,7 +47,6 @@ export default function BlogPostPage({ params }: { params: Promise<Params> }) {
   if (!data) {
     return <div>Loading...</div>;
   }
-  // const [inputNumber, setInputNumber] = useState(`${id}`);
   const status = fetchPokemonStatus(data.stats);
   const typeNames: string[] = data.type;
   const typeNamesJa: string[] = typeNames.map(
@@ -58,23 +55,36 @@ export default function BlogPostPage({ params }: { params: Promise<Params> }) {
 
   return (
     <div>
-      <h1 className="text-center text-4xl font-bold">ポケモン図鑑</h1>
       <div>
-        <ButtonGroupInput value={inputNumber} onChange={setInputNumber} />
-        {isClicked && <p>検索しました</p>}
-      </div>
-      <div>
-        <div className="font-bold">No.{data.id}</div>
-        <div className="font-bold">{data.japaneseName}</div>
-        <div className="font-bold">タイプ：{typeNamesJa}</div>
-        <div className="font-bold">
-          高さ：{data.height / 10}m/体重：{data.weight / 10}kg
+        <h1 className="text-center text-4xl font-bold">ポケモン図鑑</h1>
+        <div className="flex flex-col items-end">
+          <ButtonGroupInput value={inputNumber} onChange={setInputNumber} />
         </div>
-        <Image src={data.imageUrl} alt={data?.name} width={300} height={300} />
       </div>
-      <div className="w-full border-4 border-double">
-        <div className="text_center">ポケモンステータスチャート</div>
-        <RadarChartComponent status={status} />
+      <div className="grid grid-cols-2 w-full border-4 divide-x-4">
+        <div className="grid grid-cols-2 w-full">
+        <div>
+          <div className="font-bold">No.{data.id}</div>
+          <div className="font-bold">{data.japaneseName}</div>
+          <div className="font-bold">タイプ：{typeNamesJa}</div>
+          <div className="font-bold">
+            高さ：{data.height / 10}m/体重：{data.weight / 10}kg
+          </div>
+        </div>
+        <div className="flex items-center justify-center">
+          <Image
+            src={data.imageUrl}
+            alt={data?.name}
+            width={300}
+            height={300}
+          />
+
+        </div>
+        </div>
+        <div>
+          <div className="text_center font-bold">ポケモンステータスチャート</div>
+          <RadarChartComponent status={status} />
+        </div>
       </div>
     </div>
   );

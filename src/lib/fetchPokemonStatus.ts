@@ -1,5 +1,5 @@
 import type { PokemonStat } from "@/src/types/pokemon";
-import type { DataPoint } from "@/src/components/ui/RaderChartComponent";
+import type { DataPoint } from "@/src/components/RaderChartComponent";
 export function fetchPokemonStatus(pokemonStats: PokemonStat[]): DataPoint[] {
   const getStat = (name: string) =>
     pokemonStats.find((stat) => stat.name === name)?.value ?? 0;
