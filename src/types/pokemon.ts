@@ -19,27 +19,7 @@ export type PokemonData = {
 
 export type PokemonListItem = {
   id: number;
+  name: string;
   japaneseName: string;
+  imageUrl: string;
 };
-
-// export type PokemonType = {
-//   type:string;
-// };
-
-// export type PokemonData = {
-//   name: string;
-//   height: number;
-//   weight: number;
-
-//   stats: PokemonStat[];
-
-//   type: PokemonType[];
-
-//   sprites: {
-//     other: {
-//       "official-artwork": {
-//         front_default: string;
-//       };
-//     };
-//   };
-// };
