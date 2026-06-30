@@ -1,20 +1,17 @@
-import prisma from "@/src/lib/prisma";
-import dotenv from "dotenv";
-dotenv.config({
-  path: ".env.local",
-});
-import { getMaxPokemonNumber } from "./getMaxPokemonNumber";
-import { getPokemonData } from "../lib/pokemonApi";
-import { getJapanesePokemonData } from "../lib/pokemonApi";
-console.log("DATABASE_URL =", process.env.DATABASE_URL);
-
-export default async function insertData() {
+import prisma from "@/src/infrastructure/db/prisma";
+import {
+  getMaxPokemonNumber,
+  getPokemonData,
+  getJapanesePokemonData,
+} from "@/src/infrastructure/api/pokemonApi";
+export async function deleteAllPokemonData() {
   console.log("既存のデータを削除します");
-
-  await prisma.$executeRawUnsafe(`
+  return await prisma.$executeRawUnsafe(`
         TRUNCATE TABLE "Stats", "Pokemon"
         RESTART IDENTITY CASCADE;
     `);
+}
+export async function registerAllPokeomonData() {
   const maxPokemonNumber = await getMaxPokemonNumber();
   console.log("画面の読み込みが始まった");
   for (let i = 1; i <= maxPokemonNumber; i++) {
@@ -55,4 +52,3 @@ export default async function insertData() {
   }
   console.log("すべてのポケモンの登録が完了した");
 }
-insertData();

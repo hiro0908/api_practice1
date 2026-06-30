@@ -2,10 +2,10 @@
 ## ディレクトリー構成
 |層|ディレクトリー|役割|
 |---|---|---|
-|Presentation層|null|リクエストの送信と受け取り、UIの表示|
-|Application層|null|実際の機能|
-|Domain層|null|	不変の事実 |
-|Infrastructure層|null|外部API・DB等との実際のやり取り|
+|Presentation層|@/app|リクエストの送信と受け取り、UIの表示|
+|Application層|@/src/application|実際の機能|
+|Domain層|@/src/domain|	不変の事実 |
+|Infrastructure層|@/src/infrastructure|外部API・DB等との実際のやり取り|
 
 
 # 実行手順

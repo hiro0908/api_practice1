@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import type { PokemonListItem } from "@/src/types/pokemon";
+import type { PokemonListItem } from "@/src/domain/pokemon/pokemon";
 import Image from "next/image";
 import { ButtonGroupInput } from "@/src/components/ui/ButtonGroupInput";
 
@@ -36,7 +36,7 @@ export default function Home() {
         <div className="flex flex-col items-end">
           <ButtonGroupInput value={inputNumber} onChange={setInputNumber} />
         </div>
-      </div>     
+      </div>
       <div>
         {pokemonList.map((pokemon) => (
           <div

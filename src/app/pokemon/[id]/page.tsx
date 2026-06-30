@@ -2,34 +2,16 @@
 import { use } from "react";
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import { PokemonData } from "@/src/types/pokemon";
-import RadarChartComponent from "@/src/components/RaderChartComponent";
-import { fetchPokemonStatus } from "@/src/lib/fetchPokemonStatus";
+import { PokemonData } from "@/src/domain/pokemon/pokemon";
+import RadarChartComponent from "@/src/components/ui/RaderChartComponent";
+import { fetchPokemonStatus } from "@/src/components/ui/fetchPokemonStatus";
 import { ButtonGroupInput } from "@/src/components/ui/ButtonGroupInput";
+import { pokemonTypeNamesList } from "@/src/domain/pokemon/pokemonTypeDictionary";
 type Params = {
   id: string;
 };
 
-const typeNamesList: { eng: string; ja: string }[] = [
-  { eng: "normal", ja: "ノーマル" },
-  { eng: "fire", ja: "ほのう" },
-  { eng: "water", ja: "みず" },
-  { eng: "grass", ja: "くさ" },
-  { eng: "electric", ja: "でんき" },
-  { eng: "ice", ja: "こおり" },
-  { eng: "fighting", ja: "かくとう" },
-  { eng: "poison", ja: "どく" },
-  { eng: "ground", ja: "じめん" },
-  { eng: "flying", ja: "ひこう" },
-  { eng: "psychic", ja: "エスパー" },
-  { eng: "bug", ja: "むし" },
-  { eng: "rock", ja: "いわ" },
-  { eng: "ghost", ja: "ゴースト" },
-  { eng: "dragon", ja: "ドラゴン" },
-  { eng: "dark", ja: "あく" },
-  { eng: "steel", ja: "はがね" },
-  { eng: "fairy", ja: "フェアリー" },
-];
+const typeNamesList = pokemonTypeNamesList;
 
 export default function BlogPostPage({ params }: { params: Promise<Params> }) {
   const { id } = use(params);
@@ -63,26 +45,27 @@ export default function BlogPostPage({ params }: { params: Promise<Params> }) {
       </div>
       <div className="grid grid-cols-2 w-full border-4 divide-x-4">
         <div className="grid grid-cols-2 w-full">
-        <div>
-          <div className="font-bold">No.{data.id}</div>
-          <div className="font-bold">{data.japaneseName}</div>
-          <div className="font-bold">タイプ：{typeNamesJa}</div>
-          <div className="font-bold">
-            高さ：{data.height / 10}m/体重：{data.weight / 10}kg
+          <div>
+            <div className="font-bold">No.{data.id}</div>
+            <div className="font-bold">{data.japaneseName}</div>
+            <div className="font-bold">タイプ：{typeNamesJa}</div>
+            <div className="font-bold">
+              高さ：{data.height / 10}m/体重：{data.weight / 10}kg
+            </div>
+          </div>
+          <div className="flex items-center justify-center">
+            <Image
+              src={data.imageUrl}
+              alt={data?.name}
+              width={300}
+              height={300}
+            />
           </div>
         </div>
-        <div className="flex items-center justify-center">
-          <Image
-            src={data.imageUrl}
-            alt={data?.name}
-            width={300}
-            height={300}
-          />
-
-        </div>
-        </div>
         <div>
-          <div className="text_center font-bold">ポケモンステータスチャート</div>
+          <div className="text_center font-bold">
+            ポケモンステータスチャート
+          </div>
           <RadarChartComponent status={status} />
         </div>
       </div>

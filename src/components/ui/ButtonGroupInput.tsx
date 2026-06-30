@@ -15,7 +15,7 @@ export function ButtonGroupInput({ value, onChange }: Props) {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault(); //全体画面のページリロードを防ぐ
     if (!value) return;
-    router.push(`${value}`);
+    router.push(`/pokemon/${value}`);
   };
   return (
     <form onSubmit={handleSubmit}>
