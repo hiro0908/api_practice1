@@ -4,7 +4,6 @@ import type { PokemonListItem } from "@/src/domain/pokemon/pokemon";
 import Image from "next/image";
 import { PageHeader } from "@/src/components/ui/PageHeader";
 
-
 import { useRouter } from "next/navigation";
 
 export default function Home() {
@@ -31,7 +30,7 @@ export default function Home() {
 
   return (
     <div>
-      <PageHeader/>
+      <PageHeader />
       <div>
         {pokemonList.map((pokemon) => (
           <div

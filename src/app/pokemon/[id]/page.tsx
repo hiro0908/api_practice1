@@ -5,13 +5,13 @@ import Image from "next/image";
 import { PokemonData } from "@/src/domain/pokemon/pokemon";
 import RadarChartComponent from "@/src/components/ui/RaderChartComponent";
 import { fetchPokemonStatus } from "@/src/components/ui/fetchPokemonStatus";
-import { pokemonTypeNamesList } from "@/src/domain/pokemon/pokemonTypeDictionary";
 import { PageHeader } from "@/src/components/ui/PageHeader";
+import { BaseStatBarChart } from "@/src/components/ui/BaseStatBarChart";
+import { TypeEffectivenessSection } from "@/src/components/ui/TypeEffectivenessSection";
+import { TypeBadge } from "@/src/components/ui/TypeBadge";
 type Params = {
   id: string;
 };
-
-const typeNamesList = pokemonTypeNamesList;
 
 export default function BlogPostPage({ params }: { params: Promise<Params> }) {
   const { id } = use(params);
@@ -30,19 +30,21 @@ export default function BlogPostPage({ params }: { params: Promise<Params> }) {
   }
   const status = fetchPokemonStatus(data.stats);
   const typeNames: string[] = data.type;
-  const typeNamesJa: string[] = typeNames.map(
-    (typeName) => typeNamesList.find((type) => type.eng === typeName)?.ja || "",
-  );
 
   return (
     <div>
-      <PageHeader/>
+      <PageHeader />
       <div className="grid grid-cols-2 w-full border-4 divide-x-4">
         <div className="grid grid-cols-2 w-full">
           <div>
             <div className="font-bold">No.{data.id}</div>
             <div className="font-bold">{data.japaneseName}</div>
-            <div className="font-bold">タイプ：{typeNamesJa}</div>
+            <div className="font-bold">
+              タイプ：{" "}
+              {data.type.map((type) => (
+                <TypeBadge key={type} type={type} />
+              ))}
+            </div>
             <div className="font-bold">
               高さ：{data.height / 10}m/体重：{data.weight / 10}kg
             </div>
@@ -61,6 +63,10 @@ export default function BlogPostPage({ params }: { params: Promise<Params> }) {
             ポケモンステータスチャート
           </div>
           <RadarChartComponent status={status} />
+          <div>
+            <BaseStatBarChart stats={data.stats} />
+            <TypeEffectivenessSection types={typeNames} />
+          </div>
         </div>
       </div>
     </div>
