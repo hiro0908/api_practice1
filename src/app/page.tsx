@@ -2,7 +2,8 @@
 import { useEffect, useState } from "react";
 import type { PokemonListItem } from "@/src/domain/pokemon/pokemon";
 import Image from "next/image";
-import { ButtonGroupInput } from "@/src/components/ui/ButtonGroupInput";
+import { PageHeader } from "@/src/components/ui/PageHeader";
+
 
 import { useRouter } from "next/navigation";
 
@@ -12,7 +13,6 @@ export default function Home() {
   const [pokemonList, setPokemonList] = useState<
     { number: string; name: string; japaneseName: string; imageUrl: string }[]
   >([]);
-  const [inputNumber, setInputNumber] = useState("0");
   useEffect(() => {
     // if (pokemonCount === null) return;
     const fetchPokemonList = async () => {
@@ -31,12 +31,7 @@ export default function Home() {
 
   return (
     <div>
-      <div>
-        <h1 className="text-center text-4xl font-bold">ポケモン図鑑</h1>
-        <div className="flex flex-col items-end">
-          <ButtonGroupInput value={inputNumber} onChange={setInputNumber} />
-        </div>
-      </div>
+      <PageHeader/>
       <div>
         {pokemonList.map((pokemon) => (
           <div
