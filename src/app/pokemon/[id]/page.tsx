@@ -5,8 +5,8 @@ import Image from "next/image";
 import { PokemonData } from "@/src/domain/pokemon/pokemon";
 import RadarChartComponent from "@/src/components/ui/RaderChartComponent";
 import { fetchPokemonStatus } from "@/src/components/ui/fetchPokemonStatus";
-import { ButtonGroupInput } from "@/src/components/ui/ButtonGroupInput";
 import { pokemonTypeNamesList } from "@/src/domain/pokemon/pokemonTypeDictionary";
+import { PageHeader } from "@/src/components/ui/PageHeader";
 type Params = {
   id: string;
 };
@@ -16,7 +16,6 @@ const typeNamesList = pokemonTypeNamesList;
 export default function BlogPostPage({ params }: { params: Promise<Params> }) {
   const { id } = use(params);
   const [data, setData] = useState<PokemonData | null>(null);
-  const [inputNumber, setInputNumber] = useState("0");
   useEffect(() => {
     const fetchPokemon = async () => {
       const response = await fetch(`/api/pokemon/${id}`);
@@ -37,12 +36,7 @@ export default function BlogPostPage({ params }: { params: Promise<Params> }) {
 
   return (
     <div>
-      <div>
-        <h1 className="text-center text-4xl font-bold">ポケモン図鑑</h1>
-        <div className="flex flex-col items-end">
-          <ButtonGroupInput value={inputNumber} onChange={setInputNumber} />
-        </div>
-      </div>
+      <PageHeader/>
       <div className="grid grid-cols-2 w-full border-4 divide-x-4">
         <div className="grid grid-cols-2 w-full">
           <div>

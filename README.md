@@ -55,7 +55,7 @@ pnpm prisma generate
 PokeAPIからポケモン情報を取得し、PostgreSQLへ保存する。
 
 ```bash
-pnpm tsx src/script/fetchPokemon.ts
+pnpm tsx src/infrastructure/db/fetchPokemon.ts
 ```
 
 実行すると以下の処理が行われる。
@@ -92,10 +92,6 @@ http://localhost:3000/api/pokemon
 ```
 
 ### ポケモン詳細取得
-
-```text
-http://localhost:3000/api/pokemon/1
-```
 
 例：フシギダネ
 
