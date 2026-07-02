@@ -18,9 +18,10 @@ export function ButtonGroupInput({ value, onChange }: Props) {
     router.push(`/pokemon/${value}`);
   };
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className="bg-white">
       <ButtonGroup>
         <Input
+          className="bg-white"
           placeholder="図鑑番号を入力"
           value={value}
           onChange={(e) => onChange(e.target.value)}

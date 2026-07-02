@@ -6,11 +6,11 @@ import { useState } from "react";
 export function PageHeader() {
   const [inputNumber, setInputNumber] = useState("0");
   return (
-    <>
+    <div>
       <PageTitle title="ポケモン図鑑" />
       <div className="flex flex-col items-end">
         <ButtonGroupInput value={inputNumber} onChange={setInputNumber} />
       </div>
-    </>
+    </div>
   );
 }

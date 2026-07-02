@@ -37,36 +37,37 @@ export default function Home() {
   return (
     <div>
       <PageHeader />
-      <div>
+      <div className="flex flex-wrap">
         {pokemonList.map((pokemon) => (
-          <div
-            key={pokemon.number}
-            className="inline-block border-4 border-solid"
-          >
+          <div key={pokemon.number} className="w-[300px] border-4 border-solid">
             <div>
-              <button
-                type="button"
-                onClick={() => router.push(`/pokemon/${pokemon.number}`)}
-              >
-                {pokemon.number} :{pokemon.japaneseName}{pokemon.formName ? `(${pokemon.formName})` : ""}
-                <div>
-                  {pokemon.imageUrl ? (
-                    <Image
-                      src={pokemon.imageUrl}
-                      alt={pokemon.name}
-                      width={300}
-                      height={300}
-                    />
-                  ) : (
-                    <div
-                      className="flex items-center justify-center bg-gray-200"
-                      style={{ width: 300, height: 300 }}
-                    >
-                      no image
-                    </div>
-                  )}
-                </div>
-              </button>
+              {pokemon.formName == null && (
+                <button
+                  type="button"
+                  onClick={() => router.push(`/pokemon/${pokemon.number}`)}
+                >
+                  <div className="truncate">
+                    {pokemon.number} :{pokemon.japaneseName}
+                  </div>
+                  <div>
+                    {pokemon.imageUrl ? (
+                      <Image
+                        src={pokemon.imageUrl}
+                        alt={pokemon.name}
+                        width={300}
+                        height={300}
+                      />
+                    ) : (
+                      <div
+                        className="flex items-center justify-center bg-gray-200"
+                        style={{ width: 300, height: 300 }}
+                      >
+                        no image
+                      </div>
+                    )}
+                  </div>
+                </button>
+              )}
             </div>
           </div>
         ))}

@@ -32,8 +32,8 @@ export function BaseStatBarChart({ stats }: Props) {
   const total = rows.reduce((sum, row) => sum + row.value, 0);
 
   return (
-    <div>
-      <div className="flex items-center justify-between mb-2">
+    <div className="mx-8 mt-8">
+      <div className="flex items-center justify-between mb-2 mx-8">
         <div className="font-bold">種族値</div>
         <div className="text-sm font-bold">{total} BST</div>
       </div>

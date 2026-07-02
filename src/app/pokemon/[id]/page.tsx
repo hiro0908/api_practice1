@@ -34,9 +34,10 @@ export default function BlogPostPage({ params }: { params: Promise<Params> }) {
   return (
     <div>
       <PageHeader />
-      <div className="grid grid-cols-2 w-full border-4 divide-x-4">
-        <div className="grid grid-cols-2 w-full">
-          <div>
+      <div className="border-4 mt-8 mx-8">
+        <div className=" border-4 mx-8 my-8  grid grid-cols-3 gap-4">
+          <div className="grid grid-rows-2 gap-4">
+            <div>
             <div className="font-bold">No.{data.id}</div>
             <div className="font-bold">{data.japaneseName}</div>
             <div className="font-bold">
@@ -48,33 +49,46 @@ export default function BlogPostPage({ params }: { params: Promise<Params> }) {
             <div className="font-bold">
               高さ：{data.height / 10}m/体重：{data.weight / 10}kg
             </div>
+            </div>
+            <div>
+            <div className="font-bold">ポケモンの説明</div>
+            </div>
           </div>
-          <div className="flex items-center justify-center">
-                  {data.imageUrl ? (
-                    <Image
-                      src={data.imageUrl}
-                      alt={data.name}
-                      width={300}
-                      height={300}
-                    />
-                  ) : (
-                    <div
-                      className="flex items-center justify-center bg-gray-200"
-                      style={{ width: 300, height: 300 }}
-                    >
-                      no image
-                    </div>
-                  )}
+          <div>
+            {data.imageUrl ? (
+              <Image
+                src={data.imageUrl}
+                alt={data.name}
+                width={500}
+                height={500}
+              />
+            ) : (
+              <div
+                className="flex items-center justify-center bg-gray-200"
+                style={{ width: 300, height: 300 }}
+              >
+                no image
+              </div>
+            )}
+          </div>
+          <div>
+          <div className="font-bold">タグ表記</div>
+          <div>世代などのタグを実装予定</div>
           </div>
         </div>
-        <div>
-          <div className="text_center font-bold">
-            ポケモンステータスチャート
-          </div>
-          <RadarChartComponent status={status} />
+        <div className="grid grid-cols-2 border-4 mt-8 mx-8">
           <div>
+            <div className="text_center font-bold mx-8 my-8">
+              ポケモンステータスチャート
+            </div>
+            <RadarChartComponent status={status} />
+          </div>
+          <div className="grid grid-rows-2">
+
             <BaseStatBarChart stats={data.stats} />
+
             <TypeEffectivenessSection types={typeNames} />
+
           </div>
         </div>
       </div>

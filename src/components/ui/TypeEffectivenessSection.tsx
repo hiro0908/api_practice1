@@ -17,7 +17,7 @@ export function TypeEffectivenessSection({ types }: Props) {
   const effectiveness = calculateTypeEffectiveness(types);
 
   return (
-    <div>
+    <div className="mx-8 mb-8">
       <div className="font-bold mb-2">タイプ相性</div>
       <div className="flex flex-col gap-3">
         {GROUPS.map((group) => {
