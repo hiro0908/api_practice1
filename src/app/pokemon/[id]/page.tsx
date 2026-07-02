@@ -50,12 +50,21 @@ export default function BlogPostPage({ params }: { params: Promise<Params> }) {
             </div>
           </div>
           <div className="flex items-center justify-center">
-            <Image
-              src={data.imageUrl}
-              alt={data?.name}
-              width={300}
-              height={300}
-            />
+                  {data.imageUrl ? (
+                    <Image
+                      src={data.imageUrl}
+                      alt={data.name}
+                      width={300}
+                      height={300}
+                    />
+                  ) : (
+                    <div
+                      className="flex items-center justify-center bg-gray-200"
+                      style={{ width: 300, height: 300 }}
+                    >
+                      no image
+                    </div>
+                  )}
           </div>
         </div>
         <div>

@@ -73,12 +73,16 @@ export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof
 
 export const PokemonScalarFieldEnum = {
   id: 'id',
+  pokedexId: 'pokedexId',
+  pokeApiId: 'pokeApiId',
   name: 'name',
   japaneseName: 'japaneseName',
   imageUrl: 'imageUrl',
   type: 'type',
   height: 'height',
-  weight: 'weight'
+  weight: 'weight',
+  isDefault: 'isDefault',
+  formName: 'formName'
 } as const
 
 export type PokemonScalarFieldEnum = (typeof PokemonScalarFieldEnum)[keyof typeof PokemonScalarFieldEnum]

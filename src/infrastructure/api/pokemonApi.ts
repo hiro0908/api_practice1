@@ -10,6 +10,13 @@ export const getAllPokemonList = (maximam: number) => {
 export const getJapanesePokemonData = (id: number) => {
   return `https://pokeapi.co/api/v2/pokemon-species/${id}`;
 };
+export const extractIdFromUrl = (url: string): number => {
+  const match = url.match(/\/(\d+)\/?$/);
+  if (!match) {
+    throw new Error(`URLからIDを取得できません: ${url}`);
+  }
+  return Number(match[1]);
+};
 export async function getPokemon(id: number) {
   const res = await fetch(getPokemonData(id));
   if (!res.ok) {

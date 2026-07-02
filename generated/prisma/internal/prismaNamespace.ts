@@ -594,12 +594,16 @@ export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof
 
 export const PokemonScalarFieldEnum = {
   id: 'id',
+  pokedexId: 'pokedexId',
+  pokeApiId: 'pokeApiId',
   name: 'name',
   japaneseName: 'japaneseName',
   imageUrl: 'imageUrl',
   type: 'type',
   height: 'height',
-  weight: 'weight'
+  weight: 'weight',
+  isDefault: 'isDefault',
+  formName: 'formName'
 } as const
 
 export type PokemonScalarFieldEnum = (typeof PokemonScalarFieldEnum)[keyof typeof PokemonScalarFieldEnum]
@@ -670,6 +674,13 @@ export type StringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 
  * Reference to a field of type 'String[]'
  */
 export type ListStringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'String[]'>
+    
+
+
+/**
+ * Reference to a field of type 'Boolean'
+ */
+export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
     
 
 

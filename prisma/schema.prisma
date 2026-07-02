@@ -12,24 +12,27 @@ datasource db {
   provider = "postgresql"
 }
 
-model Pokemon{
-  id       Int      @id @default(autoincrement())
-  name     String 
+model Pokemon {
+  id           Int      @id @default(autoincrement())
+  pokedexId    Int
+  pokeApiId    Int      @unique
+  name         String
   japaneseName String?
-  imageUrl String?
-  type     String[]
-  height   Int
-  weight   Int
-  stats    Stats[]
+  imageUrl     String?
+  type         String[]
+  height       Int
+  weight       Int
+  isDefault    Boolean  @default(true)
+  formName     String?
+  stats        Stats[]
+
+  @@unique([pokedexId, formName])
 }
 
-model Stats{
+model Stats {
   id        Int     @id @default(autoincrement())
   name      String
   value     Int
   pokemonId Int
-  pokemon   Pokemon @relation(fields:[pokemonId],references:[id])
-  
-
+  pokemon   Pokemon @relation(fields: [pokemonId], references: [id])
 }
-

@@ -8,7 +8,7 @@ export type PokemonStat = {
 export type PokemonData = {
   id: number;
   name: string;
-  imageUrl: string;
+  imageUrl: string | null;
   japaneseName: string;
   type: string[];
   stats: PokemonStat[];
@@ -21,5 +21,6 @@ export type PokemonListItem = {
   id: number;
   name: string;
   japaneseName: string;
-  imageUrl: string;
+  imageUrl: string | null;
+  formName: string | null;
 };

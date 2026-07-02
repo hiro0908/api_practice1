@@ -1,8 +1,10 @@
 import prisma from "@/src/infrastructure/db/prisma";
 import {
   getMaxPokemonNumber,
+  getAllPokemon,
   getPokemonData,
   getJapanesePokemonData,
+  extractIdFromUrl,
 } from "@/src/infrastructure/api/pokemonApi";
 export async function deleteAllPokemonData() {
   console.log("既存のデータを削除します");
@@ -14,31 +16,58 @@ export async function deleteAllPokemonData() {
 export async function registerAllPokeomonData() {
   const maxPokemonNumber = await getMaxPokemonNumber();
   console.log("画面の読み込みが始まった");
-  for (let i = 1; i <= maxPokemonNumber; i++) {
-    const res = await fetch(getPokemonData(i));
+  const list = await getAllPokemon(maxPokemonNumber);
+
+  for (const item of list.results as { name: string; url: string }[]) {
+    const pokeApiId = extractIdFromUrl(item.url);
+
+    const res = await fetch(getPokemonData(pokeApiId));
     if (!res.ok) {
-      console.log("ポケモンのデータが存在しません。登録を終了します");
-      break;
+      console.log(`No${pokeApiId}のデータが存在しません。スキップします`);
+      continue;
     }
     const data = await res.json();
-    const resja = await fetch(getJapanesePokemonData(i));
+
+    const speciesId = extractIdFromUrl(data.species.url);
+    const resja = await fetch(getJapanesePokemonData(speciesId));
     const dataja = await resja.json();
     const japaneseName =
       dataja.names.find(
         (n: { language: { name: string }; name: string }) =>
           n.language.name == "ja-hrkt",
       )?.name ?? data.name;
-    console.log(`No${i}の${japaneseName}の登録が完了`);
-    await prisma.pokemon.create({
-      data: {
-        name: data.name,
-        japaneseName,
-        imageUrl: data.sprites.other["official-artwork"].front_default,
-        type: data.types.map(
-          (item: { type: { name: string } }) => item.type.name,
-        ),
-        height: data.height,
-        weight: data.weight,
+
+    const isDefault = data.is_default as boolean;
+    const formName = isDefault
+      ? null
+      : data.name.replace(`${dataja.name}-`, "");
+
+    console.log(
+      `No${speciesId}(pokeApiId:${pokeApiId})の${japaneseName}${
+        formName ? `(${formName})` : ""
+      }の登録が完了`,
+    );
+
+    const pokemonData = {
+      pokedexId: speciesId,
+      name: data.name,
+      japaneseName,
+      imageUrl: data.sprites.other["official-artwork"].front_default,
+      type: data.types.map(
+        (item: { type: { name: string } }) => item.type.name,
+      ),
+      height: data.height,
+      weight: data.weight,
+      isDefault,
+      formName,
+    };
+
+    await prisma.pokemon.upsert({
+      where: { pokeApiId },
+      update: pokemonData,
+      create: {
+        ...pokemonData,
+        pokeApiId,
         stats: {
           create: data.stats.map(
             (s: { stat: { name: string }; base_stat: number }) => ({
