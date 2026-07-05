@@ -19,6 +19,7 @@ model Pokemon {
   name         String
   japaneseName String?
   imageUrl     String?
+  difImageUrl  String?
   type         String[]
   height       Int
   weight       Int

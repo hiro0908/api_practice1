@@ -24,6 +24,22 @@ export default function BlogPostPage({ params }: { params: Promise<Params> }) {
     };
     fetchPokemon();
   }, [id]);
+  const [pokemonForm, setPokemonForm] = useState<"Normal" | "Special">(
+    "Normal",
+  );
+  const [isHovered, setIsHovered] = useState<boolean>(false);
+  const style: React.CSSProperties = {
+    cursor: "pointer",
+    transition: "all 0.2s ease", // 滑らかに変化させる
+    backgroundColor: isHovered ? "#3b82f6" : "#e5e7eb",
+    color: isHovered ? "#ffffff" : "#1f2937",
+    border: "none",
+  };
+  const [changeText, setChangeText] = useState<"色違い" | "通常">("色違い");
+  const handleClick = () => {
+    setPokemonForm((prev) => (prev === "Normal" ? "Special" : "Normal"));
+    setChangeText((pret) => (pret === "色違い" ? "通常" : "色違い"));
+  };
 
   if (!data) {
     return <div>Loading...</div>;
@@ -34,30 +50,37 @@ export default function BlogPostPage({ params }: { params: Promise<Params> }) {
   return (
     <div>
       <PageHeader />
-      <div className="border-4 mt-8 mx-8">
-        <div className=" border-4 mx-8 my-8  grid grid-cols-3 gap-4">
+      <div className="border-4 my-8 mx-8 bg-red-300">
+        <div className=" border-4 mx-8 my-8  grid grid-cols-3 gap-4 bg-white">
           <div className="grid grid-rows-2 gap-4">
             <div>
-            <div className="font-bold">No.{data.id}</div>
-            <div className="font-bold">{data.japaneseName}</div>
-            <div className="font-bold">
-              タイプ：{" "}
-              {data.type.map((type) => (
-                <TypeBadge key={type} type={type} />
-              ))}
-            </div>
-            <div className="font-bold">
-              高さ：{data.height / 10}m/体重：{data.weight / 10}kg
-            </div>
+              <div className="font-bold">No.{data.id}</div>
+              <div className="font-bold">{data.japaneseName}</div>
+              <div className="font-bold">
+                タイプ：{" "}
+                {data.type.map((type) => (
+                  <TypeBadge key={type} type={type} />
+                ))}
+              </div>
+              <div className="font-bold">
+                高さ：{data.height / 10}m/体重：{data.weight / 10}kg
+              </div>
             </div>
             <div>
-            <div className="font-bold">ポケモンの説明</div>
+              <div className="font-bold">ポケモンの説明</div>
             </div>
           </div>
           <div>
-            {data.imageUrl ? (
+            {data.imageUrl && pokemonForm == "Normal" ? (
               <Image
                 src={data.imageUrl}
+                alt={data.name}
+                width={500}
+                height={500}
+              />
+            ) : data.difImageUrl && pokemonForm == "Special" ? (
+              <Image
+                src={data.difImageUrl}
                 alt={data.name}
                 width={500}
                 height={500}
@@ -71,12 +94,26 @@ export default function BlogPostPage({ params }: { params: Promise<Params> }) {
               </div>
             )}
           </div>
-          <div>
-          <div className="font-bold">タグ表記</div>
-          <div>世代などのタグを実装予定</div>
+          <div className="grid grid-rows-2">
+            <div>
+              <div className="font-bold">タグ表記</div>
+              <div>世代などのタグを実装予定</div>
+            </div>
+            <div>
+              <div className="font-bold">スタイル</div>
+              <button
+                onClick={handleClick}
+                className="rounded bg-blue-500 px-3 py-1 text-white"
+                onMouseEnter={() => setIsHovered(true)}
+                onMouseLeave={() => setIsHovered(false)}
+                style={style}
+              >
+                {changeText}を表示
+              </button>
+            </div>
           </div>
         </div>
-        <div className="grid grid-cols-2 border-4 mt-8 mx-8">
+        <div className="grid grid-cols-2 border-4 my-8 mx-8 bg-white">
           <div>
             <div className="text_center font-bold mx-8 my-8">
               ポケモンステータスチャート
@@ -84,11 +121,9 @@ export default function BlogPostPage({ params }: { params: Promise<Params> }) {
             <RadarChartComponent status={status} />
           </div>
           <div className="grid grid-rows-2">
-
             <BaseStatBarChart stats={data.stats} />
 
             <TypeEffectivenessSection types={typeNames} />
-
           </div>
         </div>
       </div>

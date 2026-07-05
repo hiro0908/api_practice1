@@ -6,6 +6,7 @@ import {
   getJapanesePokemonData,
   extractIdFromUrl,
 } from "@/src/infrastructure/api/pokemonApi";
+
 export async function deleteAllPokemonData() {
   console.log("既存のデータを削除します");
   return await prisma.$executeRawUnsafe(`
@@ -13,6 +14,7 @@ export async function deleteAllPokemonData() {
         RESTART IDENTITY CASCADE;
     `);
 }
+
 export async function registerAllPokeomonData() {
   const maxPokemonNumber = await getMaxPokemonNumber();
   console.log("画面の読み込みが始まった");
@@ -53,6 +55,7 @@ export async function registerAllPokeomonData() {
       name: data.name,
       japaneseName,
       imageUrl: data.sprites.other["official-artwork"].front_default,
+      difImageUrl: data.sprites.other["official-artwork"].front_shiny,
       type: data.types.map(
         (item: { type: { name: string } }) => item.type.name,
       ),

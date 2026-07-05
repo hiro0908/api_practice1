@@ -35,7 +35,7 @@ export function BaseStatBarChart({ stats }: Props) {
     <div className="mx-8 mt-8">
       <div className="flex items-center justify-between mb-2 mx-8">
         <div className="font-bold">種族値</div>
-        <div className="text-sm font-bold">{total} BST</div>
+        <div className="text-sm font-bold">{total}</div>
       </div>
       <div className="flex flex-col gap-1.5">
         {rows.map((row) => (

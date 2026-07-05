@@ -15,6 +15,7 @@ export type PokemonData = {
   height: number;
   weight: number;
   discription: string;
+  difImageUrl: string | null;
 };
 
 export type PokemonListItem = {
