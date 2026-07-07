@@ -9,6 +9,7 @@ import { PageHeader } from "@/src/components/ui/PageHeader";
 import { BaseStatBarChart } from "@/src/components/ui/BaseStatBarChart";
 import { TypeEffectivenessSection } from "@/src/components/ui/TypeEffectivenessSection";
 import { TypeBadge } from "@/src/components/ui/TypeBadge";
+import { RolingBollAnimation } from "@/src/components/ui/RolingBollAnimation";
 type Params = {
   id: string;
 };
@@ -30,7 +31,7 @@ export default function BlogPostPage({ params }: { params: Promise<Params> }) {
   const [isHovered, setIsHovered] = useState<boolean>(false);
   const style: React.CSSProperties = {
     cursor: "pointer",
-    transition: "all 0.2s ease", // 滑らかに変化させる
+    transition: "all 0.2s ease",
     backgroundColor: isHovered ? "#3b82f6" : "#e5e7eb",
     color: isHovered ? "#ffffff" : "#1f2937",
     border: "none",
@@ -42,11 +43,12 @@ export default function BlogPostPage({ params }: { params: Promise<Params> }) {
   };
 
   if (!data) {
-    return <div>Loading...</div>;
+    return <div>{RolingBollAnimation()}Now loadiong...</div>;
   }
+  console.log(data);
   const status = fetchPokemonStatus(data.stats);
   const typeNames: string[] = data.type;
-
+  console.log(data.abilities);
   return (
     <div>
       <PageHeader />
@@ -65,9 +67,23 @@ export default function BlogPostPage({ params }: { params: Promise<Params> }) {
               <div className="font-bold">
                 高さ：{data.height / 10}m/体重：{data.weight / 10}kg
               </div>
+              <div>特性</div>
+
+              {data.abilities
+                .filter((ability) => !ability.isHidden)
+                .map((ability) => (
+                  <div key={ability.id}>{ability.name}</div>
+                ))}
+
+              {data.abilities
+                .filter((ability) => ability.isHidden)
+                .map((ability) => (
+                  <div key={ability.id}>{ability.name}（隠れ特性）</div>
+                ))}
             </div>
             <div>
               <div className="font-bold">ポケモンの説明</div>
+              <div>{data.description}</div>
             </div>
           </div>
           <div>
@@ -100,7 +116,9 @@ export default function BlogPostPage({ params }: { params: Promise<Params> }) {
               <div>世代などのタグを実装予定</div>
             </div>
             <div>
-              <div className="font-bold">スタイル</div>
+              <div className="font-bold">
+                スタイル:{changeText == "色違い" ? "ノーマル" : "色違い"}
+              </div>
               <button
                 onClick={handleClick}
                 className="rounded bg-blue-500 px-3 py-1 text-white"

@@ -14,8 +14,9 @@ export type PokemonData = {
   stats: PokemonStat[];
   height: number;
   weight: number;
-  discription: string;
+  description: string;
   difImageUrl: string | null;
+  abilities: PokemonAbility[];
 };
 
 export type PokemonListItem = {
@@ -24,4 +25,12 @@ export type PokemonListItem = {
   japaneseName: string;
   imageUrl: string | null;
   formName: string | null;
+};
+
+export type PokemonAbility = {
+  id: number;
+  name: string;
+  slot: number;
+  isHidden: boolean;
+  pokemonId: number;
 };

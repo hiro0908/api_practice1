@@ -12,6 +12,7 @@ export async function GET(
     },
     include: {
       stats: true,
+      abilities: true,
     },
   });
 

@@ -43,6 +43,21 @@ export async function registerAllPokeomonData() {
     const formName = isDefault
       ? null
       : data.name.replace(`${dataja.name}-`, "");
+    const abilityData = data.abilities.map(
+      (a: { ability: { name: string }; slot: number; is_hidden: boolean }) => ({
+        name: a.ability.name,
+        slot: a.slot,
+        isHidden: a.is_hidden,
+      }),
+    );
+    const description =
+      dataja.flavor_text_entries
+        .find(
+          (entry: { flavor_text: string; language: { name: string } }) =>
+            entry.language.name === "ja-hrkt",
+        )
+        ?.flavor_text.replace(/\n/g, " ")
+        .replace(/\f/g, " ") ?? "";
 
     console.log(
       `No${speciesId}(pokeApiId:${pokeApiId})の${japaneseName}${
@@ -63,6 +78,7 @@ export async function registerAllPokeomonData() {
       weight: data.weight,
       isDefault,
       formName,
+      description,
     };
 
     await prisma.pokemon.upsert({
@@ -79,8 +95,12 @@ export async function registerAllPokeomonData() {
             }),
           ),
         },
+        abilities: {
+          create: abilityData,
+        },
       },
     });
   }
+
   console.log("すべてのポケモンの登録が完了した");
 }

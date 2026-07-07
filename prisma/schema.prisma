@@ -26,6 +26,8 @@ model Pokemon {
   isDefault    Boolean  @default(true)
   formName     String?
   stats        Stats[]
+  abilities    Ability[]
+  description  String?
 
   @@unique([pokedexId, formName])
 }
@@ -34,6 +36,15 @@ model Stats {
   id        Int     @id @default(autoincrement())
   name      String
   value     Int
+  pokemonId Int
+  pokemon   Pokemon @relation(fields: [pokemonId], references: [id])
+}
+
+model Ability{
+  id Int        @id @default(autoincrement())
+  name String
+  slot   Int
+  isHidden Boolean
   pokemonId Int
   pokemon   Pokemon @relation(fields: [pokemonId], references: [id])
 }

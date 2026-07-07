@@ -5,6 +5,7 @@ export async function GET() {
   const result = await prisma.pokemon.findMany({
     include: {
       stats: true,
+      abilities: true,
     },
   });
 

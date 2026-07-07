@@ -10,4 +10,5 @@
  */
 export type * from './models/Pokemon'
 export type * from './models/Stats'
+export type * from './models/Ability'
 export type * from './commonInputTypes'
