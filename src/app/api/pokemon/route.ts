@@ -7,6 +7,9 @@ export async function GET() {
       stats: true,
       abilities: true,
     },
+    orderBy: {
+      pokedexId: "asc",
+    },
   });
 
   return NextResponse.json(result);

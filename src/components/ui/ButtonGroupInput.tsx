@@ -18,15 +18,19 @@ export function ButtonGroupInput({ value, onChange }: Props) {
     router.push(`/pokemon/${value}`);
   };
   return (
-    <form onSubmit={handleSubmit} className="bg-white">
+    <form onSubmit={handleSubmit} className="rounded-full bg-white">
       <ButtonGroup>
         <Input
-          className="bg-white"
+          className="!rounded-l-full !rounded-r-none bg-white pl-4"
           placeholder="図鑑番号を入力"
           value={value}
           onChange={(e) => onChange(e.target.value)}
         />
-        <Button variant="outline" aria-label="Search">
+        <Button
+          variant="outline"
+          aria-label="Search"
+          className="!rounded-l-none !rounded-r-full pr-4"
+        >
           <SearchIcon />
         </Button>
       </ButtonGroup>
