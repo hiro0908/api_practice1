@@ -10,7 +10,7 @@ import {
 export async function deleteAllPokemonData() {
   console.log("既存のデータを削除します");
   return await prisma.$executeRawUnsafe(`
-        TRUNCATE TABLE "Stats", "Pokemon"
+        TRUNCATE TABLE "PokemonAbility", "Ability", "Stats", "Pokemon"
         RESTART IDENTITY CASCADE;
     `);
 }
@@ -43,27 +43,62 @@ export async function registerAllPokeomonData() {
     const formName = isDefault
       ? null
       : data.name.replace(`${dataja.name}-`, "");
-    const abilityData = data.abilities.map(
-      (a: { ability: { name: string }; slot: number; is_hidden: boolean }) => ({
-        name: a.ability.name,
-        slot: a.slot,
-        isHidden: a.is_hidden,
-      }),
+    // ① Ability登録: PokemonAbilityが参照するAbilityの一覧を作成する
+    const abilityData = await Promise.all(
+      data.abilities.map(
+        async (a: {
+          ability: { name: string; url: string };
+          slot: number;
+          is_hidden: boolean;
+        }) => {
+          const abilityApiId = extractIdFromUrl(a.ability.url);
+          const abilityRes = await fetch(a.ability.url);
+          const abilityJson = await abilityRes.json();
+          const japaneseAbilityName =
+            abilityJson.names.find(
+              (n: { language: { name: string }; name: string }) =>
+                n.language.name === "ja",
+            )?.name ?? a.ability.name;
+          const abilityDescription =
+            abilityJson.flavor_text_entries
+              .find(
+                (entry: { flavor_text: string; language: { name: string } }) =>
+                  entry.language.name === "ja",
+              )
+              ?.flavor_text.replace(/\n/g, " ")
+              .replace(/\f/g, " ") ?? null;
+
+          await prisma.ability.upsert({
+            where: { pokeApiId: abilityApiId },
+            update: {
+              name: a.ability.name,
+              japaneseName: japaneseAbilityName,
+              description: abilityDescription,
+            },
+            create: {
+              pokeApiId: abilityApiId,
+              name: a.ability.name,
+              japaneseName: japaneseAbilityName,
+              description: abilityDescription,
+            },
+          });
+
+          return {
+            abilityApiId,
+            slot: a.slot,
+            isHidden: a.is_hidden,
+          };
+        },
+      ),
     );
     const description =
       dataja.flavor_text_entries
         .find(
           (entry: { flavor_text: string; language: { name: string } }) =>
-            entry.language.name === "ja-hrkt",
+            entry.language.name === "ja",
         )
         ?.flavor_text.replace(/\n/g, " ")
         .replace(/\f/g, " ") ?? "";
-
-    console.log(
-      `No${speciesId}(pokeApiId:${pokeApiId})の${japaneseName}${
-        formName ? `(${formName})` : ""
-      }の登録が完了`,
-    );
 
     const pokemonData = {
       pokedexId: speciesId,
@@ -81,7 +116,8 @@ export async function registerAllPokeomonData() {
       description,
     };
 
-    await prisma.pokemon.upsert({
+    // ② Pokemon登録
+    const pokemon = await prisma.pokemon.upsert({
       where: { pokeApiId },
       update: pokemonData,
       create: {
@@ -95,11 +131,27 @@ export async function registerAllPokeomonData() {
             }),
           ),
         },
-        abilities: {
-          create: abilityData,
-        },
       },
     });
+
+    // ③ 中間テーブル登録: 特性構成が変わっている場合に備えて作り直す
+    await prisma.pokemonAbility.deleteMany({
+      where: { pokemonId: pokemon.id },
+    });
+    await prisma.pokemonAbility.createMany({
+      data: abilityData.map((a) => ({
+        pokemonId: pokemon.id,
+        abilityId: a.abilityApiId,
+        slot: a.slot,
+        isHidden: a.isHidden,
+      })),
+    });
+
+    console.log(
+      `No${speciesId}(pokeApiId:${pokeApiId})の${japaneseName}${
+        formName ? `(${formName})` : ""
+      }の登録が完了`,
+    );
   }
 
   console.log("すべてのポケモンの登録が完了した");

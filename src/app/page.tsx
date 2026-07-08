@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import type { PokemonListItem } from "@/src/domain/pokemon/pokemon";
 import Image from "next/image";
 import { PageHeader } from "@/src/components/ui/PageHeader";
+import { PokedexIntro } from "@/src/components/ui/PokedexIntro";
 
 import { useRouter } from "next/navigation";
 
@@ -36,6 +37,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen pb-12">
+      <PokedexIntro />
       <PageHeader />
       <div className="grid grid-cols-2 gap-4 p-4 sm:grid-cols-3 sm:gap-5 sm:p-6 md:grid-cols-4 lg:grid-cols-5">
         {pokemonList

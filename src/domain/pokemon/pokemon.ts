@@ -30,6 +30,7 @@ export type PokemonListItem = {
 export type PokemonAbility = {
   id: number;
   name: string;
+  description: string | null;
   slot: number;
   isHidden: boolean;
   pokemonId: number;

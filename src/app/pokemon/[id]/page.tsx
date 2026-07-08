@@ -2,6 +2,7 @@
 import { use } from "react";
 import { useState, useEffect } from "react";
 import Image from "next/image";
+import dynamic from "next/dynamic";
 import { Sparkles, Ruler, Weight } from "lucide-react";
 import { PokemonData } from "@/src/domain/pokemon/pokemon";
 import { pokemonTypeStyleDictionary } from "@/src/domain/pokemon/pokemonTypeStyle";
@@ -13,6 +14,12 @@ import { TypeEffectivenessSection } from "@/src/components/ui/TypeEffectivenessS
 import { TypeBadge } from "@/src/components/ui/TypeBadge";
 import { RolingBollAnimation } from "@/src/components/ui/RolingBollAnimation";
 import { Button } from "@/src/components/ui/button";
+
+const ExampleDrawer = dynamic(
+  () => import("@/src/components/ui/DisplayExplain"),
+  { ssr: false },
+);
+
 type Params = {
   id: string;
 };
@@ -20,9 +27,14 @@ type Params = {
 export default function BlogPostPage({ params }: { params: Promise<Params> }) {
   const { id } = use(params);
   const [data, setData] = useState<PokemonData | null>(null);
+  // const [notFound, setNotFound] = useState(false);
   useEffect(() => {
     const fetchPokemon = async () => {
       const response = await fetch(`/api/pokemon/${id}`);
+      // if (!response.ok) {
+      //   setNotFound(true);
+      //   return;
+      // }
       const data = await response.json();
       setData(data);
     };
@@ -34,6 +46,17 @@ export default function BlogPostPage({ params }: { params: Promise<Params> }) {
   const handleClick = () => {
     setPokemonForm((prev) => (prev === "Normal" ? "Special" : "Normal"));
   };
+  const [erroredImageSrc, setErroredImageSrc] = useState<string | null>(null);
+
+  // if (notFound) {
+  //   return (
+  //     <div className="flex min-h-screen flex-col items-center justify-center gap-4">
+  //       <div className="font-bold text-slate-500">
+  //         指定されたポケモンが見つかりませんでした
+  //       </div>
+  //     </div>
+  //   );
+  // }
 
   if (!data) {
     return (
@@ -47,7 +70,6 @@ export default function BlogPostPage({ params }: { params: Promise<Params> }) {
   const typeNames: string[] = data.type;
   const primaryTypeColor =
     pokemonTypeStyleDictionary[data.type[0]]?.color ?? "#A8A878";
-  // タイプバッジと同色にすると視認できなくなるため、バナーはぐっと暗く落として使う
   const bannerGradient = `linear-gradient(135deg, color-mix(in srgb, ${primaryTypeColor} 65%, black), color-mix(in srgb, ${primaryTypeColor} 30%, black))`;
   const normalAbilities = data.abilities.filter((ability) => !ability.isHidden);
   const hiddenAbilities = data.abilities.filter((ability) => ability.isHidden);
@@ -73,37 +95,33 @@ export default function BlogPostPage({ params }: { params: Promise<Params> }) {
             ))}
           </div>
         </div>
-
-        {/* 本体情報 */}
         <div className="grid grid-cols-1 gap-6 p-6 md:grid-cols-3">
           <div className="flex flex-col items-center gap-3">
             <div className="flex h-[260px] w-full items-center justify-center rounded-2xl bg-gradient-to-b from-slate-100 to-slate-200">
-              {data.imageUrl && pokemonForm == "Normal" ? (
-                <Image
-                  src={data.imageUrl}
-                  alt={data.name}
-                  width={220}
-                  height={220}
-                  className="drop-shadow-lg"
-                />
-              ) : data.difImageUrl && pokemonForm == "Special" ? (
-                <Image
-                  src={data.difImageUrl}
-                  alt={data.name}
-                  width={220}
-                  height={220}
-                  className="drop-shadow-lg"
-                />
-              ) : (
-                <div className="flex h-[220px] w-[220px] items-center justify-center text-sm text-slate-400">
-                  no image
-                </div>
-              )}
+              {(() => {
+                const currentImageSrc =
+                  pokemonForm === "Normal" ? data.imageUrl : data.difImageUrl;
+                return currentImageSrc &&
+                  currentImageSrc !== erroredImageSrc ? (
+                  <Image
+                    src={currentImageSrc}
+                    alt={data.name}
+                    width={220}
+                    height={220}
+                    className="drop-shadow-lg"
+                    onError={() => setErroredImageSrc(currentImageSrc)}
+                  />
+                ) : (
+                  <div className="flex h-[220px] w-[220px] items-center justify-center text-sm text-slate-400">
+                    no image
+                  </div>
+                );
+              })()}
             </div>
             <Button
               onClick={handleClick}
               variant={pokemonForm === "Special" ? "default" : "outline"}
-              className="gap-1.5"
+              className="gap-1.5 cursor-pointer transition-opacity hover:opacity-80"
             >
               <Sparkles size={16} />
               {pokemonForm === "Special" ? "色違い表示中" : "色違いを表示"}
@@ -133,17 +151,23 @@ export default function BlogPostPage({ params }: { params: Promise<Params> }) {
                 {normalAbilities.map((ability) => (
                   <div
                     key={ability.id}
-                    className="rounded-full border border-slate-200 bg-white px-3 py-1 text-xs font-bold text-slate-700 shadow-sm"
+                    className="rounded-full border border-slate-200 bg-white px-3 py-1 text-xs font-bold text-slate-700 shadow-sm transition-colors duration-150 hover:border-slate-300 hover:bg-slate-50"
                   >
-                    {ability.name}
+                    <ExampleDrawer
+                      title={ability.name}
+                      explain={ability.description}
+                    />
                   </div>
                 ))}
                 {hiddenAbilities.map((ability) => (
                   <div
                     key={ability.id}
-                    className="rounded-full border border-dashed border-slate-300 bg-slate-50 px-3 py-1 text-xs font-bold text-slate-500"
+                    className="rounded-full border border-dashed border-slate-300 bg-slate-50 px-3 py-1 text-xs font-bold text-slate-500 transition-colors duration-150 hover:border-slate-400 hover:bg-slate-100"
                   >
-                    {ability.name}（隠れ特性）
+                    <ExampleDrawer
+                      title={`${ability.name}（隠れ特性）`}
+                      explain={ability.description}
+                    />
                   </div>
                 ))}
               </div>

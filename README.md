@@ -1,11 +1,69 @@
 # ポケモン図鑑アプリ 
+## このアプリの作成目的
+APIの仕組みを理解しdoker上にPostgreSQLを建て、APIからの情報を取得したデータベースにアクセスし動かせるようにする
+
 ## ディレクトリー構成
 |層|ディレクトリー|役割|
 |---|---|---|
-|Presentation層|@/app|リクエストの送信と受け取り、UIの表示|
-|Application層|@/src/components|実際の機能|
-|Domain層|@/src/domain|	不変の事実 |
-|Infrastructure層|@/src/infrastructure|外部API・DB等との実際のやり取り|
+|Presentation層|@/src/app|ルーティング、APIエンドポイント、画面の表示|
+|Application層|@/src/components/ui|画面を構成するUI部品（ヘッダー、カード、チャート等）|
+|Domain層|@/src/domain/pokemon|型定義、タイプ相性計算などの不変のルール|
+|Infrastructure層|@/src/infrastructure|PokeAPI・PostgreSQL(Prisma)との実際のやり取り|
+
+```text
+src/
+├─ app/                          # Presentation層
+│  ├─ api/pokemon/
+│  │  ├─ route.ts                # ポケモン一覧取得API
+│  │  └─ [id]/route.ts           # ポケモン詳細取得API
+│  ├─ pokemon/[id]/page.tsx      # ポケモン詳細ページ
+│  ├─ page.tsx                   # ポケモン一覧ページ
+│  ├─ layout.tsx
+│  └─ globals.css
+├─ components/ui/                # Application層
+│  ├─ PageHeader.tsx / PageTitle.tsx / PokedexIntro.tsx
+│  ├─ TypeBadge.tsx / TypeEffectivenessSection.tsx
+│  ├─ BaseStatBarChart.tsx / RaderChartComponent.tsx
+│  ├─ ButtonGroupInput.tsx / button.tsx / input.tsx など（shadcn由来のUI部品）
+│  └─ fetchPokemonStatus.ts
+├─ domain/pokemon/                # Domain層
+│  ├─ pokemon.ts                  # ポケモン関連の型定義
+│  ├─ pokemonTypeStyle.ts         # タイプごとの色・アイコン定義
+│  ├─ pokemonTypeDictionary.ts / typeChart.ts
+│  └─ calculateEffectiveType.ts   # タイプ相性の計算ロジック
+├─ infrastructure/                # Infrastructure層
+│  ├─ api/pokemonApi.ts           # PokeAPI呼び出し
+│  └─ db/                         # DB登録処理（Prisma経由）
+│     ├─ dbFunction.ts
+│     ├─ fetchPokemon.ts
+│     └─ prisma.ts
+└─ lib/utils.ts
+
+prisma/
+├─ schema.prisma
+└─ migrations/
+```
+
+## 工夫した点
+- 画面遷移後のポケモンの詳細ページでステータスや相性、特性など情報量を増やすことによって隙間を減らした点。
+- ボタンを押すことでポケモンの色違いを表示する機能を持たせユーザー体験を向上させる
+- Next.jsのApp Route機能を使いURLから特定の情報に瞬時にアクセスできるようにした点
+- 画面遷移時にロードしているのかを明示しつつテーマ性を持たせるためにモンスターボールの図形を回転させて表示した点
+- 
+
+## 苦労した点
+- ポケモン情報を1匹ごとに取得した際にfor文のインデックス番号を割り当てると特殊個体のIDに対応しておらずエラーが出てしまうという点。
+- 設計思想の選定
+- Prisma ORMの導入
+- APIのどの部分に欲しい情報があるのかを探す
+- 機能をComponents化したときにどの程度細分化すればいいのかという点
+- 特殊個体と通常個体の関連付け
+- データベースの設計
+
+
+## 今後の展望
+- geminiを使用して読み取った画像をもとにどのポケモンなのかを類推させそのポケモンを表示するような機能を作成したい
+- 読み取った画像とマッチしたポケモンにマークを付けて一種のゲーム性やコレクター性を持たせたい
 
 
 # 実行手順
@@ -62,6 +120,7 @@ pnpm tsx src/infrastructure/db/fetchPokemon.ts
 
 * Pokemonテーブルのデータ削除
 * Statsテーブルのデータ削除
+* Abilityテーブルのデータ削除
 * IDのリセット
 * PokeAPIからポケモン情報取得
 * PostgreSQLへ保存
@@ -88,7 +147,7 @@ http://localhost:3000
 ### ポケモン一覧取得
 
 ```text
-http://localhost:3000/api/pokemon
+http://localhost:3000
 ```
 
 ### ポケモン詳細取得
@@ -96,17 +155,24 @@ http://localhost:3000/api/pokemon
 例：フシギダネ
 
 ```text
-http://localhost:3000/api/pokemon/1
+http://localhost:3000/pokemon/1
 ```
 
 ## 10. 画面機能
 
 * ポケモン一覧表示
-* ポケモン検索
+* ポケモン検索（図鑑番号を入力して詳細ページへ遷移）
 * ポケモン画像表示
+* 色違い画像の表示切り替え
 * タイプ表示
 * 高さ・体重表示
+* 特性表示（通常特性・隠れ特性）
+* 説明文（フレーバーテキスト）表示
 * 種族値表示
 * レーダーチャート表示
+* タイプ相性表示（弱点・耐性・無効）
+* ポケモン図鑑起動時の演出表示
+* ローディング中のモンスターボールアニメーション表示
+* ヘッダー固定表示
 * PostgreSQLからデータ取得
 * Next.js API Route経由でフロントエンドへデータ提供

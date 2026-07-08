@@ -26,7 +26,7 @@ model Pokemon {
   isDefault    Boolean  @default(true)
   formName     String?
   stats        Stats[]
-  abilities    Ability[]
+  abilities    PokemonAbility[]
   description  String?
 
   @@unique([pokedexId, formName])
@@ -41,10 +41,21 @@ model Stats {
 }
 
 model Ability{
-  id Int        @id @default(autoincrement())
+  pokeApiId Int @id
   name String
-  slot   Int
-  isHidden Boolean
+  japaneseName String
+  description String?
+
+  pokemons PokemonAbility[]
+}
+
+model PokemonAbility{
   pokemonId Int
-  pokemon   Pokemon @relation(fields: [pokemonId], references: [id])
+  abilityId Int
+  slot Int
+  isHidden Boolean
+
+  pokemon Pokemon @relation(fields:[pokemonId],references:[id])
+  ability Ability @relation(fields:[abilityId],references:[pokeApiId])
+  @@id([pokemonId,abilityId])
 }

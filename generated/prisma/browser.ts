@@ -32,3 +32,8 @@ export type Stats = Prisma.StatsModel
  * 
  */
 export type Ability = Prisma.AbilityModel
+/**
+ * Model PokemonAbility
+ * 
+ */
+export type PokemonAbility = Prisma.PokemonAbilityModel

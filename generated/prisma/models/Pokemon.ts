@@ -293,7 +293,7 @@ export type PokemonWhereInput = {
   formName?: Prisma.StringNullableFilter<"Pokemon"> | string | null
   description?: Prisma.StringNullableFilter<"Pokemon"> | string | null
   stats?: Prisma.StatsListRelationFilter
-  abilities?: Prisma.AbilityListRelationFilter
+  abilities?: Prisma.PokemonAbilityListRelationFilter
 }
 
 export type PokemonOrderByWithRelationInput = {
@@ -311,7 +311,7 @@ export type PokemonOrderByWithRelationInput = {
   formName?: Prisma.SortOrderInput | Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   stats?: Prisma.StatsOrderByRelationAggregateInput
-  abilities?: Prisma.AbilityOrderByRelationAggregateInput
+  abilities?: Prisma.PokemonAbilityOrderByRelationAggregateInput
 }
 
 export type PokemonWhereUniqueInput = Prisma.AtLeast<{
@@ -333,7 +333,7 @@ export type PokemonWhereUniqueInput = Prisma.AtLeast<{
   formName?: Prisma.StringNullableFilter<"Pokemon"> | string | null
   description?: Prisma.StringNullableFilter<"Pokemon"> | string | null
   stats?: Prisma.StatsListRelationFilter
-  abilities?: Prisma.AbilityListRelationFilter
+  abilities?: Prisma.PokemonAbilityListRelationFilter
 }, "id" | "pokeApiId" | "pokedexId_formName">
 
 export type PokemonOrderByWithAggregationInput = {
@@ -390,7 +390,7 @@ export type PokemonCreateInput = {
   formName?: string | null
   description?: string | null
   stats?: Prisma.StatsCreateNestedManyWithoutPokemonInput
-  abilities?: Prisma.AbilityCreateNestedManyWithoutPokemonInput
+  abilities?: Prisma.PokemonAbilityCreateNestedManyWithoutPokemonInput
 }
 
 export type PokemonUncheckedCreateInput = {
@@ -408,7 +408,7 @@ export type PokemonUncheckedCreateInput = {
   formName?: string | null
   description?: string | null
   stats?: Prisma.StatsUncheckedCreateNestedManyWithoutPokemonInput
-  abilities?: Prisma.AbilityUncheckedCreateNestedManyWithoutPokemonInput
+  abilities?: Prisma.PokemonAbilityUncheckedCreateNestedManyWithoutPokemonInput
 }
 
 export type PokemonUpdateInput = {
@@ -425,7 +425,7 @@ export type PokemonUpdateInput = {
   formName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stats?: Prisma.StatsUpdateManyWithoutPokemonNestedInput
-  abilities?: Prisma.AbilityUpdateManyWithoutPokemonNestedInput
+  abilities?: Prisma.PokemonAbilityUpdateManyWithoutPokemonNestedInput
 }
 
 export type PokemonUncheckedUpdateInput = {
@@ -443,7 +443,7 @@ export type PokemonUncheckedUpdateInput = {
   formName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stats?: Prisma.StatsUncheckedUpdateManyWithoutPokemonNestedInput
-  abilities?: Prisma.AbilityUncheckedUpdateManyWithoutPokemonNestedInput
+  abilities?: Prisma.PokemonAbilityUncheckedUpdateManyWithoutPokemonNestedInput
 }
 
 export type PokemonCreateManyInput = {
@@ -643,7 +643,7 @@ export type PokemonCreateWithoutStatsInput = {
   isDefault?: boolean
   formName?: string | null
   description?: string | null
-  abilities?: Prisma.AbilityCreateNestedManyWithoutPokemonInput
+  abilities?: Prisma.PokemonAbilityCreateNestedManyWithoutPokemonInput
 }
 
 export type PokemonUncheckedCreateWithoutStatsInput = {
@@ -660,7 +660,7 @@ export type PokemonUncheckedCreateWithoutStatsInput = {
   isDefault?: boolean
   formName?: string | null
   description?: string | null
-  abilities?: Prisma.AbilityUncheckedCreateNestedManyWithoutPokemonInput
+  abilities?: Prisma.PokemonAbilityUncheckedCreateNestedManyWithoutPokemonInput
 }
 
 export type PokemonCreateOrConnectWithoutStatsInput = {
@@ -692,7 +692,7 @@ export type PokemonUpdateWithoutStatsInput = {
   isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
   formName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  abilities?: Prisma.AbilityUpdateManyWithoutPokemonNestedInput
+  abilities?: Prisma.PokemonAbilityUpdateManyWithoutPokemonNestedInput
 }
 
 export type PokemonUncheckedUpdateWithoutStatsInput = {
@@ -709,7 +709,7 @@ export type PokemonUncheckedUpdateWithoutStatsInput = {
   isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
   formName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  abilities?: Prisma.AbilityUncheckedUpdateManyWithoutPokemonNestedInput
+  abilities?: Prisma.PokemonAbilityUncheckedUpdateManyWithoutPokemonNestedInput
 }
 
 export type PokemonCreateWithoutAbilitiesInput = {
@@ -830,7 +830,7 @@ export type PokemonCountOutputTypeCountStatsArgs<ExtArgs extends runtime.Types.E
  * PokemonCountOutputType without action
  */
 export type PokemonCountOutputTypeCountAbilitiesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.AbilityWhereInput
+  where?: Prisma.PokemonAbilityWhereInput
 }
 
 
@@ -914,7 +914,7 @@ export type $PokemonPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
   name: "Pokemon"
   objects: {
     stats: Prisma.$StatsPayload<ExtArgs>[]
-    abilities: Prisma.$AbilityPayload<ExtArgs>[]
+    abilities: Prisma.$PokemonAbilityPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
@@ -1325,7 +1325,7 @@ readonly fields: PokemonFieldRefs;
 export interface Prisma__PokemonClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   stats<T extends Prisma.Pokemon$statsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Pokemon$statsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$StatsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  abilities<T extends Prisma.Pokemon$abilitiesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Pokemon$abilitiesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AbilityPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  abilities<T extends Prisma.Pokemon$abilitiesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Pokemon$abilitiesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PokemonAbilityPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1789,23 +1789,23 @@ export type Pokemon$statsArgs<ExtArgs extends runtime.Types.Extensions.InternalA
  */
 export type Pokemon$abilitiesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the Ability
+   * Select specific fields to fetch from the PokemonAbility
    */
-  select?: Prisma.AbilitySelect<ExtArgs> | null
+  select?: Prisma.PokemonAbilitySelect<ExtArgs> | null
   /**
-   * Omit specific fields from the Ability
+   * Omit specific fields from the PokemonAbility
    */
-  omit?: Prisma.AbilityOmit<ExtArgs> | null
+  omit?: Prisma.PokemonAbilityOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.AbilityInclude<ExtArgs> | null
-  where?: Prisma.AbilityWhereInput
-  orderBy?: Prisma.AbilityOrderByWithRelationInput | Prisma.AbilityOrderByWithRelationInput[]
-  cursor?: Prisma.AbilityWhereUniqueInput
+  include?: Prisma.PokemonAbilityInclude<ExtArgs> | null
+  where?: Prisma.PokemonAbilityWhereInput
+  orderBy?: Prisma.PokemonAbilityOrderByWithRelationInput | Prisma.PokemonAbilityOrderByWithRelationInput[]
+  cursor?: Prisma.PokemonAbilityWhereUniqueInput
   take?: number
   skip?: number
-  distinct?: Prisma.AbilityScalarFieldEnum | Prisma.AbilityScalarFieldEnum[]
+  distinct?: Prisma.PokemonAbilityScalarFieldEnum | Prisma.PokemonAbilityScalarFieldEnum[]
 }
 
 /**

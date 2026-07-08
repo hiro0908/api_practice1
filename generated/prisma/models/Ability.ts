@@ -27,77 +27,63 @@ export type AggregateAbility = {
 }
 
 export type AbilityAvgAggregateOutputType = {
-  id: number | null
-  slot: number | null
-  pokemonId: number | null
+  pokeApiId: number | null
 }
 
 export type AbilitySumAggregateOutputType = {
-  id: number | null
-  slot: number | null
-  pokemonId: number | null
+  pokeApiId: number | null
 }
 
 export type AbilityMinAggregateOutputType = {
-  id: number | null
+  pokeApiId: number | null
   name: string | null
-  slot: number | null
-  isHidden: boolean | null
-  pokemonId: number | null
+  japaneseName: string | null
+  description: string | null
 }
 
 export type AbilityMaxAggregateOutputType = {
-  id: number | null
+  pokeApiId: number | null
   name: string | null
-  slot: number | null
-  isHidden: boolean | null
-  pokemonId: number | null
+  japaneseName: string | null
+  description: string | null
 }
 
 export type AbilityCountAggregateOutputType = {
-  id: number
+  pokeApiId: number
   name: number
-  slot: number
-  isHidden: number
-  pokemonId: number
+  japaneseName: number
+  description: number
   _all: number
 }
 
 
 export type AbilityAvgAggregateInputType = {
-  id?: true
-  slot?: true
-  pokemonId?: true
+  pokeApiId?: true
 }
 
 export type AbilitySumAggregateInputType = {
-  id?: true
-  slot?: true
-  pokemonId?: true
+  pokeApiId?: true
 }
 
 export type AbilityMinAggregateInputType = {
-  id?: true
+  pokeApiId?: true
   name?: true
-  slot?: true
-  isHidden?: true
-  pokemonId?: true
+  japaneseName?: true
+  description?: true
 }
 
 export type AbilityMaxAggregateInputType = {
-  id?: true
+  pokeApiId?: true
   name?: true
-  slot?: true
-  isHidden?: true
-  pokemonId?: true
+  japaneseName?: true
+  description?: true
 }
 
 export type AbilityCountAggregateInputType = {
-  id?: true
+  pokeApiId?: true
   name?: true
-  slot?: true
-  isHidden?: true
-  pokemonId?: true
+  japaneseName?: true
+  description?: true
   _all?: true
 }
 
@@ -188,11 +174,10 @@ export type AbilityGroupByArgs<ExtArgs extends runtime.Types.Extensions.Internal
 }
 
 export type AbilityGroupByOutputType = {
-  id: number
+  pokeApiId: number
   name: string
-  slot: number
-  isHidden: boolean
-  pokemonId: number
+  japaneseName: string
+  description: string | null
   _count: AbilityCountAggregateOutputType | null
   _avg: AbilityAvgAggregateOutputType | null
   _sum: AbilitySumAggregateOutputType | null
@@ -219,41 +204,37 @@ export type AbilityWhereInput = {
   AND?: Prisma.AbilityWhereInput | Prisma.AbilityWhereInput[]
   OR?: Prisma.AbilityWhereInput[]
   NOT?: Prisma.AbilityWhereInput | Prisma.AbilityWhereInput[]
-  id?: Prisma.IntFilter<"Ability"> | number
+  pokeApiId?: Prisma.IntFilter<"Ability"> | number
   name?: Prisma.StringFilter<"Ability"> | string
-  slot?: Prisma.IntFilter<"Ability"> | number
-  isHidden?: Prisma.BoolFilter<"Ability"> | boolean
-  pokemonId?: Prisma.IntFilter<"Ability"> | number
-  pokemon?: Prisma.XOR<Prisma.PokemonScalarRelationFilter, Prisma.PokemonWhereInput>
+  japaneseName?: Prisma.StringFilter<"Ability"> | string
+  description?: Prisma.StringNullableFilter<"Ability"> | string | null
+  pokemons?: Prisma.PokemonAbilityListRelationFilter
 }
 
 export type AbilityOrderByWithRelationInput = {
-  id?: Prisma.SortOrder
+  pokeApiId?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  slot?: Prisma.SortOrder
-  isHidden?: Prisma.SortOrder
-  pokemonId?: Prisma.SortOrder
-  pokemon?: Prisma.PokemonOrderByWithRelationInput
+  japaneseName?: Prisma.SortOrder
+  description?: Prisma.SortOrderInput | Prisma.SortOrder
+  pokemons?: Prisma.PokemonAbilityOrderByRelationAggregateInput
 }
 
 export type AbilityWhereUniqueInput = Prisma.AtLeast<{
-  id?: number
+  pokeApiId?: number
   AND?: Prisma.AbilityWhereInput | Prisma.AbilityWhereInput[]
   OR?: Prisma.AbilityWhereInput[]
   NOT?: Prisma.AbilityWhereInput | Prisma.AbilityWhereInput[]
   name?: Prisma.StringFilter<"Ability"> | string
-  slot?: Prisma.IntFilter<"Ability"> | number
-  isHidden?: Prisma.BoolFilter<"Ability"> | boolean
-  pokemonId?: Prisma.IntFilter<"Ability"> | number
-  pokemon?: Prisma.XOR<Prisma.PokemonScalarRelationFilter, Prisma.PokemonWhereInput>
-}, "id">
+  japaneseName?: Prisma.StringFilter<"Ability"> | string
+  description?: Prisma.StringNullableFilter<"Ability"> | string | null
+  pokemons?: Prisma.PokemonAbilityListRelationFilter
+}, "pokeApiId">
 
 export type AbilityOrderByWithAggregationInput = {
-  id?: Prisma.SortOrder
+  pokeApiId?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  slot?: Prisma.SortOrder
-  isHidden?: Prisma.SortOrder
-  pokemonId?: Prisma.SortOrder
+  japaneseName?: Prisma.SortOrder
+  description?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.AbilityCountOrderByAggregateInput
   _avg?: Prisma.AbilityAvgOrderByAggregateInput
   _max?: Prisma.AbilityMaxOrderByAggregateInput
@@ -265,289 +246,236 @@ export type AbilityScalarWhereWithAggregatesInput = {
   AND?: Prisma.AbilityScalarWhereWithAggregatesInput | Prisma.AbilityScalarWhereWithAggregatesInput[]
   OR?: Prisma.AbilityScalarWhereWithAggregatesInput[]
   NOT?: Prisma.AbilityScalarWhereWithAggregatesInput | Prisma.AbilityScalarWhereWithAggregatesInput[]
-  id?: Prisma.IntWithAggregatesFilter<"Ability"> | number
+  pokeApiId?: Prisma.IntWithAggregatesFilter<"Ability"> | number
   name?: Prisma.StringWithAggregatesFilter<"Ability"> | string
-  slot?: Prisma.IntWithAggregatesFilter<"Ability"> | number
-  isHidden?: Prisma.BoolWithAggregatesFilter<"Ability"> | boolean
-  pokemonId?: Prisma.IntWithAggregatesFilter<"Ability"> | number
+  japaneseName?: Prisma.StringWithAggregatesFilter<"Ability"> | string
+  description?: Prisma.StringNullableWithAggregatesFilter<"Ability"> | string | null
 }
 
 export type AbilityCreateInput = {
+  pokeApiId: number
   name: string
-  slot: number
-  isHidden: boolean
-  pokemon: Prisma.PokemonCreateNestedOneWithoutAbilitiesInput
+  japaneseName: string
+  description?: string | null
+  pokemons?: Prisma.PokemonAbilityCreateNestedManyWithoutAbilityInput
 }
 
 export type AbilityUncheckedCreateInput = {
-  id?: number
+  pokeApiId: number
   name: string
-  slot: number
-  isHidden: boolean
-  pokemonId: number
+  japaneseName: string
+  description?: string | null
+  pokemons?: Prisma.PokemonAbilityUncheckedCreateNestedManyWithoutAbilityInput
 }
 
 export type AbilityUpdateInput = {
+  pokeApiId?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  slot?: Prisma.IntFieldUpdateOperationsInput | number
-  isHidden?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  pokemon?: Prisma.PokemonUpdateOneRequiredWithoutAbilitiesNestedInput
+  japaneseName?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pokemons?: Prisma.PokemonAbilityUpdateManyWithoutAbilityNestedInput
 }
 
 export type AbilityUncheckedUpdateInput = {
-  id?: Prisma.IntFieldUpdateOperationsInput | number
+  pokeApiId?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  slot?: Prisma.IntFieldUpdateOperationsInput | number
-  isHidden?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  pokemonId?: Prisma.IntFieldUpdateOperationsInput | number
+  japaneseName?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pokemons?: Prisma.PokemonAbilityUncheckedUpdateManyWithoutAbilityNestedInput
 }
 
 export type AbilityCreateManyInput = {
-  id?: number
+  pokeApiId: number
   name: string
-  slot: number
-  isHidden: boolean
-  pokemonId: number
+  japaneseName: string
+  description?: string | null
 }
 
 export type AbilityUpdateManyMutationInput = {
+  pokeApiId?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  slot?: Prisma.IntFieldUpdateOperationsInput | number
-  isHidden?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  japaneseName?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type AbilityUncheckedUpdateManyInput = {
-  id?: Prisma.IntFieldUpdateOperationsInput | number
+  pokeApiId?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  slot?: Prisma.IntFieldUpdateOperationsInput | number
-  isHidden?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  pokemonId?: Prisma.IntFieldUpdateOperationsInput | number
-}
-
-export type AbilityListRelationFilter = {
-  every?: Prisma.AbilityWhereInput
-  some?: Prisma.AbilityWhereInput
-  none?: Prisma.AbilityWhereInput
-}
-
-export type AbilityOrderByRelationAggregateInput = {
-  _count?: Prisma.SortOrder
+  japaneseName?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type AbilityCountOrderByAggregateInput = {
-  id?: Prisma.SortOrder
+  pokeApiId?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  slot?: Prisma.SortOrder
-  isHidden?: Prisma.SortOrder
-  pokemonId?: Prisma.SortOrder
+  japaneseName?: Prisma.SortOrder
+  description?: Prisma.SortOrder
 }
 
 export type AbilityAvgOrderByAggregateInput = {
-  id?: Prisma.SortOrder
-  slot?: Prisma.SortOrder
-  pokemonId?: Prisma.SortOrder
+  pokeApiId?: Prisma.SortOrder
 }
 
 export type AbilityMaxOrderByAggregateInput = {
-  id?: Prisma.SortOrder
+  pokeApiId?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  slot?: Prisma.SortOrder
-  isHidden?: Prisma.SortOrder
-  pokemonId?: Prisma.SortOrder
+  japaneseName?: Prisma.SortOrder
+  description?: Prisma.SortOrder
 }
 
 export type AbilityMinOrderByAggregateInput = {
-  id?: Prisma.SortOrder
+  pokeApiId?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  slot?: Prisma.SortOrder
-  isHidden?: Prisma.SortOrder
-  pokemonId?: Prisma.SortOrder
+  japaneseName?: Prisma.SortOrder
+  description?: Prisma.SortOrder
 }
 
 export type AbilitySumOrderByAggregateInput = {
-  id?: Prisma.SortOrder
-  slot?: Prisma.SortOrder
-  pokemonId?: Prisma.SortOrder
+  pokeApiId?: Prisma.SortOrder
 }
 
-export type AbilityCreateNestedManyWithoutPokemonInput = {
-  create?: Prisma.XOR<Prisma.AbilityCreateWithoutPokemonInput, Prisma.AbilityUncheckedCreateWithoutPokemonInput> | Prisma.AbilityCreateWithoutPokemonInput[] | Prisma.AbilityUncheckedCreateWithoutPokemonInput[]
-  connectOrCreate?: Prisma.AbilityCreateOrConnectWithoutPokemonInput | Prisma.AbilityCreateOrConnectWithoutPokemonInput[]
-  createMany?: Prisma.AbilityCreateManyPokemonInputEnvelope
-  connect?: Prisma.AbilityWhereUniqueInput | Prisma.AbilityWhereUniqueInput[]
+export type AbilityScalarRelationFilter = {
+  is?: Prisma.AbilityWhereInput
+  isNot?: Prisma.AbilityWhereInput
 }
 
-export type AbilityUncheckedCreateNestedManyWithoutPokemonInput = {
-  create?: Prisma.XOR<Prisma.AbilityCreateWithoutPokemonInput, Prisma.AbilityUncheckedCreateWithoutPokemonInput> | Prisma.AbilityCreateWithoutPokemonInput[] | Prisma.AbilityUncheckedCreateWithoutPokemonInput[]
-  connectOrCreate?: Prisma.AbilityCreateOrConnectWithoutPokemonInput | Prisma.AbilityCreateOrConnectWithoutPokemonInput[]
-  createMany?: Prisma.AbilityCreateManyPokemonInputEnvelope
-  connect?: Prisma.AbilityWhereUniqueInput | Prisma.AbilityWhereUniqueInput[]
+export type AbilityCreateNestedOneWithoutPokemonsInput = {
+  create?: Prisma.XOR<Prisma.AbilityCreateWithoutPokemonsInput, Prisma.AbilityUncheckedCreateWithoutPokemonsInput>
+  connectOrCreate?: Prisma.AbilityCreateOrConnectWithoutPokemonsInput
+  connect?: Prisma.AbilityWhereUniqueInput
 }
 
-export type AbilityUpdateManyWithoutPokemonNestedInput = {
-  create?: Prisma.XOR<Prisma.AbilityCreateWithoutPokemonInput, Prisma.AbilityUncheckedCreateWithoutPokemonInput> | Prisma.AbilityCreateWithoutPokemonInput[] | Prisma.AbilityUncheckedCreateWithoutPokemonInput[]
-  connectOrCreate?: Prisma.AbilityCreateOrConnectWithoutPokemonInput | Prisma.AbilityCreateOrConnectWithoutPokemonInput[]
-  upsert?: Prisma.AbilityUpsertWithWhereUniqueWithoutPokemonInput | Prisma.AbilityUpsertWithWhereUniqueWithoutPokemonInput[]
-  createMany?: Prisma.AbilityCreateManyPokemonInputEnvelope
-  set?: Prisma.AbilityWhereUniqueInput | Prisma.AbilityWhereUniqueInput[]
-  disconnect?: Prisma.AbilityWhereUniqueInput | Prisma.AbilityWhereUniqueInput[]
-  delete?: Prisma.AbilityWhereUniqueInput | Prisma.AbilityWhereUniqueInput[]
-  connect?: Prisma.AbilityWhereUniqueInput | Prisma.AbilityWhereUniqueInput[]
-  update?: Prisma.AbilityUpdateWithWhereUniqueWithoutPokemonInput | Prisma.AbilityUpdateWithWhereUniqueWithoutPokemonInput[]
-  updateMany?: Prisma.AbilityUpdateManyWithWhereWithoutPokemonInput | Prisma.AbilityUpdateManyWithWhereWithoutPokemonInput[]
-  deleteMany?: Prisma.AbilityScalarWhereInput | Prisma.AbilityScalarWhereInput[]
+export type AbilityUpdateOneRequiredWithoutPokemonsNestedInput = {
+  create?: Prisma.XOR<Prisma.AbilityCreateWithoutPokemonsInput, Prisma.AbilityUncheckedCreateWithoutPokemonsInput>
+  connectOrCreate?: Prisma.AbilityCreateOrConnectWithoutPokemonsInput
+  upsert?: Prisma.AbilityUpsertWithoutPokemonsInput
+  connect?: Prisma.AbilityWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.AbilityUpdateToOneWithWhereWithoutPokemonsInput, Prisma.AbilityUpdateWithoutPokemonsInput>, Prisma.AbilityUncheckedUpdateWithoutPokemonsInput>
 }
 
-export type AbilityUncheckedUpdateManyWithoutPokemonNestedInput = {
-  create?: Prisma.XOR<Prisma.AbilityCreateWithoutPokemonInput, Prisma.AbilityUncheckedCreateWithoutPokemonInput> | Prisma.AbilityCreateWithoutPokemonInput[] | Prisma.AbilityUncheckedCreateWithoutPokemonInput[]
-  connectOrCreate?: Prisma.AbilityCreateOrConnectWithoutPokemonInput | Prisma.AbilityCreateOrConnectWithoutPokemonInput[]
-  upsert?: Prisma.AbilityUpsertWithWhereUniqueWithoutPokemonInput | Prisma.AbilityUpsertWithWhereUniqueWithoutPokemonInput[]
-  createMany?: Prisma.AbilityCreateManyPokemonInputEnvelope
-  set?: Prisma.AbilityWhereUniqueInput | Prisma.AbilityWhereUniqueInput[]
-  disconnect?: Prisma.AbilityWhereUniqueInput | Prisma.AbilityWhereUniqueInput[]
-  delete?: Prisma.AbilityWhereUniqueInput | Prisma.AbilityWhereUniqueInput[]
-  connect?: Prisma.AbilityWhereUniqueInput | Prisma.AbilityWhereUniqueInput[]
-  update?: Prisma.AbilityUpdateWithWhereUniqueWithoutPokemonInput | Prisma.AbilityUpdateWithWhereUniqueWithoutPokemonInput[]
-  updateMany?: Prisma.AbilityUpdateManyWithWhereWithoutPokemonInput | Prisma.AbilityUpdateManyWithWhereWithoutPokemonInput[]
-  deleteMany?: Prisma.AbilityScalarWhereInput | Prisma.AbilityScalarWhereInput[]
-}
-
-export type AbilityCreateWithoutPokemonInput = {
+export type AbilityCreateWithoutPokemonsInput = {
+  pokeApiId: number
   name: string
-  slot: number
-  isHidden: boolean
+  japaneseName: string
+  description?: string | null
 }
 
-export type AbilityUncheckedCreateWithoutPokemonInput = {
-  id?: number
+export type AbilityUncheckedCreateWithoutPokemonsInput = {
+  pokeApiId: number
   name: string
-  slot: number
-  isHidden: boolean
+  japaneseName: string
+  description?: string | null
 }
 
-export type AbilityCreateOrConnectWithoutPokemonInput = {
+export type AbilityCreateOrConnectWithoutPokemonsInput = {
   where: Prisma.AbilityWhereUniqueInput
-  create: Prisma.XOR<Prisma.AbilityCreateWithoutPokemonInput, Prisma.AbilityUncheckedCreateWithoutPokemonInput>
+  create: Prisma.XOR<Prisma.AbilityCreateWithoutPokemonsInput, Prisma.AbilityUncheckedCreateWithoutPokemonsInput>
 }
 
-export type AbilityCreateManyPokemonInputEnvelope = {
-  data: Prisma.AbilityCreateManyPokemonInput | Prisma.AbilityCreateManyPokemonInput[]
-  skipDuplicates?: boolean
+export type AbilityUpsertWithoutPokemonsInput = {
+  update: Prisma.XOR<Prisma.AbilityUpdateWithoutPokemonsInput, Prisma.AbilityUncheckedUpdateWithoutPokemonsInput>
+  create: Prisma.XOR<Prisma.AbilityCreateWithoutPokemonsInput, Prisma.AbilityUncheckedCreateWithoutPokemonsInput>
+  where?: Prisma.AbilityWhereInput
 }
 
-export type AbilityUpsertWithWhereUniqueWithoutPokemonInput = {
-  where: Prisma.AbilityWhereUniqueInput
-  update: Prisma.XOR<Prisma.AbilityUpdateWithoutPokemonInput, Prisma.AbilityUncheckedUpdateWithoutPokemonInput>
-  create: Prisma.XOR<Prisma.AbilityCreateWithoutPokemonInput, Prisma.AbilityUncheckedCreateWithoutPokemonInput>
+export type AbilityUpdateToOneWithWhereWithoutPokemonsInput = {
+  where?: Prisma.AbilityWhereInput
+  data: Prisma.XOR<Prisma.AbilityUpdateWithoutPokemonsInput, Prisma.AbilityUncheckedUpdateWithoutPokemonsInput>
 }
 
-export type AbilityUpdateWithWhereUniqueWithoutPokemonInput = {
-  where: Prisma.AbilityWhereUniqueInput
-  data: Prisma.XOR<Prisma.AbilityUpdateWithoutPokemonInput, Prisma.AbilityUncheckedUpdateWithoutPokemonInput>
-}
-
-export type AbilityUpdateManyWithWhereWithoutPokemonInput = {
-  where: Prisma.AbilityScalarWhereInput
-  data: Prisma.XOR<Prisma.AbilityUpdateManyMutationInput, Prisma.AbilityUncheckedUpdateManyWithoutPokemonInput>
-}
-
-export type AbilityScalarWhereInput = {
-  AND?: Prisma.AbilityScalarWhereInput | Prisma.AbilityScalarWhereInput[]
-  OR?: Prisma.AbilityScalarWhereInput[]
-  NOT?: Prisma.AbilityScalarWhereInput | Prisma.AbilityScalarWhereInput[]
-  id?: Prisma.IntFilter<"Ability"> | number
-  name?: Prisma.StringFilter<"Ability"> | string
-  slot?: Prisma.IntFilter<"Ability"> | number
-  isHidden?: Prisma.BoolFilter<"Ability"> | boolean
-  pokemonId?: Prisma.IntFilter<"Ability"> | number
-}
-
-export type AbilityCreateManyPokemonInput = {
-  id?: number
-  name: string
-  slot: number
-  isHidden: boolean
-}
-
-export type AbilityUpdateWithoutPokemonInput = {
+export type AbilityUpdateWithoutPokemonsInput = {
+  pokeApiId?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  slot?: Prisma.IntFieldUpdateOperationsInput | number
-  isHidden?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  japaneseName?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
-export type AbilityUncheckedUpdateWithoutPokemonInput = {
-  id?: Prisma.IntFieldUpdateOperationsInput | number
+export type AbilityUncheckedUpdateWithoutPokemonsInput = {
+  pokeApiId?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  slot?: Prisma.IntFieldUpdateOperationsInput | number
-  isHidden?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  japaneseName?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
-export type AbilityUncheckedUpdateManyWithoutPokemonInput = {
-  id?: Prisma.IntFieldUpdateOperationsInput | number
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  slot?: Prisma.IntFieldUpdateOperationsInput | number
-  isHidden?: Prisma.BoolFieldUpdateOperationsInput | boolean
+
+/**
+ * Count Type AbilityCountOutputType
+ */
+
+export type AbilityCountOutputType = {
+  pokemons: number
 }
 
+export type AbilityCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  pokemons?: boolean | AbilityCountOutputTypeCountPokemonsArgs
+}
+
+/**
+ * AbilityCountOutputType without action
+ */
+export type AbilityCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the AbilityCountOutputType
+   */
+  select?: Prisma.AbilityCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * AbilityCountOutputType without action
+ */
+export type AbilityCountOutputTypeCountPokemonsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PokemonAbilityWhereInput
+}
 
 
 export type AbilitySelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
-  id?: boolean
+  pokeApiId?: boolean
   name?: boolean
-  slot?: boolean
-  isHidden?: boolean
-  pokemonId?: boolean
-  pokemon?: boolean | Prisma.PokemonDefaultArgs<ExtArgs>
+  japaneseName?: boolean
+  description?: boolean
+  pokemons?: boolean | Prisma.Ability$pokemonsArgs<ExtArgs>
+  _count?: boolean | Prisma.AbilityCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["ability"]>
 
 export type AbilitySelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
-  id?: boolean
+  pokeApiId?: boolean
   name?: boolean
-  slot?: boolean
-  isHidden?: boolean
-  pokemonId?: boolean
-  pokemon?: boolean | Prisma.PokemonDefaultArgs<ExtArgs>
+  japaneseName?: boolean
+  description?: boolean
 }, ExtArgs["result"]["ability"]>
 
 export type AbilitySelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
-  id?: boolean
+  pokeApiId?: boolean
   name?: boolean
-  slot?: boolean
-  isHidden?: boolean
-  pokemonId?: boolean
-  pokemon?: boolean | Prisma.PokemonDefaultArgs<ExtArgs>
+  japaneseName?: boolean
+  description?: boolean
 }, ExtArgs["result"]["ability"]>
 
 export type AbilitySelectScalar = {
-  id?: boolean
+  pokeApiId?: boolean
   name?: boolean
-  slot?: boolean
-  isHidden?: boolean
-  pokemonId?: boolean
+  japaneseName?: boolean
+  description?: boolean
 }
 
-export type AbilityOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "slot" | "isHidden" | "pokemonId", ExtArgs["result"]["ability"]>
+export type AbilityOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"pokeApiId" | "name" | "japaneseName" | "description", ExtArgs["result"]["ability"]>
 export type AbilityInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  pokemon?: boolean | Prisma.PokemonDefaultArgs<ExtArgs>
+  pokemons?: boolean | Prisma.Ability$pokemonsArgs<ExtArgs>
+  _count?: boolean | Prisma.AbilityCountOutputTypeDefaultArgs<ExtArgs>
 }
-export type AbilityIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  pokemon?: boolean | Prisma.PokemonDefaultArgs<ExtArgs>
-}
-export type AbilityIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  pokemon?: boolean | Prisma.PokemonDefaultArgs<ExtArgs>
-}
+export type AbilityIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
+export type AbilityIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
 
 export type $AbilityPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Ability"
   objects: {
-    pokemon: Prisma.$PokemonPayload<ExtArgs>
+    pokemons: Prisma.$PokemonAbilityPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
-    id: number
+    pokeApiId: number
     name: string
-    slot: number
-    isHidden: boolean
-    pokemonId: number
+    japaneseName: string
+    description: string | null
   }, ExtArgs["result"]["ability"]>
   composites: {}
 }
@@ -631,8 +559,8 @@ export interface AbilityDelegate<ExtArgs extends runtime.Types.Extensions.Intern
    * // Get first 10 Abilities
    * const abilities = await prisma.ability.findMany({ take: 10 })
    * 
-   * // Only select the `id`
-   * const abilityWithIdOnly = await prisma.ability.findMany({ select: { id: true } })
+   * // Only select the `pokeApiId`
+   * const abilityWithPokeApiIdOnly = await prisma.ability.findMany({ select: { pokeApiId: true } })
    * 
    */
   findMany<T extends AbilityFindManyArgs>(args?: Prisma.SelectSubset<T, AbilityFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AbilityPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
@@ -676,9 +604,9 @@ export interface AbilityDelegate<ExtArgs extends runtime.Types.Extensions.Intern
    *   ]
    * })
    * 
-   * // Create many Abilities and only return the `id`
-   * const abilityWithIdOnly = await prisma.ability.createManyAndReturn({
-   *   select: { id: true },
+   * // Create many Abilities and only return the `pokeApiId`
+   * const abilityWithPokeApiIdOnly = await prisma.ability.createManyAndReturn({
+   *   select: { pokeApiId: true },
    *   data: [
    *     // ... provide data here
    *   ]
@@ -767,9 +695,9 @@ export interface AbilityDelegate<ExtArgs extends runtime.Types.Extensions.Intern
    *   ]
    * })
    * 
-   * // Update zero or more Abilities and only return the `id`
-   * const abilityWithIdOnly = await prisma.ability.updateManyAndReturn({
-   *   select: { id: true },
+   * // Update zero or more Abilities and only return the `pokeApiId`
+   * const abilityWithPokeApiIdOnly = await prisma.ability.updateManyAndReturn({
+   *   select: { pokeApiId: true },
    *   where: {
    *     // ... provide filter here
    *   },
@@ -942,7 +870,7 @@ readonly fields: AbilityFieldRefs;
  */
 export interface Prisma__AbilityClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  pokemon<T extends Prisma.PokemonDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PokemonDefaultArgs<ExtArgs>>): Prisma.Prisma__PokemonClient<runtime.Types.Result.GetResult<Prisma.$PokemonPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  pokemons<T extends Prisma.Ability$pokemonsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Ability$pokemonsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PokemonAbilityPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -972,11 +900,10 @@ export interface Prisma__AbilityClient<T, Null = never, ExtArgs extends runtime.
  * Fields of the Ability model
  */
 export interface AbilityFieldRefs {
-  readonly id: Prisma.FieldRef<"Ability", 'Int'>
+  readonly pokeApiId: Prisma.FieldRef<"Ability", 'Int'>
   readonly name: Prisma.FieldRef<"Ability", 'String'>
-  readonly slot: Prisma.FieldRef<"Ability", 'Int'>
-  readonly isHidden: Prisma.FieldRef<"Ability", 'Boolean'>
-  readonly pokemonId: Prisma.FieldRef<"Ability", 'Int'>
+  readonly japaneseName: Prisma.FieldRef<"Ability", 'String'>
+  readonly description: Prisma.FieldRef<"Ability", 'String'>
 }
     
 
@@ -1231,10 +1158,6 @@ export type AbilityCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensi
    */
   data: Prisma.AbilityCreateManyInput | Prisma.AbilityCreateManyInput[]
   skipDuplicates?: boolean
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.AbilityIncludeCreateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1305,10 +1228,6 @@ export type AbilityUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensi
    * Limit how many Abilities to update.
    */
   limit?: number
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.AbilityIncludeUpdateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1375,6 +1294,30 @@ export type AbilityDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Inter
    * Limit how many Abilities to delete.
    */
   limit?: number
+}
+
+/**
+ * Ability.pokemons
+ */
+export type Ability$pokemonsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the PokemonAbility
+   */
+  select?: Prisma.PokemonAbilitySelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the PokemonAbility
+   */
+  omit?: Prisma.PokemonAbilityOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PokemonAbilityInclude<ExtArgs> | null
+  where?: Prisma.PokemonAbilityWhereInput
+  orderBy?: Prisma.PokemonAbilityOrderByWithRelationInput | Prisma.PokemonAbilityOrderByWithRelationInput[]
+  cursor?: Prisma.PokemonAbilityWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PokemonAbilityScalarFieldEnum | Prisma.PokemonAbilityScalarFieldEnum[]
 }
 
 /**

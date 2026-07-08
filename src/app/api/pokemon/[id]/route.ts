@@ -12,9 +12,32 @@ export async function GET(
     },
     include: {
       stats: true,
-      abilities: true,
+      abilities: {
+        include: {
+          ability: true,
+        },
+        orderBy: {
+          slot: "asc",
+        },
+      },
     },
   });
 
-  return NextResponse.json(result);
+  if (!result) {
+    return NextResponse.json({ error: "Pokemon not found" }, { status: 404 });
+  }
+
+  const pokemon = {
+    ...result,
+    abilities:
+      result?.abilities.map((a) => ({
+        id: a.ability.pokeApiId,
+        name: a.ability.japaneseName,
+        description: a.ability.description,
+        slot: a.slot,
+        isHidden: a.isHidden,
+      })) ?? [],
+  };
+
+  return NextResponse.json(pokemon);
 }

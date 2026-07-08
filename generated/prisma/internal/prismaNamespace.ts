@@ -386,7 +386,8 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 export const ModelName = {
   Pokemon: 'Pokemon',
   Stats: 'Stats',
-  Ability: 'Ability'
+  Ability: 'Ability',
+  PokemonAbility: 'PokemonAbility'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -402,7 +403,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "pokemon" | "stats" | "ability"
+    modelProps: "pokemon" | "stats" | "ability" | "pokemonAbility"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -628,6 +629,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    PokemonAbility: {
+      payload: Prisma.$PokemonAbilityPayload<ExtArgs>
+      fields: Prisma.PokemonAbilityFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.PokemonAbilityFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PokemonAbilityPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.PokemonAbilityFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PokemonAbilityPayload>
+        }
+        findFirst: {
+          args: Prisma.PokemonAbilityFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PokemonAbilityPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.PokemonAbilityFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PokemonAbilityPayload>
+        }
+        findMany: {
+          args: Prisma.PokemonAbilityFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PokemonAbilityPayload>[]
+        }
+        create: {
+          args: Prisma.PokemonAbilityCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PokemonAbilityPayload>
+        }
+        createMany: {
+          args: Prisma.PokemonAbilityCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.PokemonAbilityCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PokemonAbilityPayload>[]
+        }
+        delete: {
+          args: Prisma.PokemonAbilityDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PokemonAbilityPayload>
+        }
+        update: {
+          args: Prisma.PokemonAbilityUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PokemonAbilityPayload>
+        }
+        deleteMany: {
+          args: Prisma.PokemonAbilityDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.PokemonAbilityUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.PokemonAbilityUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PokemonAbilityPayload>[]
+        }
+        upsert: {
+          args: Prisma.PokemonAbilityUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PokemonAbilityPayload>
+        }
+        aggregate: {
+          args: Prisma.PokemonAbilityAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregatePokemonAbility>
+        }
+        groupBy: {
+          args: Prisma.PokemonAbilityGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PokemonAbilityGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.PokemonAbilityCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PokemonAbilityCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -697,14 +772,23 @@ export type StatsScalarFieldEnum = (typeof StatsScalarFieldEnum)[keyof typeof St
 
 
 export const AbilityScalarFieldEnum = {
-  id: 'id',
+  pokeApiId: 'pokeApiId',
   name: 'name',
-  slot: 'slot',
-  isHidden: 'isHidden',
-  pokemonId: 'pokemonId'
+  japaneseName: 'japaneseName',
+  description: 'description'
 } as const
 
 export type AbilityScalarFieldEnum = (typeof AbilityScalarFieldEnum)[keyof typeof AbilityScalarFieldEnum]
+
+
+export const PokemonAbilityScalarFieldEnum = {
+  pokemonId: 'pokemonId',
+  abilityId: 'abilityId',
+  slot: 'slot',
+  isHidden: 'isHidden'
+} as const
+
+export type PokemonAbilityScalarFieldEnum = (typeof PokemonAbilityScalarFieldEnum)[keyof typeof PokemonAbilityScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -898,6 +982,7 @@ export type GlobalOmitConfig = {
   pokemon?: Prisma.PokemonOmit
   stats?: Prisma.StatsOmit
   ability?: Prisma.AbilityOmit
+  pokemonAbility?: Prisma.PokemonAbilityOmit
 }
 
 /* Types for Logging */

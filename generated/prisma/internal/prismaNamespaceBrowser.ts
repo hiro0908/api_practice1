@@ -53,7 +53,8 @@ export const AnyNull = runtime.AnyNull
 export const ModelName = {
   Pokemon: 'Pokemon',
   Stats: 'Stats',
-  Ability: 'Ability'
+  Ability: 'Ability',
+  PokemonAbility: 'PokemonAbility'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -102,14 +103,23 @@ export type StatsScalarFieldEnum = (typeof StatsScalarFieldEnum)[keyof typeof St
 
 
 export const AbilityScalarFieldEnum = {
-  id: 'id',
+  pokeApiId: 'pokeApiId',
   name: 'name',
-  slot: 'slot',
-  isHidden: 'isHidden',
-  pokemonId: 'pokemonId'
+  japaneseName: 'japaneseName',
+  description: 'description'
 } as const
 
 export type AbilityScalarFieldEnum = (typeof AbilityScalarFieldEnum)[keyof typeof AbilityScalarFieldEnum]
+
+
+export const PokemonAbilityScalarFieldEnum = {
+  pokemonId: 'pokemonId',
+  abilityId: 'abilityId',
+  slot: 'slot',
+  isHidden: 'isHidden'
+} as const
+
+export type PokemonAbilityScalarFieldEnum = (typeof PokemonAbilityScalarFieldEnum)[keyof typeof PokemonAbilityScalarFieldEnum]
 
 
 export const SortOrder = {
