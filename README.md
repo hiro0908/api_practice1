@@ -3,13 +3,19 @@
 APIの仕組みを理解しdoker上にPostgreSQLを建て、APIからの情報を取得したデータベースにアクセスし動かせるようにする
 
 ## 画面遷移
-- ホーム画面
+### ホーム画面
 ![alt text](images/Readme1.png)
-- 検索後の遷移画面
+### 検索後の遷移画面
 ![alt text](images/Readme2.png)
 
-- 色違いへの画像遷移
+## 色違いへの画像遷移
+### 遷移前
+![alt text](images/Readme3.png)
+### 遷移後
+![alt text](images/Readme4.png)
 
+## 詳細除法の取得
+![alt text](images/Readme5.png)
 
 ## ディレクトリー構成
 レイヤードアーキテクチャの構成を採用し4層構造になっている
