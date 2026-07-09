@@ -92,12 +92,17 @@ export async function registerAllPokeomonData() {
       ),
     );
     const description =
-      dataja.flavor_text_entries
-        .find(
-          (entry: { flavor_text: string; language: { name: string } }) =>
+      (
+        dataja.flavor_text_entries.find(
+          (entry: { language: { name: string } }) =>
             entry.language.name === "ja",
+        ) ??
+        dataja.flavor_text_entries.find(
+          (entry: { language: { name: string } }) =>
+            entry.language.name === "en",
         )
-        ?.flavor_text.replace(/\n/g, " ")
+      )?.flavor_text
+        .replace(/\n/g, " ")
         .replace(/\f/g, " ") ?? "";
 
     const pokemonData = {
