@@ -1,3 +1,5 @@
+import fs from "node:fs/promises";
+import path from "node:path";
 import prisma from "@/src/infrastructure/db/prisma";
 import {
   getMaxPokemonNumber,
@@ -6,6 +8,38 @@ import {
   getJapanesePokemonData,
   extractIdFromUrl,
 } from "@/src/infrastructure/api/pokemonApi";
+
+const IMAGE_DIR = path.join(process.cwd(), "public", "images");
+const DIF_IMAGE_DIR = path.join(process.cwd(), "public", "difImages");
+
+// 起動のたびにGitHub(raw.githubusercontent.com)へ画像を取りに行ってメモリを消費するのを防ぐため、
+// 一度public配下に保存したらDBにはそのパスだけを持たせ、以降はダウンロードをスキップする
+async function saveImageIfMissing(
+  url: string | null,
+  dir: string,
+  publicSubDir: string,
+  pokeApiId: number,
+): Promise<string | null> {
+  if (!url) return null;
+
+  const fileName = `${pokeApiId}.png`;
+  const filePath = path.join(dir, fileName);
+  const publicPath = `/${publicSubDir}/${fileName}`;
+
+  try {
+    await fs.access(filePath);
+    return publicPath;
+  } catch {
+    // ファイルが存在しない場合のみダウンロードする
+  }
+
+  const res = await fetch(url);
+  if (!res.ok) return null;
+
+  const buffer = Buffer.from(await res.arrayBuffer());
+  await fs.writeFile(filePath, buffer);
+  return publicPath;
+}
 
 export async function deleteAllPokemonData() {
   console.log("既存のデータを削除します");
@@ -16,6 +50,9 @@ export async function deleteAllPokemonData() {
 }
 
 export async function registerAllPokeomonData() {
+  await fs.mkdir(IMAGE_DIR, { recursive: true });
+  await fs.mkdir(DIF_IMAGE_DIR, { recursive: true });
+
   const maxPokemonNumber = await getMaxPokemonNumber();
   console.log("画面の読み込みが始まった");
   const list = await getAllPokemon(maxPokemonNumber);
@@ -105,12 +142,25 @@ export async function registerAllPokeomonData() {
         .replace(/\n/g, " ")
         .replace(/\f/g, " ") ?? "";
 
+    const imageUrl = await saveImageIfMissing(
+      data.sprites.other["official-artwork"].front_default,
+      IMAGE_DIR,
+      "images",
+      pokeApiId,
+    );
+    const difImageUrl = await saveImageIfMissing(
+      data.sprites.other["official-artwork"].front_shiny,
+      DIF_IMAGE_DIR,
+      "difImages",
+      pokeApiId,
+    );
+
     const pokemonData = {
       pokedexId: speciesId,
       name: data.name,
       japaneseName,
-      imageUrl: data.sprites.other["official-artwork"].front_default,
-      difImageUrl: data.sprites.other["official-artwork"].front_shiny,
+      imageUrl,
+      difImageUrl,
       type: data.types.map(
         (item: { type: { name: string } }) => item.type.name,
       ),
