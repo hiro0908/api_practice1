@@ -4,10 +4,13 @@ import type { PokemonListItem } from "@/src/domain/pokemon/pokemon";
 import Image from "next/image";
 import { PageHeader } from "@/src/components/ui/PageHeader";
 import { PokedexIntro } from "@/src/components/ui/PokedexIntro";
+import { Pagination } from "@/src/components/ui/Pagination";
 
 import { useRouter } from "next/navigation";
 
 const SCROLL_POSITION_KEY = "pokedexHomeScrollY";
+const PAGE_POSITION_KEY = "pokedexHomePage";
+const PAGE_SIZE = 10;
 
 export default function Home() {
   const router = useRouter();
@@ -22,6 +25,11 @@ export default function Home() {
       formName: string | null;
     }[]
   >([]);
+  const [currentPage, setCurrentPage] = useState(() => {
+    if (typeof window === "undefined") return 1;
+    const savedPage = sessionStorage.getItem(PAGE_POSITION_KEY);
+    return savedPage ? Number(savedPage) : 1;
+  });
   useEffect(() => {
     // ブラウザ標準の自動スクロール復元は、一覧が非同期取得のため
     // コンテンツが揃う前に働いてしまうので無効化し、自前で復元する
@@ -52,47 +60,66 @@ export default function Home() {
 
   const handleSelectPokemon = (number: string) => {
     sessionStorage.setItem(SCROLL_POSITION_KEY, String(window.scrollY));
+    sessionStorage.setItem(PAGE_POSITION_KEY, String(currentPage));
     router.push(`/pokemon/${number}`);
   };
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    window.scrollTo(0, 0);
+  };
+
+  const defaultFormList = pokemonList.filter(
+    (pokemon) => pokemon.formName == null,
+  );
+  const totalPages = Math.max(1, Math.ceil(defaultFormList.length / PAGE_SIZE));
+  const safeCurrentPage = Math.min(currentPage, totalPages);
+  const currentPageList = defaultFormList.slice(
+    (safeCurrentPage - 1) * PAGE_SIZE,
+    safeCurrentPage * PAGE_SIZE,
+  );
 
   return (
     <div className="min-h-screen pb-12">
       <PokedexIntro />
       <PageHeader />
       <div className="grid grid-cols-2 gap-4 p-4 sm:grid-cols-3 sm:gap-5 sm:p-6 md:grid-cols-4 lg:grid-cols-5">
-        {pokemonList
-          .filter((pokemon) => pokemon.formName == null)
-          .map((pokemon) => (
-            <button
-              key={pokemon.number}
-              type="button"
-              onClick={() => handleSelectPokemon(pokemon.number)}
-              className="group relative overflow-hidden rounded-2xl border border-slate-200 bg-white p-3 text-left shadow-sm transition-all hover:-translate-y-1 hover:border-red-300 hover:shadow-xl"
-            >
-              <div className="absolute top-2 right-2 rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-bold text-slate-400 group-hover:bg-red-100 group-hover:text-red-500">
-                No.{pokemon.number}
-              </div>
-              <div className="mx-auto flex h-[140px] w-[140px] items-center justify-center rounded-full bg-gradient-to-b from-slate-100 to-slate-200 transition-colors group-hover:from-red-50 group-hover:to-red-100">
-                {pokemon.imageUrl ? (
-                  <Image
-                    src={pokemon.imageUrl}
-                    alt={pokemon.name}
-                    width={120}
-                    height={120}
-                    className="drop-shadow-md transition-transform group-hover:scale-110"
-                  />
-                ) : (
-                  <div className="flex h-[120px] w-[120px] items-center justify-center text-xs text-slate-400">
-                    no image
-                  </div>
-                )}
-              </div>
-              <div className="mt-2 truncate text-center text-sm font-bold text-slate-700">
-                {pokemon.japaneseName}
-              </div>
-            </button>
-          ))}
+        {currentPageList.map((pokemon) => (
+          <button
+            key={pokemon.number}
+            type="button"
+            onClick={() => handleSelectPokemon(pokemon.number)}
+            className="group relative overflow-hidden rounded-2xl border border-slate-200 bg-white p-3 text-left shadow-sm transition-all hover:-translate-y-1 hover:border-red-300 hover:shadow-xl"
+          >
+            <div className="absolute top-2 right-2 rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-bold text-slate-400 group-hover:bg-red-100 group-hover:text-red-500">
+              No.{pokemon.number}
+            </div>
+            <div className="mx-auto flex h-[140px] w-[140px] items-center justify-center rounded-full bg-gradient-to-b from-slate-100 to-slate-200 transition-colors group-hover:from-red-50 group-hover:to-red-100">
+              {pokemon.imageUrl ? (
+                <Image
+                  src={pokemon.imageUrl}
+                  alt={pokemon.name}
+                  width={120}
+                  height={120}
+                  className="drop-shadow-md transition-transform group-hover:scale-110"
+                />
+              ) : (
+                <div className="flex h-[120px] w-[120px] items-center justify-center text-xs text-slate-400">
+                  no image
+                </div>
+              )}
+            </div>
+            <div className="mt-2 truncate text-center text-sm font-bold text-slate-700">
+              {pokemon.japaneseName}
+            </div>
+          </button>
+        ))}
       </div>
+      <Pagination
+        currentPage={safeCurrentPage}
+        totalPages={totalPages}
+        onPageChange={handlePageChange}
+      />
     </div>
   );
 }
