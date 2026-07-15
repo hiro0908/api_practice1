@@ -84,7 +84,7 @@ export default function Home() {
             key={pokemon.number}
             type="button"
             onClick={() => handleSelectPokemon(pokemon.number)}
-            className="group relative overflow-hidden rounded-2xl border border-border bg-card p-3 text-left shadow-sm transition-all hover:-translate-y-1 hover:border-red-300 hover:shadow-xl dark:hover:border-red-800"
+            className="group relative overflow-hidden rounded-2xl border border-border bg-card p-3 text-left shadow-sm transition-all hover:-translate-y-1 hover:border-red-300 hover:shadow-xl dark:hover:border-red-800 cursor-pointer"
           >
             <div className="absolute top-2 right-2 rounded-full bg-muted px-2 py-0.5 text-[10px] font-bold text-muted-foreground group-hover:bg-red-100 group-hover:text-red-500 dark:group-hover:bg-red-950 dark:group-hover:text-red-400">
               No.{pokemon.number}
