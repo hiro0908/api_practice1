@@ -10,7 +10,7 @@ import { useRouter } from "next/navigation";
 
 const SCROLL_POSITION_KEY = "pokedexHomeScrollY";
 const PAGE_POSITION_KEY = "pokedexHomePage";
-const PAGE_SIZE = 10;
+const PAGE_ITEM = 20;
 
 export default function Home() {
   const router = useRouter();
@@ -72,11 +72,11 @@ export default function Home() {
   const defaultFormList = pokemonList.filter(
     (pokemon) => pokemon.formName == null,
   );
-  const totalPages = Math.max(1, Math.ceil(defaultFormList.length / PAGE_SIZE));
+  const totalPages = Math.max(1, Math.ceil(defaultFormList.length / PAGE_ITEM));
   const safeCurrentPage = Math.min(currentPage, totalPages);
   const currentPageList = defaultFormList.slice(
-    (safeCurrentPage - 1) * PAGE_SIZE,
-    safeCurrentPage * PAGE_SIZE,
+    (safeCurrentPage - 1) * PAGE_ITEM,
+    safeCurrentPage * PAGE_ITEM,
   );
 
   return (

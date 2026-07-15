@@ -1,5 +1,10 @@
 "use client";
-import { ChevronLeft,ChevronsLeft, ChevronRight,ChevronsRight } from "lucide-react";
+import {
+  ChevronLeft,
+  ChevronsLeft,
+  ChevronRight,
+  ChevronsRight,
+} from "lucide-react";
 import { Button } from "@/src/components/ui/button";
 
 type PaginationProps = {
@@ -15,18 +20,19 @@ function getPageNumbers(
   const delta = 1;
   const left = Math.max(2, currentPage - delta);
   const right = Math.min(totalPages - 1, currentPage + delta);
-
-  const pages: (number | "ellipsis")[] = [1];//ここでページの配列化！！ここはしょきちだから最初のページとして1が置かれていある下の処理では現在のページから両隣のページを取得し1ページ目と最後のページから離れている場合に...を追加する処理を行っている
-  if (left > 2){ 
-    pages.push("ellipsis")
+  //ここでページの配列化！！
+  const pages: (number | "ellipsis")[] = [1]; //ここは初期値だから最初のページとして1が置かれている。
+  //下の処理では現在のページから両隣のページを取得し1ページ目と最後のページから離れている場合に...を追加する処理を行っている
+  if (left > 2) {
+    pages.push("ellipsis");
   }
-  for (let page = left; page <= right; page++){ 
+  for (let page = left; page <= right; page++) {
     pages.push(page);
   }
   if (right < totalPages - 1) pages.push("ellipsis");
   if (totalPages > 1) pages.push(totalPages);
 
-  return pages;//現在のページにおける表示するべき情報の配列を返している
+  return pages; //現在のページにおける表示するべき情報の配列を返している
 }
 
 export function Pagination({
@@ -43,7 +49,7 @@ export function Pagination({
       className="mt-6 flex flex-wrap items-center justify-center gap-1"
       aria-label="ページネーション"
     >
-    <Button
+      <Button
         type="button"
         variant="outline"
         size="icon-sm"
@@ -95,7 +101,7 @@ export function Pagination({
       >
         <ChevronRight />
       </Button>
-      
+
       <Button
         type="button"
         variant="outline"
