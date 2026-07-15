@@ -1,9 +1,8 @@
 "use client";
-import {useAtom} from "jotai";
-import { useEffect } from "react";
+import { useAtom } from "jotai";
 import { PageHeader } from "@/src/components/ui/PageHeader";
 import { ToggleSwitch } from "@/src/components/ui/ToggleSwitch";
-import {darkModeAtom,cameraAccessAtom} from "@/src/state/settingsAtom";
+import { darkModeAtom, cameraAccessAtom } from "@/src/state/settingsAtom";
 export default function TestJotaiLibrary() {
   const [darkMode, setDarkMode] = useAtom(darkModeAtom);
   const [cameraAccess, setCameraAccess] = useAtom(cameraAccessAtom);
