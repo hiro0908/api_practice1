@@ -27,7 +27,6 @@ type Params = {
 export default function BlogPostPage({ params }: { params: Promise<Params> }) {
   const { id } = use(params);
   const [data, setData] = useState<PokemonData | null>(null);
-  // const [notFound, setNotFound] = useState(false);
   useEffect(() => {
     const fetchPokemon = async () => {
       const response = await fetch(`/api/pokemon/${id}`);
@@ -47,17 +46,6 @@ export default function BlogPostPage({ params }: { params: Promise<Params> }) {
     setPokemonForm((prev) => (prev === "Normal" ? "Special" : "Normal"));
   };
   const [erroredImageSrc, setErroredImageSrc] = useState<string | null>(null);
-
-  // if (notFound) {
-  //   return (
-  //     <div className="flex min-h-screen flex-col items-center justify-center gap-4">
-  //       <div className="font-bold text-slate-500">
-  //         指定されたポケモンが見つかりませんでした
-  //       </div>
-  //     </div>
-  //   );
-  // }
-
   if (!data) {
     return (
       <div className="flex min-h-screen flex-col items-center justify-center gap-4">
