@@ -73,7 +73,7 @@ export function Pagination({
         page === "ellipsis" ? (
           <span
             key={`ellipsis-${index}`}
-            className="px-1 text-sm text-slate-400"
+            className="px-1 text-sm text-muted-foreground"
           >
             ...
           </span>

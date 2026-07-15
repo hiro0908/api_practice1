@@ -34,8 +34,8 @@ export function BaseStatBarChart({ stats }: Props) {
   return (
     <div>
       <div className="flex items-center justify-between mb-2">
-        <div className="font-bold text-slate-700">種族値</div>
-        <div className="text-sm font-bold text-slate-700">{total}</div>
+        <div className="font-bold text-card-foreground">種族値</div>
+        <div className="text-sm font-bold text-card-foreground">{total}</div>
       </div>
       <div className="flex flex-col gap-1.5">
         {rows.map((row) => (

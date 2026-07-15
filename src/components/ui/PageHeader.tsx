@@ -9,7 +9,7 @@ export function PageHeader() {
   const router = useRouter();
 
   return (
-    <div className="sticky top-0 z-50 rounded-b-2xl bg-gradient-to-r from-red-500 via-red-400 to-red-600 px-4 pb-3 shadow-lg ring-1 ring-black/10 sm:px-8">
+    <div className="sticky top-0 z-50 rounded-b-2xl bg-gradient-to-r from-red-500 via-red-400 to-red-600 px-4 pb-3 shadow-lg ring-1 ring-black/10 sm:px-8 dark:bg-none dark:bg-card dark:ring-border">
       <button
         type="button"
         onClick={() => router.push("/")}

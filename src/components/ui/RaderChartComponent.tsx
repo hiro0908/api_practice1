@@ -1,3 +1,4 @@
+"use client";
 import {
   Radar,
   RadarChart,
@@ -8,6 +9,8 @@ import {
   Tooltip,
   Legend,
 } from "recharts";
+import { useAtomValue } from "jotai";
+import { darkModeAtom } from "@/src/state/settingsAtom";
 
 export interface DataPoint {
   subject: string; // 軸のラベル
@@ -19,17 +22,26 @@ type Props = {
 };
 
 export default function RadarChartComponent({ status }: Props) {
+  // globals.cssの --border / --muted-foreground と揃えた中立グレー(無彩色)を使う
+  const darkMode = useAtomValue(darkModeAtom);
+  const gridColor = darkMode ? "#404040" : "#e5e5e5";
+  const tickColor = darkMode ? "#d4d4d4" : "#525252";
+
   return (
     // 親コンテナに合わせてサイズを調整するResponsiveContainerを使用
     <ResponsiveContainer width="100%" height={400}>
       {/* cx, cyは中心点の位置、outerRadiusはチャートのサイズを定義 */}
       <RadarChart cx="50%" cy="50%" outerRadius="80%" data={status}>
         {/* PolarGrid は6角形のグリッド線を描画 */}
-        <PolarGrid />
+        <PolarGrid stroke={gridColor} />
         {/* PolarAngleAxis は6角形の頂点（軸）のラベルを描画 */}
-        <PolarAngleAxis dataKey="subject" />
+        <PolarAngleAxis dataKey="subject" tick={{ fill: tickColor }} />
         {/* PolarRadiusAxis は中心からの距離（数値のスケール）を描画しない設定 (必要なら変更可) */}
-        <PolarRadiusAxis angle={30} domain={[0, 200]} />
+        <PolarRadiusAxis
+          angle={30}
+          domain={[0, 200]}
+          tick={{ fill: tickColor }}
+        />
 
         {/* Radar は実際のデータ系列を描画 */}
         <Radar

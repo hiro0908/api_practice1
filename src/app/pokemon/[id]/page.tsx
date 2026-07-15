@@ -65,7 +65,7 @@ export default function BlogPostPage({ params }: { params: Promise<Params> }) {
   return (
     <div className="min-h-screen pb-12">
       <PageHeader />
-      <div className="mx-4 my-6 overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-xl sm:mx-8">
+      <div className="mx-4 my-6 overflow-hidden rounded-3xl border border-border bg-card shadow-xl sm:mx-8">
         {/* バナー */}
         <div
           className="px-6 pt-6 pb-8 sm:px-10"
@@ -85,7 +85,7 @@ export default function BlogPostPage({ params }: { params: Promise<Params> }) {
         </div>
         <div className="grid grid-cols-1 gap-6 p-6 md:grid-cols-3">
           <div className="flex flex-col items-center gap-3">
-            <div className="flex h-[260px] w-full items-center justify-center rounded-2xl bg-gradient-to-b from-slate-100 to-slate-200">
+            <div className="flex h-[260px] w-full items-center justify-center rounded-2xl bg-muted">
               {(() => {
                 const currentImageSrc =
                   pokemonForm === "Normal" ? data.imageUrl : data.difImageUrl;
@@ -100,7 +100,7 @@ export default function BlogPostPage({ params }: { params: Promise<Params> }) {
                     onError={() => setErroredImageSrc(currentImageSrc)}
                   />
                 ) : (
-                  <div className="flex h-[220px] w-[220px] items-center justify-center text-sm text-slate-400">
+                  <div className="flex h-[220px] w-[220px] items-center justify-center text-sm text-muted-foreground">
                     no image
                   </div>
                 );
@@ -117,29 +117,29 @@ export default function BlogPostPage({ params }: { params: Promise<Params> }) {
           </div>
 
           <div className="flex flex-col gap-4 md:col-span-2">
-            <div className="flex flex-wrap gap-4 text-sm font-bold text-slate-700">
-              <div className="flex items-center gap-1.5 rounded-full bg-slate-100 px-3 py-1.5">
-                <Ruler size={16} className="text-slate-500" />
+            <div className="flex flex-wrap gap-4 text-sm font-bold text-card-foreground">
+              <div className="flex items-center gap-1.5 rounded-full bg-muted px-3 py-1.5">
+                <Ruler size={16} className="text-muted-foreground" />
                 高さ {data.height / 10}m
               </div>
-              <div className="flex items-center gap-1.5 rounded-full bg-slate-100 px-3 py-1.5">
-                <Weight size={16} className="text-slate-500" />
+              <div className="flex items-center gap-1.5 rounded-full bg-muted px-3 py-1.5">
+                <Weight size={16} className="text-muted-foreground" />
                 重さ {data.weight / 10}kg
               </div>
-              <div className="flex items-center gap-1.5 rounded-full border border-dashed border-slate-300 px-3 py-1.5 text-slate-400">
+              <div className="flex items-center gap-1.5 rounded-full border border-dashed border-border px-3 py-1.5 text-muted-foreground">
                 世代などのタグ（実装予定）
               </div>
             </div>
 
             <div>
-              <div className="mb-1.5 text-sm font-bold text-slate-500">
+              <div className="mb-1.5 text-sm font-bold text-muted-foreground">
                 特性
               </div>
               <div className="flex flex-wrap gap-2">
                 {normalAbilities.map((ability) => (
                   <div
                     key={ability.id}
-                    className="rounded-full border border-slate-200 bg-white px-3 py-1 text-xs font-bold text-slate-700 shadow-sm transition-colors duration-150 hover:border-slate-300 hover:bg-slate-50"
+                    className="rounded-full border border-border bg-card px-3 py-1 text-xs font-bold text-card-foreground shadow-sm transition-colors duration-150 hover:bg-accent"
                   >
                     <ExampleDrawer
                       title={ability.name}
@@ -150,7 +150,7 @@ export default function BlogPostPage({ params }: { params: Promise<Params> }) {
                 {hiddenAbilities.map((ability) => (
                   <div
                     key={ability.id}
-                    className="rounded-full border border-dashed border-slate-300 bg-slate-50 px-3 py-1 text-xs font-bold text-slate-500 transition-colors duration-150 hover:border-slate-400 hover:bg-slate-100"
+                    className="rounded-full border border-dashed border-border bg-muted px-3 py-1 text-xs font-bold text-muted-foreground transition-colors duration-150 hover:bg-accent"
                   >
                     <ExampleDrawer
                       title={`${ability.name}（隠れ特性）`}
@@ -162,10 +162,10 @@ export default function BlogPostPage({ params }: { params: Promise<Params> }) {
             </div>
 
             <div>
-              <div className="mb-1.5 text-sm font-bold text-slate-500">
+              <div className="mb-1.5 text-sm font-bold text-muted-foreground">
                 ポケモンの説明
               </div>
-              <div className="rounded-xl bg-slate-900 p-4 font-mono text-sm leading-relaxed text-green-400 shadow-inner ring-1 ring-slate-700">
+              <div className="rounded-xl bg-slate-900 p-4 font-mono text-sm leading-relaxed text-green-400 shadow-inner ring-1 ring-border">
                 {!data.description ? "謎に包まれている" : data.description}
               </div>
             </div>
@@ -173,14 +173,14 @@ export default function BlogPostPage({ params }: { params: Promise<Params> }) {
         </div>
 
         {/* ステータス */}
-        <div className="grid grid-cols-1 gap-6 border-t border-slate-100 p-6 lg:grid-cols-2">
-          <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
-            <div className="text-center font-bold text-slate-700">
+        <div className="grid grid-cols-1 gap-6 border-t border-border p-6 lg:grid-cols-2">
+          <div className="rounded-2xl border border-border bg-card p-4 shadow-sm">
+            <div className="text-center font-bold text-card-foreground">
               ポケモンステータスチャート
             </div>
             <RadarChartComponent status={status} />
           </div>
-          <div className="flex flex-col gap-6 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+          <div className="flex flex-col gap-6 rounded-2xl border border-border bg-card p-4 shadow-sm">
             <BaseStatBarChart stats={data.stats} />
             <TypeEffectivenessSection types={typeNames} />
           </div>
