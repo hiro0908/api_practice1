@@ -10,6 +10,9 @@ export const getAllPokemonList = (maximam: number) => {
 export const getJapanesePokemonData = (id: number) => {
   return `https://pokeapi.co/api/v2/pokemon-species/${id}`;
 };
+export const getJapanesePokemonFormData=(id:number)=>{
+  return `https://pokeapi.co/api/v2/pokemon-form/${id}`;
+}
 export const extractIdFromUrl = (url: string): number => {
   const match = url.match(/\/(\d+)\/?$/);
   if (!match) {
@@ -45,6 +48,14 @@ export async function getJapanesePokemon(id: number) {
   const res = await fetch(getJapanesePokemonData(id));
   if (!res.ok) {
     throw new Error("ポケモンの日本語名の取得時にエラーが発生しました");
+  }
+  return res.json();
+}
+
+export async function getPokemonFormData(id: number) {
+  const res = await fetch(getJapanesePokemonFormData(id));
+  if (!res.ok) {
+    throw new Error("ポケモンフォーム情報の取得に失敗しました");
   }
   return res.json();
 }

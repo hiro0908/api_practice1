@@ -7,6 +7,7 @@ import {
   getPokemonData,
   getJapanesePokemonData,
   extractIdFromUrl,
+  getPokemonFormData,
 } from "@/src/infrastructure/api/pokemonApi";
 
 const IMAGE_DIR = path.join(process.cwd(), "public", "images");
@@ -77,9 +78,14 @@ export async function registerAllPokeomonData() {
       )?.name ?? data.name;
 
     const isDefault = data.is_default as boolean;
-    const formName = isDefault
-      ? null
-      : data.name.replace(`${dataja.name}-`, "");
+    const formApiId = extractIdFromUrl(
+      (data.forms as { url: string }[])[0].url,
+    );
+    const formData = await getPokemonFormData(formApiId);
+    const formDisplayName =
+      formData.form_names.find((e:{name:string;language:{name:string}}) => e.language.name === "ja")?.name ??
+      formData.form_names.find((e:{name:string;language:{name:string}}) => e.language.name === "en")?.name ??
+      null;
     // ① Ability登録: PokemonAbilityが参照するAbilityの一覧を作成する
     const abilityData = await Promise.all(
       data.abilities.map(
@@ -167,7 +173,7 @@ export async function registerAllPokeomonData() {
       height: data.height,
       weight: data.weight,
       isDefault,
-      formName,
+      formDisplayName,
       description,
     };
 
@@ -201,10 +207,9 @@ export async function registerAllPokeomonData() {
         isHidden: a.isHidden,
       })),
     });
-
     console.log(
       `No${speciesId}(pokeApiId:${pokeApiId})の${japaneseName}${
-        formName ? `(${formName})` : ""
+        formDisplayName ? "("+formDisplayName+")" : ""
       }の登録が完了`,
     );
   }

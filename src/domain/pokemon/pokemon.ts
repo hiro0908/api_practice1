@@ -17,6 +17,7 @@ export type PokemonData = {
   description: string;
   difImageUrl: string | null;
   abilities: PokemonAbility[];
+  isDefault:boolean;
 };
 
 export type PokemonListItem = {
@@ -24,7 +25,7 @@ export type PokemonListItem = {
   name: string;
   japaneseName: string;
   imageUrl: string | null;
-  formName: string | null;
+  formDisplayName: string | null;
 };
 
 export type PokemonAbility = {

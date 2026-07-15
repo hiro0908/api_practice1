@@ -22,7 +22,6 @@ export default function Home() {
       name: string;
       japaneseName: string;
       imageUrl: string | null;
-      formName: string | null;
     }[]
   >([]);
   const [currentPage, setCurrentPage] = useState(() => {
@@ -42,7 +41,6 @@ export default function Home() {
         number: pokemon.id,
         japaneseName: pokemon.japaneseName,
         imageUrl: pokemon.imageUrl,
-        formName: pokemon.formName,
       }));
       setPokemonList(nameList);
     };
@@ -69,12 +67,9 @@ export default function Home() {
     window.scrollTo(0, 0);
   };
 
-  const defaultFormList = pokemonList.filter(
-    (pokemon) => pokemon.formName == null,
-  );
-  const totalPages = Math.max(1, Math.ceil(defaultFormList.length / PAGE_ITEM));
+  const totalPages = Math.max(1, Math.ceil(pokemonList.length / PAGE_ITEM));
   const safeCurrentPage = Math.min(currentPage, totalPages);
-  const currentPageList = defaultFormList.slice(
+  const currentPageList = pokemonList.slice(
     (safeCurrentPage - 1) * PAGE_ITEM,
     safeCurrentPage * PAGE_ITEM,
   );

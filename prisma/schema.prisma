@@ -24,12 +24,10 @@ model Pokemon {
   height       Int
   weight       Int
   isDefault    Boolean  @default(true)
-  formName     String?
+  formDisplayName     String?
   stats        Stats[]
   abilities    PokemonAbility[]
   description  String?
-
-  @@unique([pokedexId, formName])
 }
 
 model Stats {

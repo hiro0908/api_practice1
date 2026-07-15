@@ -85,7 +85,7 @@ export const PokemonScalarFieldEnum = {
   height: 'height',
   weight: 'weight',
   isDefault: 'isDefault',
-  formName: 'formName',
+  formDisplayName: 'formDisplayName',
   description: 'description'
 } as const
 
