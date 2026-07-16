@@ -20,7 +20,7 @@ export function ButtonGroupInput({ value, onChange }: Props) {
   return (
     <form
       onSubmit={handleSubmit}
-      className="rounded-full bg-card dark:bg-neutral-700"
+      className="rounded-full bg-card dark:bg-neutral-700 "
     >
       <ButtonGroup>
         <Input
@@ -32,7 +32,7 @@ export function ButtonGroupInput({ value, onChange }: Props) {
         <Button
           variant="outline"
           aria-label="Search"
-          className="!rounded-l-none !rounded-r-full pr-4"
+          className="!rounded-l-none !rounded-r-full pr-4 cursor-pointer"
         >
           <SearchIcon />
         </Button>
