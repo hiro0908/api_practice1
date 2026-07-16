@@ -26,12 +26,12 @@ export async function GET(
   if (!result) {
     return NextResponse.json({ error: "Pokemon not found" }, { status: 404 });
   }
-  // const forms = await prisma.pokemon.findMany({
-  //   where: { pokedexId: result.pokedexId },
-  //   orderBy: {
-  //     pokeApiId: "asc",
-  //   },
-  // });
+
+  const { _max } = await prisma.pokemon.aggregate({
+    _max: { pokeApiId: true },
+  });
+  const maxPokeApiId = _max.pokeApiId ?? Number(id);
+
   const pokemon = {
     ...result,
     abilities:
@@ -44,5 +44,5 @@ export async function GET(
       })) ?? [],
   };
 
-  return NextResponse.json({ pokemon });
+  return NextResponse.json({ pokemon, maxPokeApiId });
 }
