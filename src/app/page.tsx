@@ -38,7 +38,7 @@ export default function Home() {
       const json = await response.json();
       const nameList = json.map((pokemon: PokemonListItem) => ({
         name: pokemon.name,
-        number: pokemon.id,
+        number: pokemon.pokeApiId,
         japaneseName: pokemon.japaneseName,
         imageUrl: pokemon.imageUrl,
       }));

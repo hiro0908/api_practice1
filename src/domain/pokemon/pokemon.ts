@@ -23,7 +23,7 @@ export type PokemonData = {
 };
 
 export type PokemonListItem = {
-  id: number;
+  pokeApiId: number;
   name: string;
   japaneseName: string;
   imageUrl: string | null;
