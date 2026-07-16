@@ -8,7 +8,7 @@ export async function GET(
   const { id } = await params;
   const result = await prisma.pokemon.findUnique({
     where: {
-      id: Number(id),
+      pokeApiId: Number(id),
     },
     include: {
       stats: true,
@@ -26,7 +26,12 @@ export async function GET(
   if (!result) {
     return NextResponse.json({ error: "Pokemon not found" }, { status: 404 });
   }
-
+  // const forms = await prisma.pokemon.findMany({
+  //   where: { pokedexId: result.pokedexId },
+  //   orderBy: {
+  //     pokeApiId: "asc",
+  //   },
+  // });
   const pokemon = {
     ...result,
     abilities:
@@ -39,5 +44,5 @@ export async function GET(
       })) ?? [],
   };
 
-  return NextResponse.json(pokemon);
+  return NextResponse.json({ pokemon });
 }

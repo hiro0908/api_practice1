@@ -10,9 +10,9 @@ export const getAllPokemonList = (maximam: number) => {
 export const getJapanesePokemonData = (id: number) => {
   return `https://pokeapi.co/api/v2/pokemon-species/${id}`;
 };
-export const getJapanesePokemonFormData=(id:number)=>{
+export const getJapanesePokemonFormData = (id: number) => {
   return `https://pokeapi.co/api/v2/pokemon-form/${id}`;
-}
+};
 export const extractIdFromUrl = (url: string): number => {
   const match = url.match(/\/(\d+)\/?$/);
   if (!match) {

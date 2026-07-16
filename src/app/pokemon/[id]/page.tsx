@@ -3,8 +3,9 @@ import { use } from "react";
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import dynamic from "next/dynamic";
+import { useRouter } from "next/navigation";
 import { Sparkles, Ruler, Weight } from "lucide-react";
-import { PokemonData } from "@/src/domain/pokemon/pokemon";
+import { PokemonData, PokemonForm } from "@/src/domain/pokemon/pokemon";
 import { pokemonTypeStyleDictionary } from "@/src/domain/pokemon/pokemonTypeStyle";
 import RadarChartComponent from "@/src/components/ui/RaderChartComponent";
 import { fetchPokemonStatus } from "@/src/components/ui/fetchPokemonStatus";
@@ -27,6 +28,9 @@ type Params = {
 export default function BlogPostPage({ params }: { params: Promise<Params> }) {
   const { id } = use(params);
   const [data, setData] = useState<PokemonData | null>(null);
+  const [specialPokeStyleList, setSpecialPokeStyleList] = useState<
+    PokemonForm[]
+  >([]);
   useEffect(() => {
     const fetchPokemon = async () => {
       const response = await fetch(`/api/pokemon/${id}`);
@@ -35,10 +39,19 @@ export default function BlogPostPage({ params }: { params: Promise<Params> }) {
       //   return;
       // }
       const data = await response.json();
-      setData(data);
+      setData(data.pokemon);
     };
     fetchPokemon();
   }, [id]);
+  useEffect(() => {
+    if (!data) return;
+    const fetchForm = async () => {
+      const response = await fetch(`/api/pokemon/forms/${data.pokedexId}`);
+      const formData = await response.json();
+      setSpecialPokeStyleList(formData.forms);
+    };
+    fetchForm();
+  }, [data]);
   const [pokemonForm, setPokemonForm] = useState<"Normal" | "Special">(
     "Normal",
   );
@@ -46,6 +59,7 @@ export default function BlogPostPage({ params }: { params: Promise<Params> }) {
     setPokemonForm((prev) => (prev === "Normal" ? "Special" : "Normal"));
   };
   const [erroredImageSrc, setErroredImageSrc] = useState<string | null>(null);
+  const router = useRouter();
   if (!data) {
     return (
       <div className="flex min-h-screen flex-col items-center justify-center gap-4">
@@ -61,7 +75,6 @@ export default function BlogPostPage({ params }: { params: Promise<Params> }) {
   const bannerGradient = `linear-gradient(135deg, color-mix(in srgb, ${primaryTypeColor} 65%, black), color-mix(in srgb, ${primaryTypeColor} 30%, black))`;
   const normalAbilities = data.abilities.filter((ability) => !ability.isHidden);
   const hiddenAbilities = data.abilities.filter((ability) => ability.isHidden);
-
   return (
     <div className="min-h-screen pb-12">
       <PageHeader />
@@ -76,6 +89,7 @@ export default function BlogPostPage({ params }: { params: Promise<Params> }) {
           </div>
           <div className="mt-1 text-3xl font-extrabold text-white drop-shadow-sm sm:text-4xl">
             {data.japaneseName}
+            {data.formDisplayName ? "(" + data.formDisplayName + ")" : ""}
           </div>
           <div className="mt-3 flex flex-wrap gap-2">
             {data.type.map((type) => (
@@ -168,6 +182,25 @@ export default function BlogPostPage({ params }: { params: Promise<Params> }) {
               <div className="rounded-xl bg-slate-900 p-4 font-mono text-sm leading-relaxed text-green-400 shadow-inner ring-1 ring-border">
                 {!data.description ? "謎に包まれている" : data.description}
               </div>
+            </div>
+            <div>
+              {specialPokeStyleList.length > 0 &&
+                specialPokeStyleList.map((form) => (
+                  <button
+                    key={form.pokeApiId}
+                    onClick={() => router.push(`/pokemon/${form.pokeApiId}`)}
+                  >
+                    {form.imageUrl && (
+                      <Image
+                        src={form.imageUrl}
+                        alt={form.japaneseName}
+                        width={60}
+                        height={60}
+                      />
+                    )}
+                    <div>{form.formDisplayName}</div>
+                  </button>
+                ))}
             </div>
           </div>
         </div>
