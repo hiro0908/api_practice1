@@ -7,7 +7,7 @@ import Link from "next/link";
 import { Settings } from "lucide-react";
 
 export function PageHeader() {
-  const [inputNumber, setInputNumber] = useState("0");
+  const [inputNumber, setInputNumber] = useState("");
   const router = useRouter();
 
   return (
