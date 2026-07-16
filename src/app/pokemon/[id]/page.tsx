@@ -183,25 +183,49 @@ export default function BlogPostPage({ params }: { params: Promise<Params> }) {
                 {!data.description ? "謎に包まれている" : data.description}
               </div>
             </div>
-            <div>
-              {specialPokeStyleList.length > 0 &&
-                specialPokeStyleList.map((form) => (
-                  <button
-                    key={form.pokeApiId}
-                    onClick={() => router.push(`/pokemon/${form.pokeApiId}`)}
-                  >
-                    {form.imageUrl && (
-                      <Image
-                        src={form.imageUrl}
-                        alt={form.japaneseName}
-                        width={60}
-                        height={60}
-                      />
-                    )}
-                    <div>{form.formDisplayName}</div>
-                  </button>
-                ))}
-            </div>
+            {specialPokeStyleList.length > 1 && (
+              <div>
+                <div className="mb-1.5 text-sm font-bold text-muted-foreground">
+                  フォーム
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {specialPokeStyleList.map((form) => {
+                    const isActive = form.pokeApiId === Number(id);
+                    return (
+                      <button
+                        key={form.pokeApiId}
+                        onClick={() =>
+                          router.push(`/pokemon/${form.pokeApiId}`)
+                        }
+                        className={`flex cursor-pointer flex-col items-center gap-1 rounded-2xl border px-3 py-2 transition-colors duration-150 ${
+                          isActive
+                            ? "border-primary bg-primary/10 shadow-sm"
+                            : "border-border bg-card hover:bg-accent"
+                        }`}
+                      >
+                        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-muted">
+                          {form.imageUrl && (
+                            <Image
+                              src={form.imageUrl}
+                              alt={form.japaneseName}
+                              width={44}
+                              height={44}
+                            />
+                          )}
+                        </div>
+                        <div
+                          className={`text-xs font-bold ${
+                            isActive ? "text-primary" : "text-card-foreground"
+                          }`}
+                        >
+                          {form.formDisplayName || form.japaneseName}
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
           </div>
         </div>
 

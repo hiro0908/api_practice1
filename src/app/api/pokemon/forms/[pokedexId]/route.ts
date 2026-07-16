@@ -18,7 +18,7 @@ export async function GET(
       imageUrl: true,
       pokeApiId: true,
       formDisplayName: true,
-        japaneseName:true,
+      japaneseName: true,
     },
   });
 

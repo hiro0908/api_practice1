@@ -46,13 +46,14 @@ export function Pagination({
 
   return (
     <nav
-      className="mt-6 flex flex-wrap items-center justify-center gap-1"
+      className="mt-6 flex flex-wrap items-center justify-center gap-1 "
       aria-label="ページネーション"
     >
       <Button
         type="button"
         variant="outline"
         size="icon-sm"
+        className="cursor-pointer"
         onClick={() => onPageChange(1)}
         aria-label="前のページ"
       >
@@ -62,6 +63,7 @@ export function Pagination({
         type="button"
         variant="outline"
         size="icon-sm"
+        className="cursor-pointer"
         disabled={currentPage === 1}
         onClick={() => onPageChange(currentPage - 1)}
         aria-label="前のページ"
@@ -83,6 +85,7 @@ export function Pagination({
             type="button"
             variant={page === currentPage ? "default" : "outline"}
             size="sm"
+            className="cursor-pointer"
             onClick={() => onPageChange(page)}
             aria-current={page === currentPage ? "page" : undefined}
           >
@@ -95,6 +98,7 @@ export function Pagination({
         type="button"
         variant="outline"
         size="icon-sm"
+        className="cursor-pointer"
         disabled={currentPage === totalPages}
         onClick={() => onPageChange(currentPage + 1)}
         aria-label="次のページ"
@@ -106,6 +110,7 @@ export function Pagination({
         type="button"
         variant="outline"
         size="icon-sm"
+        className="cursor-pointer"
         onClick={() => onPageChange(totalPages)}
         aria-label="最終ページ"
       >
