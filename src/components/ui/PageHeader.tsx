@@ -19,7 +19,7 @@ export function PageHeader() {
       >
         <PageTitle title="ポケモン図鑑" />
       </button>
-      <div className="flex flex-row items-end gap-2 justify-end">
+      <div className="flex flex-row items-end justify-end">
         <div className="shadow-md rounded-full gap-3">
           <ButtonGroupInput value={inputNumber} onChange={setInputNumber} />
         </div>

@@ -11,7 +11,10 @@ dotenv.config({
 console.log("DATABASE_URL =", process.env.DATABASE_URL);
 
 export default async function insertData() {
-  deleteAllPokemonData();
-  registerAllPokeomonData();
+  await deleteAllPokemonData();
+  await registerAllPokeomonData();
 }
-insertData();
+insertData().catch((err) => {
+  console.error("ポケモンデータの登録処理が失敗しました", err);
+  process.exitCode = 1;
+});
