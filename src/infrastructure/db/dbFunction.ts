@@ -107,6 +107,9 @@ async function registerOnePokemon(pokeApiId: number) {
   const speciesId = extractIdFromUrl(data.species.url);
   const resja = await fetchWithRetry(getJapanesePokemonData(speciesId));
   const dataja = await resja.json();
+  // console.log(dataja);
+  const legendary=dataja.is_legendary as boolean;
+  const mythical =dataja.is_mythical as boolean;
   const japaneseName =
     dataja.names.find(
       (n: { language: { name: string }; name: string }) =>
@@ -210,6 +213,8 @@ async function registerOnePokemon(pokeApiId: number) {
     weight: data.weight,
     isDefault,
     formDisplayName,
+    legendary,
+    mythical,
     description,
   };
 

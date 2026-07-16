@@ -385,6 +385,7 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 
 export const ModelName = {
   Pokemon: 'Pokemon',
+  Evolution: 'Evolution',
   Stats: 'Stats',
   Ability: 'Ability',
   PokemonAbility: 'PokemonAbility'
@@ -403,7 +404,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "pokemon" | "stats" | "ability" | "pokemonAbility"
+    modelProps: "pokemon" | "evolution" | "stats" | "ability" | "pokemonAbility"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -478,6 +479,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.PokemonCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.PokemonCountAggregateOutputType> | number
+        }
+      }
+    }
+    Evolution: {
+      payload: Prisma.$EvolutionPayload<ExtArgs>
+      fields: Prisma.EvolutionFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.EvolutionFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EvolutionPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.EvolutionFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EvolutionPayload>
+        }
+        findFirst: {
+          args: Prisma.EvolutionFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EvolutionPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.EvolutionFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EvolutionPayload>
+        }
+        findMany: {
+          args: Prisma.EvolutionFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EvolutionPayload>[]
+        }
+        create: {
+          args: Prisma.EvolutionCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EvolutionPayload>
+        }
+        createMany: {
+          args: Prisma.EvolutionCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.EvolutionCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EvolutionPayload>[]
+        }
+        delete: {
+          args: Prisma.EvolutionDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EvolutionPayload>
+        }
+        update: {
+          args: Prisma.EvolutionUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EvolutionPayload>
+        }
+        deleteMany: {
+          args: Prisma.EvolutionDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.EvolutionUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.EvolutionUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EvolutionPayload>[]
+        }
+        upsert: {
+          args: Prisma.EvolutionUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EvolutionPayload>
+        }
+        aggregate: {
+          args: Prisma.EvolutionAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateEvolution>
+        }
+        groupBy: {
+          args: Prisma.EvolutionGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.EvolutionGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.EvolutionCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.EvolutionCountAggregateOutputType> | number
         }
       }
     }
@@ -750,6 +825,8 @@ export const PokemonScalarFieldEnum = {
   japaneseName: 'japaneseName',
   imageUrl: 'imageUrl',
   difImageUrl: 'difImageUrl',
+  legendary: 'legendary',
+  mythical: 'mythical',
   type: 'type',
   height: 'height',
   weight: 'weight',
@@ -759,6 +836,15 @@ export const PokemonScalarFieldEnum = {
 } as const
 
 export type PokemonScalarFieldEnum = (typeof PokemonScalarFieldEnum)[keyof typeof PokemonScalarFieldEnum]
+
+
+export const EvolutionScalarFieldEnum = {
+  id: 'id',
+  fromPokedexId: 'fromPokedexId',
+  toPokedexId: 'toPokedexId'
+} as const
+
+export type EvolutionScalarFieldEnum = (typeof EvolutionScalarFieldEnum)[keyof typeof EvolutionScalarFieldEnum]
 
 
 export const StatsScalarFieldEnum = {
@@ -980,6 +1066,7 @@ export type PrismaClientOptions = ({
 }
 export type GlobalOmitConfig = {
   pokemon?: Prisma.PokemonOmit
+  evolution?: Prisma.EvolutionOmit
   stats?: Prisma.StatsOmit
   ability?: Prisma.AbilityOmit
   pokemonAbility?: Prisma.PokemonAbilityOmit

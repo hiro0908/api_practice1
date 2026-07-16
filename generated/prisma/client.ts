@@ -47,6 +47,11 @@ export { Prisma }
  */
 export type Pokemon = Prisma.PokemonModel
 /**
+ * Model Evolution
+ * 
+ */
+export type Evolution = Prisma.EvolutionModel
+/**
  * Model Stats
  * 
  */

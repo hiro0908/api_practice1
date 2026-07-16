@@ -20,6 +20,8 @@ model Pokemon {
   japaneseName String?
   imageUrl     String?
   difImageUrl  String?
+  legendary    Boolean @default(false)
+  mythical     Boolean @default(false)
   type         String[]
   height       Int
   weight       Int
@@ -28,6 +30,12 @@ model Pokemon {
   stats        Stats[]
   abilities    PokemonAbility[]
   description  String?
+}
+
+model Evolution{
+  id Int @id @default(autoincrement())
+  fromPokedexId Int
+  toPokedexId Int
 }
 
 model Stats {

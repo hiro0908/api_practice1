@@ -52,6 +52,7 @@ export const AnyNull = runtime.AnyNull
 
 export const ModelName = {
   Pokemon: 'Pokemon',
+  Evolution: 'Evolution',
   Stats: 'Stats',
   Ability: 'Ability',
   PokemonAbility: 'PokemonAbility'
@@ -81,6 +82,8 @@ export const PokemonScalarFieldEnum = {
   japaneseName: 'japaneseName',
   imageUrl: 'imageUrl',
   difImageUrl: 'difImageUrl',
+  legendary: 'legendary',
+  mythical: 'mythical',
   type: 'type',
   height: 'height',
   weight: 'weight',
@@ -90,6 +93,15 @@ export const PokemonScalarFieldEnum = {
 } as const
 
 export type PokemonScalarFieldEnum = (typeof PokemonScalarFieldEnum)[keyof typeof PokemonScalarFieldEnum]
+
+
+export const EvolutionScalarFieldEnum = {
+  id: 'id',
+  fromPokedexId: 'fromPokedexId',
+  toPokedexId: 'toPokedexId'
+} as const
+
+export type EvolutionScalarFieldEnum = (typeof EvolutionScalarFieldEnum)[keyof typeof EvolutionScalarFieldEnum]
 
 
 export const StatsScalarFieldEnum = {
