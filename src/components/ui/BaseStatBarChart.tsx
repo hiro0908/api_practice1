@@ -16,12 +16,12 @@ const STAT_ROWS = [
 const MAX_STAT = 200;
 
 function getBarColor(value: number): string {
-  if (value < 50) return "bg-red-500";
-  if (value < 80) return "bg-orange-400";
-  if (value < 100) return "bg-yellow-400";
-  if (value < 120) return "bg-lime-500";
-  if (value < 150) return "bg-green-500";
-  return "bg-cyan-500";
+  if (value < 50) return "bg-cyan-500";
+  if (value < 80) return "bg-green-500";
+  if (value < 100) return "bg-lime-500";
+  if (value < 120) return "bg-yellow-400";
+  if (value < 150) return "bg-orange-400";
+  return "bg-red-500";
 }
 
 export function BaseStatBarChart({ stats }: Props) {
