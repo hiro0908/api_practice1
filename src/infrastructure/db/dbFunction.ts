@@ -46,7 +46,7 @@ async function saveImageIfMissing(
 export async function deleteAllPokemonData() {
   console.log("既存のデータを削除します");
   return await prisma.$executeRawUnsafe(`
-        TRUNCATE TABLE "PokemonAbility", "Ability", "Stats", "Pokemon"
+        TRUNCATE TABLE "PokemonAbility", "Ability", "Stats", "Pokemon", "Evolution"
         RESTART IDENTITY CASCADE;
     `);
 }
@@ -78,6 +78,9 @@ export async function registerAllPokeomonData() {
   const maxPokemonNumber = await getMaxPokemonNumber();
   console.log("画面の読み込みが始まった");
   const list = await getAllPokemon(maxPokemonNumber);
+  // 進化チェーンは複数のポケモン(例:フシギダネ系列の3匹)が同じチェーンを共有しているため、
+  // チェーンIDごとに一度だけ登録するよう並列ワーカー間で共有する
+  const processedEvolutionChainIds = new Set<number>();
 
   await runWithConcurrency(
     list.results as { name: string; url: string }[],
@@ -86,7 +89,7 @@ export async function registerAllPokeomonData() {
       const pokeApiId = extractIdFromUrl(item.url);
 
       try {
-        await registerOnePokemon(pokeApiId);
+        await registerOnePokemon(pokeApiId, processedEvolutionChainIds);
       } catch (err) {
         console.log(`No${pokeApiId}の登録に失敗したためスキップします`, err);
       }
@@ -96,7 +99,75 @@ export async function registerAllPokeomonData() {
   console.log("すべてのポケモンの登録が完了した");
 }
 
-async function registerOnePokemon(pokeApiId: number) {
+type EvolutionChainNode = {
+  species: { url: string };
+  evolves_to: EvolutionChainNode[];
+};
+
+async function registerEvolutionChain(url: string) {
+  const res = await fetchWithRetry(url);
+  if (!res.ok) return;
+  const chainData = await res.json();
+
+  const edges: { fromPokedexId: number; toPokedexId: number }[] = [];
+  const collectEdges = (node: EvolutionChainNode) => {
+    const fromPokedexId = extractIdFromUrl(node.species.url);
+    for (const next of node.evolves_to) {
+      edges.push({
+        fromPokedexId,
+        toPokedexId: extractIdFromUrl(next.species.url),
+      });
+      collectEdges(next);
+    }
+  };
+  collectEdges(chainData.chain);
+
+  if (edges.length > 0) {
+    await prisma.evolution.createMany({ data: edges });
+  }
+}
+
+// Pokemon本体は既に登録済みだが進化データだけが未登録、というケースを埋めるための
+// 軽量な追加バッチ(画像取得や特性取得を伴わないため registerAllPokeomonData より大幅に速い)
+export async function registerAllEvolutionData() {
+  await prisma.$executeRawUnsafe(`
+    TRUNCATE TABLE "Evolution" RESTART IDENTITY;
+  `);
+
+  const pokemonList = await prisma.pokemon.findMany({
+    distinct: ["pokedexId"],
+    select: { pokedexId: true },
+  });
+  const processedEvolutionChainIds = new Set<number>();
+
+  await runWithConcurrency(
+    pokemonList.map((p) => p.pokedexId),
+    FETCH_CONCURRENCY,
+    async (pokedexId) => {
+      try {
+        const res = await fetchWithRetry(getJapanesePokemonData(pokedexId));
+        if (!res.ok) return;
+        const dataja = await res.json();
+        const chainUrl = dataja.evolution_chain?.url as string | undefined;
+        if (!chainUrl) return;
+
+        const chainId = extractIdFromUrl(chainUrl);
+        if (processedEvolutionChainIds.has(chainId)) return;
+        processedEvolutionChainIds.add(chainId);
+        await registerEvolutionChain(chainUrl);
+      } catch (err) {
+        console.log(`No${pokedexId}の進化チェーン取得に失敗しました`, err);
+      }
+    },
+  );
+
+  console.log("進化データの登録が完了した");
+}
+
+async function registerOnePokemon(
+  pokeApiId: number,
+  processedEvolutionChainIds: Set<number>,
+) {
   const res = await fetchWithRetry(getPokemonData(pokeApiId));
   if (!res.ok) {
     console.log(`No${pokeApiId}のデータが存在しません。スキップします`);
@@ -108,13 +179,21 @@ async function registerOnePokemon(pokeApiId: number) {
   const resja = await fetchWithRetry(getJapanesePokemonData(speciesId));
   const dataja = await resja.json();
   // console.log(dataja);
-  const legendary=dataja.is_legendary as boolean;
-  const mythical =dataja.is_mythical as boolean;
+  const legendary = dataja.is_legendary as boolean;
+  const mythical = dataja.is_mythical as boolean;
   const japaneseName =
     dataja.names.find(
       (n: { language: { name: string }; name: string }) =>
         n.language.name == "ja-hrkt",
     )?.name ?? data.name;
+
+  if (dataja.evolution_chain?.url) {
+    const chainId = extractIdFromUrl(dataja.evolution_chain.url);
+    if (!processedEvolutionChainIds.has(chainId)) {
+      processedEvolutionChainIds.add(chainId);
+      await registerEvolutionChain(dataja.evolution_chain.url);
+    }
+  }
 
   const isDefault = data.is_default as boolean;
   const formApiId = extractIdFromUrl((data.forms as { url: string }[])[0].url);

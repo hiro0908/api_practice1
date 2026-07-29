@@ -45,3 +45,12 @@ export type PokemonForm = {
   imageUrl: string | null;
   japaneseName: string;
 };
+
+export type PokemonEvolutionNode = {
+  pokedexId: number;
+  pokeApiId: number;
+  name: string;
+  japaneseName: string;
+  imageUrl: string | null;
+  evolvesTo: PokemonEvolutionNode[];
+};

@@ -11,7 +11,11 @@ import {
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
-import { PokemonData, PokemonForm } from "@/src/domain/pokemon/pokemon";
+import {
+  PokemonData,
+  PokemonForm,
+  PokemonEvolutionNode,
+} from "@/src/domain/pokemon/pokemon";
 import { pokemonTypeStyleDictionary } from "@/src/domain/pokemon/pokemonTypeStyle";
 // import RadarChartComponent from "@/src/components/ui/RaderChartComponent";
 // import { fetchPokemonStatus } from "@/src/components/ui/fetchPokemonStatus";
@@ -38,6 +42,8 @@ export default function BlogPostPage({ params }: { params: Promise<Params> }) {
   const [specialPokeStyleList, setSpecialPokeStyleList] = useState<
     PokemonForm[]
   >([]);
+  const [evolutionTree, setEvolutionTree] =
+    useState<PokemonEvolutionNode | null>(null);
   useEffect(() => {
     const fetchPokemon = async () => {
       const response = await fetch(`/api/pokemon/${id}`);
@@ -59,6 +65,15 @@ export default function BlogPostPage({ params }: { params: Promise<Params> }) {
       setSpecialPokeStyleList(formData.forms);
     };
     fetchForm();
+  }, [data]);
+  useEffect(() => {
+    if (!data) return;
+    const fetchEvolution = async () => {
+      const response = await fetch(`/api/pokemon/evolution/${data.pokedexId}`);
+      const evolutionData = await response.json();
+      setEvolutionTree(evolutionData.tree ?? null);
+    };
+    fetchEvolution();
   }, [data]);
   const [pokemonForm, setPokemonForm] = useState<"Normal" | "Special">(
     "Normal",
@@ -267,7 +282,21 @@ export default function BlogPostPage({ params }: { params: Promise<Params> }) {
               <div className="text-center font-bold text-card-foreground">
                 ポケモン進化
               </div>
-              {/* <RadarChartComponent status={status} /> */}
+              <div className="mt-3">
+                {evolutionTree &&
+                  (evolutionTree.evolvesTo.length === 0 ? (
+                    <div className="text-center text-sm text-muted-foreground">
+                      進化はありません
+                    </div>
+                  ) : (
+                    <div className="flex flex-wrap items-center justify-center gap-2">
+                      <EvolutionTreeNode
+                        node={evolutionTree}
+                        currentPokedexId={data.pokedexId}
+                      />
+                    </div>
+                  ))}
+              </div>
             </div>
             <div className="flex flex-col gap-6 rounded-2xl border border-border bg-card p-4 shadow-sm">
               <BaseStatBarChart stats={data.stats} />
@@ -286,6 +315,64 @@ export default function BlogPostPage({ params }: { params: Promise<Params> }) {
           </button>
         )}
       </div>
+    </div>
+  );
+}
+
+function EvolutionTreeNode({
+  node,
+  currentPokedexId,
+}: {
+  node: PokemonEvolutionNode;
+  currentPokedexId: number;
+}) {
+  const router = useRouter();
+  const isCurrent = node.pokedexId === currentPokedexId;
+  return (
+    <div className="flex items-center gap-2">
+      <button
+        type="button"
+        onClick={() => router.push(`/pokemon/${node.pokeApiId}`)}
+        className={`flex cursor-pointer flex-col items-center gap-1 rounded-2xl border px-3 py-2 transition-colors duration-150 ${
+          isCurrent
+            ? "border-primary bg-primary/10 shadow-sm"
+            : "border-border bg-card hover:bg-accent"
+        }`}
+      >
+        <div className="flex h-14 w-14 items-center justify-center rounded-full bg-muted">
+          {node.imageUrl && (
+            <Image
+              src={node.imageUrl}
+              alt={node.japaneseName}
+              width={48}
+              height={48}
+            />
+          )}
+        </div>
+        <div
+          className={`text-xs font-bold ${
+            isCurrent ? "text-primary" : "text-card-foreground"
+          }`}
+        >
+          {node.japaneseName}
+        </div>
+      </button>
+      {node.evolvesTo.length > 0 && (
+        <div className="flex max-h-80 flex-col flex-wrap gap-2">
+          {node.evolvesTo.map((child) => (
+            <div key={child.pokedexId} className="flex items-center gap-2">
+              <ChevronRight
+                size={18}
+                className="shrink-0 text-muted-foreground"
+              />
+              <EvolutionTreeNode
+                node={child}
+                currentPokedexId={currentPokedexId}
+              />
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
