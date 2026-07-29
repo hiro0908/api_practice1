@@ -20,6 +20,8 @@ export type PokemonData = {
   isDefault: boolean;
   formDisplayName: string | null;
   pokedexId: number;
+  legendary:boolean;
+  mythical:boolean;
 };
 
 export type PokemonListItem = {

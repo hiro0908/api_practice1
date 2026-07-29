@@ -25,6 +25,7 @@ import { TypeEffectivenessSection } from "@/src/components/ui/TypeEffectivenessS
 import { TypeBadge } from "@/src/components/ui/TypeBadge";
 import { RolingBollAnimation } from "@/src/components/ui/RolingBollAnimation";
 import { Button } from "@/src/components/ui/button";
+import { RarityBadge } from "@/src/components/ui/RarityBadge";
 
 const ExampleDrawer = dynamic(
   () => import("@/src/components/ui/DisplayExplain"),
@@ -187,9 +188,7 @@ export default function BlogPostPage({ params }: { params: Promise<Params> }) {
                   <Weight size={16} className="text-muted-foreground" />
                   重さ {data.weight / 10}kg
                 </div>
-                <div className="flex items-center gap-1.5 rounded-full border border-dashed border-border px-3 py-1.5 text-muted-foreground">
-                  世代などのタグ（実装予定）
-                </div>
+                <RarityBadge legendary={data.legendary} mythical={data.mythical}/>
               </div>
 
               <div>
