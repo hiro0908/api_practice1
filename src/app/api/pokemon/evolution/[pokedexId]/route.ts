@@ -1,7 +1,6 @@
 import prisma from "@/src/infrastructure/db/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
-
 type EvolutionNode = {
   pokedexId: number;
   pokeApiId: number;
