@@ -13,18 +13,18 @@ import {
 
 const IMAGE_DIR = path.join(process.cwd(), "public", "images");
 const DIF_IMAGE_DIR = path.join(process.cwd(), "public", "difImages");
+const VOICE_DIR = path.join(process.cwd(), "public", "voice");
 
-// 起動のたびにGitHub(raw.githubusercontent.com)へ画像を取りに行ってメモリを消費するのを防ぐため、
+// 起動のたびにGitHub(raw.githubusercontent.com)へ画像や音声を取りに行ってメモリを消費するのを防ぐため、
 // 一度public配下に保存したらDBにはそのパスだけを持たせ、以降はダウンロードをスキップする
-async function saveImageIfMissing(
+async function saveFileIfMissing(
   url: string | null,
   dir: string,
   publicSubDir: string,
-  pokeApiId: number,
+  fileName: string,
 ): Promise<string | null> {
   if (!url) return null;
 
-  const fileName = `${pokeApiId}.png`;
   const filePath = path.join(dir, fileName);
   const publicPath = `/${publicSubDir}/${fileName}`;
 
@@ -74,6 +74,7 @@ async function runWithConcurrency<T>(
 export async function registerAllPokeomonData() {
   await fs.mkdir(IMAGE_DIR, { recursive: true });
   await fs.mkdir(DIF_IMAGE_DIR, { recursive: true });
+  await fs.mkdir(VOICE_DIR, { recursive: true });
 
   const maxPokemonNumber = await getMaxPokemonNumber();
   console.log("画面の読み込みが始まった");
@@ -164,6 +165,41 @@ export async function registerAllEvolutionData() {
   console.log("進化データの登録が完了した");
 }
 
+// Pokemon本体は既に登録済みだが鳴き声だけが未登録、というケースを埋めるための
+// 軽量な追加バッチ(voiceUrlが未設定の行だけを対象にする)
+export async function registerAllVoiceData() {
+  await fs.mkdir(VOICE_DIR, { recursive: true });
+
+  const pokemonList = await prisma.pokemon.findMany({
+    where: { voiceUrl: null },
+    select: { id: true, pokeApiId: true },
+  });
+
+  await runWithConcurrency(pokemonList, FETCH_CONCURRENCY, async (pokemon) => {
+    try {
+      const res = await fetchWithRetry(getPokemonData(pokemon.pokeApiId));
+      if (!res.ok) return;
+      const data = await res.json();
+      const voiceUrl = await saveFileIfMissing(
+        data.cries?.latest ?? data.cries?.legacy ?? null,
+        VOICE_DIR,
+        "voice",
+        `${pokemon.pokeApiId}.ogg`,
+      );
+      if (!voiceUrl) return;
+
+      await prisma.pokemon.update({
+        where: { id: pokemon.id },
+        data: { voiceUrl },
+      });
+    } catch (err) {
+      console.log(`No${pokemon.pokeApiId}の鳴き声取得に失敗しました`, err);
+    }
+  });
+
+  console.log("鳴き声データの登録が完了した");
+}
+
 async function registerOnePokemon(
   pokeApiId: number,
   processedEvolutionChainIds: Set<number>,
@@ -178,7 +214,6 @@ async function registerOnePokemon(
   const speciesId = extractIdFromUrl(data.species.url);
   const resja = await fetchWithRetry(getJapanesePokemonData(speciesId));
   const dataja = await resja.json();
-  // console.log(dataja);
   const legendary = dataja.is_legendary as boolean;
   const mythical = dataja.is_mythical as boolean;
   const japaneseName =
@@ -268,17 +303,23 @@ async function registerOnePokemon(
       .replace(/\n/g, " ")
       .replace(/\f/g, " ") ?? "";
 
-  const imageUrl = await saveImageIfMissing(
+  const imageUrl = await saveFileIfMissing(
     data.sprites.other["official-artwork"].front_default,
     IMAGE_DIR,
     "images",
-    pokeApiId,
+    `${pokeApiId}.png`,
   );
-  const difImageUrl = await saveImageIfMissing(
+  const difImageUrl = await saveFileIfMissing(
     data.sprites.other["official-artwork"].front_shiny,
     DIF_IMAGE_DIR,
     "difImages",
-    pokeApiId,
+    `${pokeApiId}.png`,
+  );
+  const voiceUrl = await saveFileIfMissing(
+    data.cries?.latest ?? data.cries?.legacy ?? null,
+    VOICE_DIR,
+    "voice",
+    `${pokeApiId}.ogg`,
   );
 
   const pokemonData = {
@@ -287,6 +328,7 @@ async function registerOnePokemon(
     japaneseName,
     imageUrl,
     difImageUrl,
+    voiceUrl,
     type: data.types.map((item: { type: { name: string } }) => item.type.name),
     height: data.height,
     weight: data.weight,

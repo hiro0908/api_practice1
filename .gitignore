@@ -47,3 +47,4 @@ next-env.d.ts
 # ポケモン画像(fetchPokemonスクリプトでpublic配下に生成される)
 /public/images
 /public/difImages
+/public/voice

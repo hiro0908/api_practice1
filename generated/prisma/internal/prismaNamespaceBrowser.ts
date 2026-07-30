@@ -82,6 +82,7 @@ export const PokemonScalarFieldEnum = {
   japaneseName: 'japaneseName',
   imageUrl: 'imageUrl',
   difImageUrl: 'difImageUrl',
+  voiceUrl: 'voiceUrl',
   legendary: 'legendary',
   mythical: 'mythical',
   type: 'type',
