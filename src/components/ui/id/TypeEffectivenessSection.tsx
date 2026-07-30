@@ -1,5 +1,5 @@
 import { calculateTypeEffectiveness } from "@/src/domain/pokemon/calculateEffectiveType";
-import { TypeBadge } from "@/src/components/ui/TypeBadge";
+import { TypeBadge } from "@/src/components/ui/id/TypeBadge";
 
 type Props = {
   types: string[];

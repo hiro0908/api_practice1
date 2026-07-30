@@ -18,17 +18,17 @@ import {
 } from "@/src/domain/pokemon/pokemon";
 import { pokemonTypeStyleDictionary } from "@/src/domain/pokemon/pokemonTypeStyle";
 import { PageHeader } from "@/src/components/ui/PageHeader";
-import { BaseStatBarChart } from "@/src/components/ui/BaseStatBarChart";
-import { TypeEffectivenessSection } from "@/src/components/ui/TypeEffectivenessSection";
-import { TypeBadge } from "@/src/components/ui/TypeBadge";
-import { RolingBollAnimation } from "@/src/components/ui/RolingBollAnimation";
+import { BaseStatBarChart } from "@/src/components/ui/id/BaseStatBarChart";
+import { TypeEffectivenessSection } from "@/src/components/ui/id/TypeEffectivenessSection";
+import { TypeBadge } from "@/src/components/ui/id/TypeBadge";
+import { RolingBollAnimation } from "@/src/components/ui/id/RolingBollAnimation";
 import { Button } from "@/src/components/ui/button";
-import { RarityBadge } from "@/src/components/ui/RarityBadge";
-import { EvolutionTreeNode } from "@/src/components/ui/EvolutionTreeNode";
+import { RarityBadge } from "@/src/components/ui/id/RarityBadge";
+import { EvolutionTreeNode } from "@/src/components/ui/id/EvolutionTreeNode";
 import { DisplayPokemonImage } from "@/src/components/ui/DisplayPokemonImage";
 
 const ExampleDrawer = dynamic(
-  () => import("@/src/components/ui/DisplayExplain"),
+  () => import("@/src/components/ui/id/DisplayExplain"),
   { ssr: false },
 );
 
@@ -78,7 +78,6 @@ export default function BlogPostPage({ params }: { params: Promise<Params> }) {
   const handleClick = () => {
     setPokemonForm((prev) => (prev === "Normal" ? "Special" : "Normal"));
   };
-  // const [erroredImageSrc, setErroredImageSrc] = useState<string | null>(null);
   const router = useRouter();
   const currentPokeApiId = Number(id);
   const hasPrev = currentPokeApiId > 1;
