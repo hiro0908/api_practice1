@@ -4,6 +4,17 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
+import { pokemonTypeStyleDictionary } from "@/src/domain/pokemon/pokemonTypeStyle";
+import { PageHeader } from "@/src/components/ui/PageHeader";
+import { BaseStatBarChart } from "@/src/components/ui/id/BaseStatBarChart";
+import { TypeEffectivenessSection } from "@/src/components/ui/id/TypeEffectivenessSection";
+import { TypeBadge } from "@/src/components/ui/id/TypeBadge";
+import { RolingBollAnimation } from "@/src/components/ui/id/RolingBollAnimation";
+import { Button } from "@/src/components/ui/button";
+import { RarityBadge } from "@/src/components/ui/id/RarityBadge";
+import { EvolutionTreeNode } from "@/src/components/ui/id/EvolutionTreeNode";
+import { DisplayPokemonImage } from "@/src/components/ui/DisplayPokemonImage";
+import {GenerationBadge} from "@/src/components/ui/id/GenerationBadge"
 import {
   Sparkles,
   Ruler,
@@ -16,16 +27,6 @@ import {
   PokemonForm,
   PokemonEvolutionNode,
 } from "@/src/domain/pokemon/pokemon";
-import { pokemonTypeStyleDictionary } from "@/src/domain/pokemon/pokemonTypeStyle";
-import { PageHeader } from "@/src/components/ui/PageHeader";
-import { BaseStatBarChart } from "@/src/components/ui/id/BaseStatBarChart";
-import { TypeEffectivenessSection } from "@/src/components/ui/id/TypeEffectivenessSection";
-import { TypeBadge } from "@/src/components/ui/id/TypeBadge";
-import { RolingBollAnimation } from "@/src/components/ui/id/RolingBollAnimation";
-import { Button } from "@/src/components/ui/button";
-import { RarityBadge } from "@/src/components/ui/id/RarityBadge";
-import { EvolutionTreeNode } from "@/src/components/ui/id/EvolutionTreeNode";
-import { DisplayPokemonImage } from "@/src/components/ui/DisplayPokemonImage";
 
 const ExampleDrawer = dynamic(
   () => import("@/src/components/ui/id/DisplayExplain"),
@@ -169,6 +170,7 @@ export default function BlogPostPage({ params }: { params: Promise<Params> }) {
                   legendary={data.legendary}
                   mythical={data.mythical}
                 />
+                <GenerationBadge gene={data.generation}/>
               </div>
 
               <div>

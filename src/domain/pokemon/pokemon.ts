@@ -22,6 +22,7 @@ export type PokemonData = {
   pokedexId: number;
   legendary: boolean;
   mythical: boolean;
+  generation: number;
 };
 
 export type PokemonListItem = {

@@ -833,7 +833,8 @@ export const PokemonScalarFieldEnum = {
   weight: 'weight',
   isDefault: 'isDefault',
   formDisplayName: 'formDisplayName',
-  description: 'description'
+  description: 'description',
+  generation: 'generation'
 } as const
 
 export type PokemonScalarFieldEnum = (typeof PokemonScalarFieldEnum)[keyof typeof PokemonScalarFieldEnum]
