@@ -20,6 +20,7 @@ model Pokemon {
   japaneseName String?
   imageUrl     String?
   difImageUrl  String?
+  voiceUrl     String?
   legendary    Boolean @default(false)
   mythical     Boolean @default(false)
   type         String[]
