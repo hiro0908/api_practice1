@@ -1,5 +1,5 @@
 import { PokemonEvolutionNode } from "@/src/domain/pokemon/pokemon";
-import { EvolutionNodeButton } from "@/src/components/ui/EvolutionNodeButton";
+import { EvolutionNodeButton } from "@/src/components/ui/id/EvolutionNodeButton";
 import {
   ChevronRight,
   ArrowUp,
