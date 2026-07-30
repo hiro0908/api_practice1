@@ -3,10 +3,26 @@
 @import "shadcn/tailwind.css";
 
 @custom-variant dark (&:is(.dark *));
+
 h1 {
   text-align: center;
 }
 
+body {
+  min-height: 100vh;
+  color: var(--foreground);
+  background: radial-gradient(
+      circle at top,
+      oklch(0.97 0.02 30) 0%,
+      oklch(0.94 0.015 250) 45%,
+      oklch(0.9 0.015 250) 100%
+    )
+    fixed;
+}
+
+.dark body {
+  background: var(--background);
+}
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
@@ -117,7 +133,7 @@ h1 {
   --sidebar-ring: oklch(0.556 0 0);
 }
 
-@layer base {
+/* @layer base {
   * {
     @apply border-border outline-ring/50;
     @apply border-border outline-ring/50;
@@ -126,4 +142,4 @@ h1 {
     @apply bg-background text-foreground;
     @apply bg-background text-foreground;
   }
-}
+} */

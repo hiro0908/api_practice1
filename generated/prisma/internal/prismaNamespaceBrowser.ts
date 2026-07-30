@@ -52,7 +52,10 @@ export const AnyNull = runtime.AnyNull
 
 export const ModelName = {
   Pokemon: 'Pokemon',
-  Stats: 'Stats'
+  Evolution: 'Evolution',
+  Stats: 'Stats',
+  Ability: 'Ability',
+  PokemonAbility: 'PokemonAbility'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -73,15 +76,32 @@ export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof
 
 export const PokemonScalarFieldEnum = {
   id: 'id',
+  pokedexId: 'pokedexId',
+  pokeApiId: 'pokeApiId',
   name: 'name',
   japaneseName: 'japaneseName',
   imageUrl: 'imageUrl',
+  difImageUrl: 'difImageUrl',
+  legendary: 'legendary',
+  mythical: 'mythical',
   type: 'type',
   height: 'height',
-  weight: 'weight'
+  weight: 'weight',
+  isDefault: 'isDefault',
+  formDisplayName: 'formDisplayName',
+  description: 'description'
 } as const
 
 export type PokemonScalarFieldEnum = (typeof PokemonScalarFieldEnum)[keyof typeof PokemonScalarFieldEnum]
+
+
+export const EvolutionScalarFieldEnum = {
+  id: 'id',
+  fromPokedexId: 'fromPokedexId',
+  toPokedexId: 'toPokedexId'
+} as const
+
+export type EvolutionScalarFieldEnum = (typeof EvolutionScalarFieldEnum)[keyof typeof EvolutionScalarFieldEnum]
 
 
 export const StatsScalarFieldEnum = {
@@ -92,6 +112,26 @@ export const StatsScalarFieldEnum = {
 } as const
 
 export type StatsScalarFieldEnum = (typeof StatsScalarFieldEnum)[keyof typeof StatsScalarFieldEnum]
+
+
+export const AbilityScalarFieldEnum = {
+  pokeApiId: 'pokeApiId',
+  name: 'name',
+  japaneseName: 'japaneseName',
+  description: 'description'
+} as const
+
+export type AbilityScalarFieldEnum = (typeof AbilityScalarFieldEnum)[keyof typeof AbilityScalarFieldEnum]
+
+
+export const PokemonAbilityScalarFieldEnum = {
+  pokemonId: 'pokemonId',
+  abilityId: 'abilityId',
+  slot: 'slot',
+  isHidden: 'isHidden'
+} as const
+
+export type PokemonAbilityScalarFieldEnum = (typeof PokemonAbilityScalarFieldEnum)[keyof typeof PokemonAbilityScalarFieldEnum]
 
 
 export const SortOrder = {

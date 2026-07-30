@@ -1,10 +1,17 @@
-import prisma from "@/src/lib/prisma";
+import prisma from "@/src/infrastructure/db/prisma";
 import { NextResponse } from "next/server";
 
 export async function GET() {
   const result = await prisma.pokemon.findMany({
+    where: {
+      isDefault: true,
+    },
     include: {
       stats: true,
+      abilities: true,
+    },
+    orderBy: {
+      pokedexId: "asc",
     },
   });
 

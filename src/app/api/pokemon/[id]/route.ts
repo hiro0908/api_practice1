@@ -1,4 +1,4 @@
-import prisma from "@/src/lib/prisma";
+import prisma from "@/src/infrastructure/db/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
@@ -8,12 +8,41 @@ export async function GET(
   const { id } = await params;
   const result = await prisma.pokemon.findUnique({
     where: {
-      id: Number(id),
+      pokeApiId: Number(id),
     },
     include: {
       stats: true,
+      abilities: {
+        include: {
+          ability: true,
+        },
+        orderBy: {
+          slot: "asc",
+        },
+      },
     },
   });
 
-  return NextResponse.json(result);
+  if (!result) {
+    return NextResponse.json({ error: "Pokemon not found" }, { status: 404 });
+  }
+
+  const { _max } = await prisma.pokemon.aggregate({
+    _max: { pokeApiId: true },
+  });
+  const maxPokeApiId = _max.pokeApiId ?? Number(id);
+
+  const pokemon = {
+    ...result,
+    abilities:
+      result?.abilities.map((a) => ({
+        id: a.ability.pokeApiId,
+        name: a.ability.japaneseName,
+        description: a.ability.description,
+        slot: a.slot,
+        isHidden: a.isHidden,
+      })) ?? [],
+  };
+
+  return NextResponse.json({ pokemon, maxPokeApiId });
 }

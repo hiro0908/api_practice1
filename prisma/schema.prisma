@@ -12,24 +12,56 @@ datasource db {
   provider = "postgresql"
 }
 
-model Pokemon{
-  id       Int      @id @default(autoincrement())
-  name     String 
+model Pokemon {
+  id           Int      @id @default(autoincrement())
+  pokedexId    Int
+  pokeApiId    Int      @unique
+  name         String
   japaneseName String?
-  imageUrl String?
-  type     String[]
-  height   Int
-  weight   Int
-  stats    Stats[]
+  imageUrl     String?
+  difImageUrl  String?
+  legendary    Boolean @default(false)
+  mythical     Boolean @default(false)
+  type         String[]
+  height       Int
+  weight       Int
+  isDefault    Boolean  @default(true)
+  formDisplayName     String?
+  stats        Stats[]
+  abilities    PokemonAbility[]
+  description  String?
 }
 
-model Stats{
+model Evolution{
+  id Int @id @default(autoincrement())
+  fromPokedexId Int
+  toPokedexId Int
+}
+
+model Stats {
   id        Int     @id @default(autoincrement())
   name      String
   value     Int
   pokemonId Int
-  pokemon   Pokemon @relation(fields:[pokemonId],references:[id])
-  
-
+  pokemon   Pokemon @relation(fields: [pokemonId], references: [id])
 }
 
+model Ability{
+  pokeApiId Int @id
+  name String
+  japaneseName String
+  description String?
+
+  pokemons PokemonAbility[]
+}
+
+model PokemonAbility{
+  pokemonId Int
+  abilityId Int
+  slot Int
+  isHidden Boolean
+
+  pokemon Pokemon @relation(fields:[pokemonId],references:[id])
+  ability Ability @relation(fields:[abilityId],references:[pokeApiId])
+  @@id([pokemonId,abilityId])
+}
