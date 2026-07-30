@@ -24,7 +24,8 @@ import { TypeBadge } from "@/src/components/ui/TypeBadge";
 import { RolingBollAnimation } from "@/src/components/ui/RolingBollAnimation";
 import { Button } from "@/src/components/ui/button";
 import { RarityBadge } from "@/src/components/ui/RarityBadge";
-import {EvolutionTreeNode} from "@/src/components/ui/EvolutionTreeNode"
+import { EvolutionTreeNode } from "@/src/components/ui/EvolutionTreeNode";
+import { DisplayPokemonImage } from "@/src/components/ui/DisplayPokemonImage";
 
 const ExampleDrawer = dynamic(
   () => import("@/src/components/ui/DisplayExplain"),
@@ -77,7 +78,7 @@ export default function BlogPostPage({ params }: { params: Promise<Params> }) {
   const handleClick = () => {
     setPokemonForm((prev) => (prev === "Normal" ? "Special" : "Normal"));
   };
-  const [erroredImageSrc, setErroredImageSrc] = useState<string | null>(null);
+  // const [erroredImageSrc, setErroredImageSrc] = useState<string | null>(null);
   const router = useRouter();
   const currentPokeApiId = Number(id);
   const hasPrev = currentPokeApiId > 1;
@@ -143,25 +144,7 @@ export default function BlogPostPage({ params }: { params: Promise<Params> }) {
           <div className="grid grid-cols-1 gap-6 p-6 md:grid-cols-3">
             <div className="flex flex-col items-center gap-3">
               <div className="flex h-[260px] w-full items-center justify-center rounded-2xl bg-muted">
-                {(() => {
-                  const currentImageSrc =
-                    pokemonForm === "Normal" ? data.imageUrl : data.difImageUrl;
-                  return currentImageSrc &&
-                    currentImageSrc !== erroredImageSrc ? (
-                    <Image
-                      src={currentImageSrc}
-                      alt={data.name}
-                      width={220}
-                      height={220}
-                      className="drop-shadow-lg"
-                      onError={() => setErroredImageSrc(currentImageSrc)}
-                    />
-                  ) : (
-                    <div className="flex h-[220px] w-[220px] items-center justify-center text-sm text-muted-foreground">
-                      no image
-                    </div>
-                  );
-                })()}
+                <DisplayPokemonImage data={data} form={pokemonForm} />
               </div>
               <Button
                 onClick={handleClick}
@@ -315,4 +298,3 @@ export default function BlogPostPage({ params }: { params: Promise<Params> }) {
     </div>
   );
 }
-

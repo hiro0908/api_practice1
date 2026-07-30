@@ -1,12 +1,13 @@
 "use client";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import type { PokemonListItem } from "@/src/domain/pokemon/pokemon";
-import Image from "next/image";
 import { PageHeader } from "@/src/components/ui/PageHeader";
 import { PokedexIntro } from "@/src/components/ui/PokedexIntro";
 import { Pagination } from "@/src/components/ui/Pagination";
 
 import { useRouter } from "next/navigation";
+
+import { DisplayPokemonImage } from "../components/ui/DisplayPokemonImage";
 
 const SCROLL_POSITION_KEY = "pokedexHomeScrollY";
 const PAGE_POSITION_KEY = "pokedexHomePage";
@@ -90,19 +91,7 @@ export default function Home() {
               No.{pokemon.number}
             </div>
             <div className="mx-auto flex h-[140px] w-[140px] items-center justify-center rounded-full bg-muted transition-colors group-hover:bg-red-50 dark:group-hover:bg-red-950/40">
-              {pokemon.imageUrl ? (
-                <Image
-                  src={pokemon.imageUrl}
-                  alt={pokemon.name}
-                  width={120}
-                  height={120}
-                  className="drop-shadow-md transition-transform group-hover:scale-110"
-                />
-              ) : (
-                <div className="flex h-[120px] w-[120px] items-center justify-center text-xs text-muted-foreground">
-                  no image
-                </div>
-              )}
+              <DisplayPokemonImage data={pokemon} form={"Normal"} />
             </div>
             <div className="mt-2 truncate text-center text-sm font-bold text-card-foreground">
               {pokemon.japaneseName}
