@@ -15,8 +15,6 @@ const IMAGE_DIR = path.join(process.cwd(), "public", "images");
 const DIF_IMAGE_DIR = path.join(process.cwd(), "public", "difImages");
 const VOICE_DIR = path.join(process.cwd(), "public", "voice");
 
-// 起動のたびにGitHub(raw.githubusercontent.com)へ画像や音声を取りに行ってメモリを消費するのを防ぐため、
-// 一度public配下に保存したらDBにはそのパスだけを持たせ、以降はダウンロードをスキップする
 async function saveFileIfMissing(
   url: string | null,
   dir: string,
@@ -216,6 +214,7 @@ async function registerOnePokemon(
   const dataja = await resja.json();
   const legendary = dataja.is_legendary as boolean;
   const mythical = dataja.is_mythical as boolean;
+  const generation = extractIdFromUrl(dataja.generation.url);
   const japaneseName =
     dataja.names.find(
       (n: { language: { name: string }; name: string }) =>
@@ -333,6 +332,7 @@ async function registerOnePokemon(
     height: data.height,
     weight: data.weight,
     isDefault,
+    generation,
     formDisplayName,
     legendary,
     mythical,

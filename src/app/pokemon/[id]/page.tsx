@@ -14,6 +14,7 @@ import { Button } from "@/src/components/ui/button";
 import { RarityBadge } from "@/src/components/ui/id/RarityBadge";
 import { EvolutionTreeNode } from "@/src/components/ui/id/EvolutionTreeNode";
 import { DisplayPokemonImage } from "@/src/components/ui/DisplayPokemonImage";
+import {GenerationBadge} from "@/src/components/ui/id/GenerationBadge"
 import {
   Sparkles,
   Ruler,
@@ -169,6 +170,7 @@ export default function BlogPostPage({ params }: { params: Promise<Params> }) {
                   legendary={data.legendary}
                   mythical={data.mythical}
                 />
+                <GenerationBadge gene={data.generation}/>
               </div>
 
               <div>

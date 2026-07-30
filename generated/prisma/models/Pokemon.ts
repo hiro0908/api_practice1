@@ -32,6 +32,7 @@ export type PokemonAvgAggregateOutputType = {
   pokeApiId: number | null
   height: number | null
   weight: number | null
+  generation: number | null
 }
 
 export type PokemonSumAggregateOutputType = {
@@ -40,6 +41,7 @@ export type PokemonSumAggregateOutputType = {
   pokeApiId: number | null
   height: number | null
   weight: number | null
+  generation: number | null
 }
 
 export type PokemonMinAggregateOutputType = {
@@ -58,6 +60,7 @@ export type PokemonMinAggregateOutputType = {
   isDefault: boolean | null
   formDisplayName: string | null
   description: string | null
+  generation: number | null
 }
 
 export type PokemonMaxAggregateOutputType = {
@@ -76,6 +79,7 @@ export type PokemonMaxAggregateOutputType = {
   isDefault: boolean | null
   formDisplayName: string | null
   description: string | null
+  generation: number | null
 }
 
 export type PokemonCountAggregateOutputType = {
@@ -95,6 +99,7 @@ export type PokemonCountAggregateOutputType = {
   isDefault: number
   formDisplayName: number
   description: number
+  generation: number
   _all: number
 }
 
@@ -105,6 +110,7 @@ export type PokemonAvgAggregateInputType = {
   pokeApiId?: true
   height?: true
   weight?: true
+  generation?: true
 }
 
 export type PokemonSumAggregateInputType = {
@@ -113,6 +119,7 @@ export type PokemonSumAggregateInputType = {
   pokeApiId?: true
   height?: true
   weight?: true
+  generation?: true
 }
 
 export type PokemonMinAggregateInputType = {
@@ -131,6 +138,7 @@ export type PokemonMinAggregateInputType = {
   isDefault?: true
   formDisplayName?: true
   description?: true
+  generation?: true
 }
 
 export type PokemonMaxAggregateInputType = {
@@ -149,6 +157,7 @@ export type PokemonMaxAggregateInputType = {
   isDefault?: true
   formDisplayName?: true
   description?: true
+  generation?: true
 }
 
 export type PokemonCountAggregateInputType = {
@@ -168,6 +177,7 @@ export type PokemonCountAggregateInputType = {
   isDefault?: true
   formDisplayName?: true
   description?: true
+  generation?: true
   _all?: true
 }
 
@@ -274,6 +284,7 @@ export type PokemonGroupByOutputType = {
   isDefault: boolean
   formDisplayName: string | null
   description: string | null
+  generation: number
   _count: PokemonCountAggregateOutputType | null
   _avg: PokemonAvgAggregateOutputType | null
   _sum: PokemonSumAggregateOutputType | null
@@ -316,6 +327,7 @@ export type PokemonWhereInput = {
   isDefault?: Prisma.BoolFilter<"Pokemon"> | boolean
   formDisplayName?: Prisma.StringNullableFilter<"Pokemon"> | string | null
   description?: Prisma.StringNullableFilter<"Pokemon"> | string | null
+  generation?: Prisma.IntFilter<"Pokemon"> | number
   stats?: Prisma.StatsListRelationFilter
   abilities?: Prisma.PokemonAbilityListRelationFilter
 }
@@ -337,6 +349,7 @@ export type PokemonOrderByWithRelationInput = {
   isDefault?: Prisma.SortOrder
   formDisplayName?: Prisma.SortOrderInput | Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
+  generation?: Prisma.SortOrder
   stats?: Prisma.StatsOrderByRelationAggregateInput
   abilities?: Prisma.PokemonAbilityOrderByRelationAggregateInput
 }
@@ -361,6 +374,7 @@ export type PokemonWhereUniqueInput = Prisma.AtLeast<{
   isDefault?: Prisma.BoolFilter<"Pokemon"> | boolean
   formDisplayName?: Prisma.StringNullableFilter<"Pokemon"> | string | null
   description?: Prisma.StringNullableFilter<"Pokemon"> | string | null
+  generation?: Prisma.IntFilter<"Pokemon"> | number
   stats?: Prisma.StatsListRelationFilter
   abilities?: Prisma.PokemonAbilityListRelationFilter
 }, "id" | "pokeApiId">
@@ -382,6 +396,7 @@ export type PokemonOrderByWithAggregationInput = {
   isDefault?: Prisma.SortOrder
   formDisplayName?: Prisma.SortOrderInput | Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
+  generation?: Prisma.SortOrder
   _count?: Prisma.PokemonCountOrderByAggregateInput
   _avg?: Prisma.PokemonAvgOrderByAggregateInput
   _max?: Prisma.PokemonMaxOrderByAggregateInput
@@ -409,6 +424,7 @@ export type PokemonScalarWhereWithAggregatesInput = {
   isDefault?: Prisma.BoolWithAggregatesFilter<"Pokemon"> | boolean
   formDisplayName?: Prisma.StringNullableWithAggregatesFilter<"Pokemon"> | string | null
   description?: Prisma.StringNullableWithAggregatesFilter<"Pokemon"> | string | null
+  generation?: Prisma.IntWithAggregatesFilter<"Pokemon"> | number
 }
 
 export type PokemonCreateInput = {
@@ -427,6 +443,7 @@ export type PokemonCreateInput = {
   isDefault?: boolean
   formDisplayName?: string | null
   description?: string | null
+  generation: number
   stats?: Prisma.StatsCreateNestedManyWithoutPokemonInput
   abilities?: Prisma.PokemonAbilityCreateNestedManyWithoutPokemonInput
 }
@@ -448,6 +465,7 @@ export type PokemonUncheckedCreateInput = {
   isDefault?: boolean
   formDisplayName?: string | null
   description?: string | null
+  generation: number
   stats?: Prisma.StatsUncheckedCreateNestedManyWithoutPokemonInput
   abilities?: Prisma.PokemonAbilityUncheckedCreateNestedManyWithoutPokemonInput
 }
@@ -468,6 +486,7 @@ export type PokemonUpdateInput = {
   isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
   formDisplayName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  generation?: Prisma.IntFieldUpdateOperationsInput | number
   stats?: Prisma.StatsUpdateManyWithoutPokemonNestedInput
   abilities?: Prisma.PokemonAbilityUpdateManyWithoutPokemonNestedInput
 }
@@ -489,6 +508,7 @@ export type PokemonUncheckedUpdateInput = {
   isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
   formDisplayName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  generation?: Prisma.IntFieldUpdateOperationsInput | number
   stats?: Prisma.StatsUncheckedUpdateManyWithoutPokemonNestedInput
   abilities?: Prisma.PokemonAbilityUncheckedUpdateManyWithoutPokemonNestedInput
 }
@@ -510,6 +530,7 @@ export type PokemonCreateManyInput = {
   isDefault?: boolean
   formDisplayName?: string | null
   description?: string | null
+  generation: number
 }
 
 export type PokemonUpdateManyMutationInput = {
@@ -528,6 +549,7 @@ export type PokemonUpdateManyMutationInput = {
   isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
   formDisplayName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  generation?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type PokemonUncheckedUpdateManyInput = {
@@ -547,6 +569,7 @@ export type PokemonUncheckedUpdateManyInput = {
   isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
   formDisplayName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  generation?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type StringNullableListFilter<$PrismaModel = never> = {
@@ -574,6 +597,7 @@ export type PokemonCountOrderByAggregateInput = {
   isDefault?: Prisma.SortOrder
   formDisplayName?: Prisma.SortOrder
   description?: Prisma.SortOrder
+  generation?: Prisma.SortOrder
 }
 
 export type PokemonAvgOrderByAggregateInput = {
@@ -582,6 +606,7 @@ export type PokemonAvgOrderByAggregateInput = {
   pokeApiId?: Prisma.SortOrder
   height?: Prisma.SortOrder
   weight?: Prisma.SortOrder
+  generation?: Prisma.SortOrder
 }
 
 export type PokemonMaxOrderByAggregateInput = {
@@ -600,6 +625,7 @@ export type PokemonMaxOrderByAggregateInput = {
   isDefault?: Prisma.SortOrder
   formDisplayName?: Prisma.SortOrder
   description?: Prisma.SortOrder
+  generation?: Prisma.SortOrder
 }
 
 export type PokemonMinOrderByAggregateInput = {
@@ -618,6 +644,7 @@ export type PokemonMinOrderByAggregateInput = {
   isDefault?: Prisma.SortOrder
   formDisplayName?: Prisma.SortOrder
   description?: Prisma.SortOrder
+  generation?: Prisma.SortOrder
 }
 
 export type PokemonSumOrderByAggregateInput = {
@@ -626,6 +653,7 @@ export type PokemonSumOrderByAggregateInput = {
   pokeApiId?: Prisma.SortOrder
   height?: Prisma.SortOrder
   weight?: Prisma.SortOrder
+  generation?: Prisma.SortOrder
 }
 
 export type PokemonScalarRelationFilter = {
@@ -706,6 +734,7 @@ export type PokemonCreateWithoutStatsInput = {
   isDefault?: boolean
   formDisplayName?: string | null
   description?: string | null
+  generation: number
   abilities?: Prisma.PokemonAbilityCreateNestedManyWithoutPokemonInput
 }
 
@@ -726,6 +755,7 @@ export type PokemonUncheckedCreateWithoutStatsInput = {
   isDefault?: boolean
   formDisplayName?: string | null
   description?: string | null
+  generation: number
   abilities?: Prisma.PokemonAbilityUncheckedCreateNestedManyWithoutPokemonInput
 }
 
@@ -761,6 +791,7 @@ export type PokemonUpdateWithoutStatsInput = {
   isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
   formDisplayName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  generation?: Prisma.IntFieldUpdateOperationsInput | number
   abilities?: Prisma.PokemonAbilityUpdateManyWithoutPokemonNestedInput
 }
 
@@ -781,6 +812,7 @@ export type PokemonUncheckedUpdateWithoutStatsInput = {
   isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
   formDisplayName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  generation?: Prisma.IntFieldUpdateOperationsInput | number
   abilities?: Prisma.PokemonAbilityUncheckedUpdateManyWithoutPokemonNestedInput
 }
 
@@ -800,6 +832,7 @@ export type PokemonCreateWithoutAbilitiesInput = {
   isDefault?: boolean
   formDisplayName?: string | null
   description?: string | null
+  generation: number
   stats?: Prisma.StatsCreateNestedManyWithoutPokemonInput
 }
 
@@ -820,6 +853,7 @@ export type PokemonUncheckedCreateWithoutAbilitiesInput = {
   isDefault?: boolean
   formDisplayName?: string | null
   description?: string | null
+  generation: number
   stats?: Prisma.StatsUncheckedCreateNestedManyWithoutPokemonInput
 }
 
@@ -855,6 +889,7 @@ export type PokemonUpdateWithoutAbilitiesInput = {
   isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
   formDisplayName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  generation?: Prisma.IntFieldUpdateOperationsInput | number
   stats?: Prisma.StatsUpdateManyWithoutPokemonNestedInput
 }
 
@@ -875,6 +910,7 @@ export type PokemonUncheckedUpdateWithoutAbilitiesInput = {
   isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
   formDisplayName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  generation?: Prisma.IntFieldUpdateOperationsInput | number
   stats?: Prisma.StatsUncheckedUpdateManyWithoutPokemonNestedInput
 }
 
@@ -935,6 +971,7 @@ export type PokemonSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   isDefault?: boolean
   formDisplayName?: boolean
   description?: boolean
+  generation?: boolean
   stats?: boolean | Prisma.Pokemon$statsArgs<ExtArgs>
   abilities?: boolean | Prisma.Pokemon$abilitiesArgs<ExtArgs>
   _count?: boolean | Prisma.PokemonCountOutputTypeDefaultArgs<ExtArgs>
@@ -957,6 +994,7 @@ export type PokemonSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   isDefault?: boolean
   formDisplayName?: boolean
   description?: boolean
+  generation?: boolean
 }, ExtArgs["result"]["pokemon"]>
 
 export type PokemonSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -976,6 +1014,7 @@ export type PokemonSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   isDefault?: boolean
   formDisplayName?: boolean
   description?: boolean
+  generation?: boolean
 }, ExtArgs["result"]["pokemon"]>
 
 export type PokemonSelectScalar = {
@@ -995,9 +1034,10 @@ export type PokemonSelectScalar = {
   isDefault?: boolean
   formDisplayName?: boolean
   description?: boolean
+  generation?: boolean
 }
 
-export type PokemonOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "pokedexId" | "pokeApiId" | "name" | "japaneseName" | "imageUrl" | "difImageUrl" | "voiceUrl" | "legendary" | "mythical" | "type" | "height" | "weight" | "isDefault" | "formDisplayName" | "description", ExtArgs["result"]["pokemon"]>
+export type PokemonOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "pokedexId" | "pokeApiId" | "name" | "japaneseName" | "imageUrl" | "difImageUrl" | "voiceUrl" | "legendary" | "mythical" | "type" | "height" | "weight" | "isDefault" | "formDisplayName" | "description" | "generation", ExtArgs["result"]["pokemon"]>
 export type PokemonInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   stats?: boolean | Prisma.Pokemon$statsArgs<ExtArgs>
   abilities?: boolean | Prisma.Pokemon$abilitiesArgs<ExtArgs>
@@ -1029,6 +1069,7 @@ export type $PokemonPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     isDefault: boolean
     formDisplayName: string | null
     description: string | null
+    generation: number
   }, ExtArgs["result"]["pokemon"]>
   composites: {}
 }
@@ -1470,6 +1511,7 @@ export interface PokemonFieldRefs {
   readonly isDefault: Prisma.FieldRef<"Pokemon", 'Boolean'>
   readonly formDisplayName: Prisma.FieldRef<"Pokemon", 'String'>
   readonly description: Prisma.FieldRef<"Pokemon", 'String'>
+  readonly generation: Prisma.FieldRef<"Pokemon", 'Int'>
 }
     
 

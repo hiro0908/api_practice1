@@ -31,6 +31,7 @@ model Pokemon {
   stats        Stats[]
   abilities    PokemonAbility[]
   description  String?
+  generation   Int
 }
 
 model Evolution{
